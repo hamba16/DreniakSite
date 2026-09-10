@@ -11,7 +11,7 @@ parser.add_argument('--image-dir',type=Path,help='Optional folder containing the
 args=parser.parse_args()
 out = root / 'public' / 'brand'
 out.mkdir(parents=True, exist_ok=True)
-doc = pymupdf.open(root / 'Dreniak Brand Guideline.pdf')
+doc = pymupdf.open(root / 'doc' / 'Dreniak Brand Guideline.pdf')
 drawing = doc[6].get_drawings()[2]
 x0,y0 = drawing['rect'].x0,drawing['rect'].y0
 def point(p): return f'{p.x-x0:.3f} {p.y-y0:.3f}'
@@ -53,7 +53,7 @@ for source,name in [('exec-2d97651c-1f0a-4a38-9f4e-2da7e03abbb2.png','asset-mana
     elif not target.exists():
         raise FileNotFoundError(f'{target} is missing. Supply --image-dir to create photographic assets.')
 
-brief=(root/'DRENIAK_SITE_BUILD_BRIEF.md').read_text(encoding='utf-8')
+brief=(root/'doc'/'DRENIAK_SITE_BUILD_BRIEF.md').read_text(encoding='utf-8')
 story=re.findall(r'^> (.+)',brief,re.M)[0]
 values=[{'name':a,'text':b} for a,b in re.findall(r'^- \*\*([A-Z ]+)\*\* — (.+)$',brief,re.M)]
 services=[]

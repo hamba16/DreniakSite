@@ -9,7 +9,7 @@ export default defineConfig([
     "test-results/**",
     ".next/**",
     "tmp/**",
-    "dreniak.com_files/**",
+    "doc/archive/dreniak.com_files/**",
     "next-env.d.ts",
   ]),
 ]);

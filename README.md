@@ -1,6 +1,6 @@
 # Dreniak
 
-A shared brand home and two complete division experiences, built from `DRENIAK_SITE_BUILD_BRIEF.md` and the supplied brand artwork.
+A shared brand home and two complete division experiences, built from `doc/DRENIAK_SITE_BUILD_BRIEF.md` and the supplied brand artwork.
 
 ## Run locally
 
@@ -32,6 +32,8 @@ Node 20.9+ is required by Next.js; this build was developed with Node 24.13.0. T
 - Optional GA4 behind visitor consent; privacy and preference reset surface.
 
 ## Content and artwork
+
+`doc/` holds the source documents, build brief, implementation handoff, and review previews. `doc/archive/` preserves the original website snapshot. `assets/brand/` and `assets/images/` hold original supplied logos and the banner; production website assets live in `public/`.
 
 `src/content/brief.json` preserves the supplied story, values, mission, vision, services and sectors verbatim. Tests verify each against the original brief. `src/lib/site.ts` contains Engineering interim content and typed Insights/testimonial collections. No client projects, outcomes or testimonials are invented.
 
@@ -79,4 +81,4 @@ The browser suite covers desktop and mobile routing, image errors, overflow, div
 - Implement authenticated client portal access and document authorization in Phase 2. No auth provider has been chosen or connected.
 - Deploy to an approved staging host for stakeholder review. Registrar/DNS changes and Microsoft 365 mail records remain a deployment handoff; preserve existing email configuration.
 
-See `IMPLEMENTATION_HANDOFF.md` for the final verification evidence and launch status.
+See `doc/IMPLEMENTATION_HANDOFF.md` for the final verification evidence and launch status.

@@ -10,7 +10,7 @@ import {
   consumeLimit,
 } from "../src/lib/intake";
 test("founder story, values, mission, vision, sectors and every service remain verbatim", () => {
-  const source = readFileSync("DRENIAK_SITE_BUILD_BRIEF.md", "utf8");
+  const source = readFileSync("doc/DRENIAK_SITE_BUILD_BRIEF.md", "utf8");
   assert.ok(source.includes(data.story));
   assert.ok(source.includes(data.mission));
   assert.ok(source.includes(data.vision));

@@ -55,7 +55,7 @@ There are **23 implemented page routes**, including the shared story, privacy an
 
 The automated report is generated at `playwright-report/index.html`. Tests run against the local production server using Chromium desktop (1440 × 1000) and mobile emulation (390 × 844). These are automated and local browser checks, not a formal accessibility certification or physical-device test.
 
-Fourteen review images are saved in `docs/preview`: desktop home, split, both divisions, services, About and assessment; mobile home, Asset Management, contact and assessment; and the three social cards. Recreate them with `node scripts/capture-preview.mjs` while the server is running.
+Fourteen review images are saved in `doc/preview`: desktop home, split, both divisions, services, About and assessment; mobile home, Asset Management, contact and assessment; and the three social cards. Recreate them with `node scripts/capture-preview.mjs` while the server is running.
 
 ## Launch dependencies
 
