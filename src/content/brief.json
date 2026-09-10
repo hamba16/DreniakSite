@@ -1,0 +1,155 @@
+{
+  "story": "Dreniak began with a boy who grew up in Africa with a simple but ambitious belief: Africa can build, manage and own world-class infrastructure — and take its rightful place on the global economic stage. For me, engineering was the beginning. It taught me how we build. My love for economics made me ask a bigger question: how do the things we build create lasting value? That question shaped Dreniak. We evolved from engineering into Infrastructure & Asset Management — bringing together engineering, technology, data, finance and economics to help organisations and governments understand what they own, protect its value, invest intelligently and make infrastructure work harder for the economies it serves. Our ambition goes beyond maintaining assets. We want to create infrastructure harmony: where buildings, transport, utilities, institutions and investment work together to strengthen businesses, communities and entire economies. The vision is global, but Africa remains deeply personal. We started with engineering. We are building towards economies.",
+  "values": [
+    {
+      "name": "WINNING",
+      "text": "We compete to win. Winning means setting a world-class standard, delivering measurable value and refusing to accept that where we come from should determine how far we can go."
+    },
+    {
+      "name": "THINK GENERATIONS",
+      "text": "We don't optimise for today alone. Every asset, investment and decision should be considered against the organisations, communities and economies it will serve decades from now."
+    },
+    {
+      "name": "QUESTION EVERYTHING",
+      "text": "\"That's how it's always been done\" isn't a sufficient answer. We challenge assumptions, interrogate data and rethink engineering, investment and infrastructure from first principles."
+    },
+    {
+      "name": "BUILD BEYOND THE BRIEF",
+      "text": "We solve the immediate engineering problem while understanding the bigger system around it. A building affects an organisation. Infrastructure affects productivity. Investment decisions can shape entire economies."
+    },
+    {
+      "name": "MAKE THE FUTURE PRACTICAL",
+      "text": "Big ideas mean little without execution. We turn engineering, technology, data, finance and economics into solutions that can actually be built, managed, financed and scaled."
+    }
+  ],
+  "services": [
+    {
+      "name": "Asset Intelligence & Strategic Management",
+      "description": "Understanding what assets you own, their condition, performance, risk and value to enable smarter long-term decisions.",
+      "includes": [
+        "asset registers and portfolio mapping",
+        "condition and performance assessments",
+        "asset valuation and risk profiling",
+        "asset management strategies and plans",
+        "ISO 55000-aligned systems",
+        "governance, policies and reporting frameworks",
+        "estate and infrastructure portfolio strategies."
+      ],
+      "value": "Know what you own, what it is worth, what it needs and what it can become."
+    },
+    {
+      "name": "Lifecycle Engineering & Performance",
+      "description": "Optimising, maintaining and extending the useful life of infrastructure while improving performance and reducing whole-life costs.",
+      "includes": [
+        "lifecycle assessments",
+        "structural and engineering reviews",
+        "preventative and risk-based maintenance strategies",
+        "reliability and serviceability planning",
+        "rehabilitation and refurbishment strategies",
+        "useful-life extension",
+        "performance optimisation",
+        "replacement and disposal planning."
+      ],
+      "value": "Make existing infrastructure perform better, cost less and last longer."
+    },
+    {
+      "name": "Capital Planning, Finance & Investment Advisory",
+      "description": "Combining engineering, financial and economic insight to direct capital towards the assets and interventions that create the greatest long-term value.",
+      "includes": [
+        "whole-life costing",
+        "CAPEX and OPEX planning",
+        "maintenance versus replacement analysis",
+        "capital prioritisation",
+        "investment appraisal",
+        "infrastructure financial modelling",
+        "portfolio investment planning",
+        "long-term funding requirements and asset liability forecasting."
+      ],
+      "value": "Put capital where it creates the greatest long-term return."
+    },
+    {
+      "name": "Digital Asset Management & Intelligence",
+      "description": "Using data, digital systems and emerging technologies to transform physical assets into measurable, monitorable and intelligently managed portfolios.",
+      "includes": [
+        "digital asset registers",
+        "BIM and digital-twin frameworks",
+        "asset management platforms",
+        "performance dashboards",
+        "data collection and integration",
+        "monitoring systems",
+        "predictive insights",
+        "decision-support tools",
+        "portfolio-level asset intelligence."
+      ],
+      "value": "Turn infrastructure data into intelligence — and intelligence into better decisions."
+    },
+    {
+      "name": "Risk, Resilience & Sustainable Infrastructure",
+      "description": "Protecting assets and organisations against operational, structural, environmental and future risks while strengthening long-term resilience.",
+      "includes": [
+        "infrastructure risk assessments",
+        "structural and operational risk",
+        "resilience planning",
+        "climate and environmental considerations",
+        "business continuity",
+        "critical asset identification",
+        "sustainability strategies",
+        "compliance and safety considerations",
+        "long-term adaptation planning."
+      ],
+      "value": "Protect infrastructure, institutional continuity and capital from tomorrow's risks."
+    },
+    {
+      "name": "Infrastructure & Economic Strategy",
+      "description": "Looking beyond individual assets to understand how infrastructure portfolios influence organisations, communities and economies.",
+      "includes": [
+        "institutional infrastructure master planning",
+        "estate transformation",
+        "infrastructure investment strategy",
+        "portfolio optimisation",
+        "socioeconomic impact analysis",
+        "infrastructure demand and capacity planning",
+        "productivity analysis",
+        "strategic advisory for large organisations and governments",
+        "interconnected infrastructure planning and \"infrastructure harmony.\""
+      ],
+      "value": "Move from managing individual assets to building infrastructure systems that enable economic growth."
+    }
+  ],
+  "sectors": [
+    {
+      "name": "Government & National Infrastructure",
+      "description": "National portfolios of public buildings, infrastructure, land and strategic assets requiring coordinated long-term investment."
+    },
+    {
+      "name": "Energy & Utilities",
+      "description": "Power, water, renewables and utility networks containing some of the most critical and capital-intensive assets in an economy."
+    },
+    {
+      "name": "Transport & Mobility",
+      "description": "Roads, bridges, railways, airports and ports that connect economies and require continuous lifecycle investment."
+    },
+    {
+      "name": "Cities & Urban Infrastructure",
+      "description": "Interconnected transport, utilities, public spaces, buildings and municipal assets managed across entire cities and regions."
+    },
+    {
+      "name": "Real Estate & Major Developments",
+      "description": "Large commercial, residential and mixed-use portfolios where asset performance directly affects investment value and returns."
+    },
+    {
+      "name": "Industrial, Manufacturing & Logistics",
+      "description": "Factories, industrial parks, warehouses and logistics infrastructure where asset reliability supports production and trade."
+    },
+    {
+      "name": "Healthcare & Social Infrastructure",
+      "description": "Hospitals, healthcare estates and critical facilities where asset performance directly supports essential public services."
+    },
+    {
+      "name": "Education & Institutional Estates",
+      "description": "Universities, school networks and campuses requiring coordinated management of buildings, land, utilities and supporting infrastructure."
+    }
+  ],
+  "mission": "To establish Dreniak as a leading infrastructure asset management company, helping organisations understand, optimise and maximise the lifetime value of their built assets.",
+  "vision": "To redefine how infrastructure assets are understood, managed and valued — creating longer-lasting assets, stronger institutions and greater economic value for generations."
+}
