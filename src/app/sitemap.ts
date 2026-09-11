@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { divisions, pages, siteUrl, insights } from "@/lib/site";
+import { divisions, getPages, siteUrl, insights } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     "",
@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/asset-management/assessment",
     ...divisions.flatMap((d) => [
       `/${d}`,
-      ...pages.map((p) => `/${d}/${p}`),
+      ...getPages(d).map((p) => `/${d}/${p}`),
       ...insights.map((i) => `/${d}/insights/${i.slug}`),
     ]),
   ].map((p) => ({

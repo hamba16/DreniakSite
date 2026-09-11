@@ -2,6 +2,7 @@
 import { useState, useId, type FormEvent } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, LoaderCircle } from "lucide-react";
+import { engineering as engineeringContent } from "@/content/engineering";
 import type { Division } from "@/lib/site";
 import { useSearchParams } from "next/navigation";
 export function EnquiryForm({ division }: { division: Division }) {
@@ -102,12 +103,7 @@ export function EnquiryForm({ division }: { division: Division }) {
             Select an area of interest
           </option>
           {(division === "engineering"
-            ? [
-                "Site assessment",
-                "Design integration",
-                "Construction management",
-                "Post-construction support",
-              ]
+            ? engineeringContent.services.map((service) => service.name)
             : [
                 "Asset intelligence & strategy",
                 "Lifecycle engineering",
@@ -124,7 +120,7 @@ export function EnquiryForm({ division }: { division: Division }) {
       </label>
       <label>
         {division === "engineering"
-          ? "Tell us about your project"
+          ? "Tell us about your project, site or engineering challenge"
           : "Tell us about your assets, portfolio or infrastructure challenge"}
         <textarea
           name="message"
@@ -155,7 +151,10 @@ export function EnquiryForm({ division }: { division: Division }) {
           </>
         ) : (
           <>
-            Send your enquiry <ArrowUpRight size={18} />
+            {division === "engineering"
+              ? "Request a consultation"
+              : "Send your enquiry"}{" "}
+            <ArrowUpRight size={18} />
           </>
         )}
       </button>

@@ -1,3 +1,4 @@
+import { engineering as engineeringContent } from "@/content/engineering";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -83,6 +84,23 @@ export function CTA({
 }: {
   division?: Division;
 }) {
+  const consultationLink = (
+    <Link
+      href={
+        division === "engineering"
+          ? "/engineering/consultation"
+          : `/${division}/contact`
+      }
+      className="cta-link"
+    >
+      {division === "engineering"
+        ? "Book a Consultation"
+        : "Start a Conversation About Your Assets"}
+      <span>
+        <ArrowUpRight />
+      </span>
+    </Link>
+  );
   return (
     <section className={`cta ${division}`}>
       <Motif />
@@ -105,14 +123,24 @@ export function CTA({
           )}
         </h2>
       </div>
-      <Link href={`/${division}/contact`} className="cta-link">
-        {division === "engineering"
-          ? "Tell us about your project"
-          : "Start a Conversation About Your Assets"}
-        <span>
-          <ArrowUpRight />
-        </span>
-      </Link>
+      {division === "engineering" ? (
+        <div className="cta-actions">
+          {consultationLink}
+          <div className="engineering-contact-links">
+            <a href="mailto:info@dreniak.com">Email</a>
+            <a href="tel:+256704175005">Phone</a>
+            <a
+              href="https://wa.me/256704175005"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp <ArrowUpRight size={15} />
+            </a>
+          </div>
+        </div>
+      ) : (
+        consultationLink
+      )}
     </section>
   );
 }
@@ -152,6 +180,13 @@ export function Standards({
             ? "Dreniak Engineering is registered with the Engineers Registration Board of Uganda. Engineering standards, safety and quality sit at the centre of our project-lifecycle approach."
             : "ISO 55000 provides the asset management framework at the centre of our approach: connecting organisational objectives with the value created by assets throughout their lives."}
         </p>
+        {engineering && (
+          <ul className="engineering-registrations">
+            {engineeringContent.registrations.slice(1).map((registration) => (
+              <li key={registration}>{registration}</li>
+            ))}
+          </ul>
+        )}
         {!engineering && (
           <>
             <div className="secondary-standards">
@@ -189,8 +224,7 @@ export function Sectors({ preview = false }: { preview?: boolean }) {
           return (
             <article key={s.name}>
               <div className="sector-top">
-                <Icon size={32} strokeWidth={1.2} />
-                <span>0{i + 1}</span>
+                <Icon size={32} strokeWidth={1.5} aria-hidden="true" />
               </div>
               <h3>{s.name}</h3>
               <p>{s.description}</p>
@@ -215,7 +249,7 @@ export function Sectors({ preview = false }: { preview?: boolean }) {
               const Icon = sectorIcons[i + 4];
               return (
                 <article key={s.name}>
-                  <Icon size={26} strokeWidth={1.3} />
+                  <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
                   <div>
                     <h3>{s.name}</h3>
                     <p>{s.description}</p>

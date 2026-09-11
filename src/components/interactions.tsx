@@ -1,4 +1,5 @@
 "use client";
+import { ServicePillarIcon } from "./category-icons";
 import {
   createContext,
   useContext,
@@ -209,6 +210,7 @@ export function Header({ division }: { division?: Division }) {
     "sectors",
     "projects",
     "insights",
+    ...(division === "engineering" ? ["careers" as const] : []),
     "contact",
   ];
   return (
@@ -219,6 +221,14 @@ export function Header({ division }: { division?: Division }) {
           <span>{names[division]}</span>
         </Link>
         <div className="header-utilities">
+          {division === "engineering" && (
+            <Link
+              className="header-consultation"
+              href="/engineering/consultation"
+            >
+              Book a Consultation <ArrowUpRight size={13} />
+            </Link>
+          )}
           <Link href="/#divisions">
             Our divisions <ArrowUpRight size={13} />
           </Link>
@@ -262,6 +272,15 @@ export function Header({ division }: { division?: Division }) {
                         .replace(" we serve", "")}
           </Link>
         ))}
+        {division === "engineering" && (
+          <Link
+            className="mobile-consultation"
+            href="/engineering/consultation"
+            onClick={() => setOpen(false)}
+          >
+            Book a Consultation <ArrowUpRight size={14} />
+          </Link>
+        )}
         <DivisionLink division={other} className="switch-link">
           Switch to {names[other]} <ArrowUpRight size={14} />
         </DivisionLink>
@@ -337,8 +356,7 @@ export function CapabilityJourney() {
                 refs.current[next]?.focus();
               }}
             >
-              <span className="stage-number">0{i + 1}</span>
-              <Icon size={22} />
+              <Icon size={24} strokeWidth={1.5} aria-hidden="true" />
               <span>{stage}</span>
               <ArrowRight className="stage-arrow" size={15} />
             </button>
@@ -352,9 +370,7 @@ export function CapabilityJourney() {
         aria-labelledby={`stage-${active}`}
         tabIndex={0}
       >
-        <span>
-          0{active + 1} / {stages[active]}
-        </span>
+        <span>{stages[active]}</span>
         <p>{explanations[active]}</p>
         <Link
           href="/asset-management/services"
@@ -400,7 +416,9 @@ export function ServiceAccordion({
     return () => window.removeEventListener("hashchange", syncHash);
   }, [services.length]);
   return (
-    <div className="service-list">
+    <div
+      className={`service-list ${engineering ? "engineering-services" : "asset-services"}`}
+    >
       {services.map((s, i) => {
         const Icon = stageIcons[i % 6];
         return (
@@ -414,9 +432,15 @@ export function ServiceAccordion({
                 aria-controls={`service-${i}`}
                 onClick={() => setActive(active === i ? null : i)}
               >
-                <span className="service-index">0{i + 1}</span>
-                <Icon className="service-icon" />
-                <span>
+                {engineering ? (
+                  <>
+                    <span className="service-index">0{i + 1}</span>
+                    <Icon className="service-icon" aria-hidden="true" />
+                  </>
+                ) : (
+                  <ServicePillarIcon index={i} className="service-icon" />
+                )}
+                <span className="service-title">
                   {s.name}
                   {i === 5 && <small>OUR SIGNATURE CAPABILITY</small>}
                 </span>

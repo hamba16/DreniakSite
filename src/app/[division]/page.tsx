@@ -1,3 +1,4 @@
+import { engineering } from "@/content/engineering";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DivisionHome } from "@/components/division-pages";
@@ -17,8 +18,9 @@ export async function generateMetadata({
     title,
     description:
       division === "engineering"
-        ? "ERB-registered Dreniak Engineering. Full project-lifecycle delivery in Uganda: assessment, design integration, construction management and post-construction support."
+        ? `ERB-registered Dreniak Engineering. ${engineering.description}`
         : "Infrastructure asset management and investment planning across East Africa and the UK. Understand, manage, invest, digitise, protect and grow.",
+    ...(division === "engineering" ? { keywords: engineering.keywords } : {}),
     alternates: { canonical: `/${division}` },
     openGraph: { title, images: [`/og/${division}`] },
     twitter: { card: "summary_large_image", images: [`/og/${division}`] },

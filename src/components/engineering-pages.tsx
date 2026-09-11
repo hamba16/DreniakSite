@@ -1,0 +1,241 @@
+import Link from "next/link";
+import {
+  ArrowUpRight,
+  HardHat,
+  Route,
+  DraftingCompass,
+  Waves,
+  ClipboardList,
+  Mountain,
+} from "lucide-react";
+import { engineering, engineeringOpenings } from "@/content/engineering";
+import { Mark, Motif } from "./brand";
+import { Reveal } from "./interactions";
+import { PageIntro, Standards } from "./shared";
+
+const sectorIcons = [Route, DraftingCompass, Waves, ClipboardList, Mountain];
+
+export function EngineeringSectors() {
+  return (
+    <div className="engineering-sectors">
+      <div className="sector-featured engineering-sector-lead">
+        <article>
+          <div className="sector-top">
+            <HardHat size={36} strokeWidth={1.5} aria-hidden="true" />
+          </div>
+          <span className="eyebrow">OUR LEAD FOCUS</span>
+          <h2>{engineering.featuredSector}</h2>
+          <p>
+            Construction Engineering is our predominant focus, supported by the
+            areas of expertise below.
+          </p>
+          <Link
+            className="text-link"
+            href="/engineering/consultation?sector=Construction%20Engineering"
+          >
+            Book a Consultation <ArrowUpRight size={17} />
+          </Link>
+        </article>
+      </div>
+      <div className="sector-secondary engineering-sector-grid">
+        {engineering.sectors.map((sector, index) => {
+          const Icon = sectorIcons[index];
+          return (
+            <article key={sector}>
+              <Icon size={28} strokeWidth={1.5} aria-hidden="true" />
+              <div>
+                <h3>{sector}</h3>
+                <Link
+                  className="text-link"
+                  href={`/engineering/consultation?sector=${encodeURIComponent(sector)}`}
+                >
+                  Discuss your project <ArrowUpRight size={16} />
+                </Link>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function EngineeringAbout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <PageIntro
+        eyebrow="ABOUT DRENIAK ENGINEERING"
+        title={
+          <>
+            Build. Connect.
+            <br />
+            <em>Deliver.</em>
+          </>
+        }
+      />
+      <section
+        className="story-section engineering-overview"
+        aria-labelledby="engineering-overview"
+      >
+        <div>
+          <span className="eyebrow">FOUNDED 2024 · INCORPORATED 2025</span>
+          <h2 id="engineering-overview">Company overview</h2>
+          <Mark stroke />
+        </div>
+        <div>
+          <p className="story-lead">{engineering.description}</p>
+          <p>
+            {engineering.legalName} works with government, investors and private
+            developers on their project, site and engineering challenges.
+          </p>
+        </div>
+      </section>
+      <div className="mission-vision">
+        <article aria-labelledby="engineering-mission">
+          <span className="eyebrow">PURPOSE IN THE PRESENT</span>
+          <h2 id="engineering-mission">Mission</h2>
+          <p>{engineering.mission}</p>
+        </article>
+        <article aria-labelledby="engineering-vision">
+          <span className="eyebrow">A BETTER FUTURE</span>
+          <h2 id="engineering-vision">Vision</h2>
+          <p>{engineering.vision}</p>
+        </article>
+      </div>
+      <section
+        className="engineering-values"
+        aria-labelledby="engineering-values"
+      >
+        <div className="section-heading">
+          <span className="eyebrow">WHAT WE STAND FOR</span>
+          <h2 id="engineering-values">Core values</h2>
+        </div>
+        <div className="engineering-value-grid">
+          {engineering.values.map((value) => (
+            <Reveal key={value}>
+              <h3>{value}</h3>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+      <section className="thinking" aria-labelledby="engineering-philosophy">
+        <span className="eyebrow">EVERY STAGE, CONNECTED</span>
+        <h2 id="engineering-philosophy">Engineering philosophy</h2>
+        <div className="convergence">
+          {[
+            "Assessment",
+            "Design",
+            "Construction",
+            "Handover",
+            "Maintenance",
+          ].map((stage, index) => (
+            <div key={stage}>
+              <span>{stage}</span>
+              {index < 4 && <b>×</b>}
+            </div>
+          ))}
+          <Mark />
+        </div>
+        <p>A whole-lifecycle approach to physical delivery.</p>
+      </section>
+      <section aria-labelledby="engineering-expertise">
+        <div className="section-heading compact">
+          <span className="eyebrow">ENGINEERING SERVICES UGANDA</span>
+          <h2 id="engineering-expertise">Areas of expertise</h2>
+        </div>
+        <EngineeringSectors />
+      </section>
+      <section className="leadership" aria-labelledby="engineering-leadership">
+        <div>
+          <span className="eyebrow">THE PEOPLE BEHIND THE WORK</span>
+          <h2 id="engineering-leadership">Leadership & team</h2>
+        </div>
+        <div className="leader-card">
+          <div className="leader-avatar" aria-hidden="true">
+            <Motif density={170} />
+            <Mark />
+          </div>
+          <div>
+            <span className="eyebrow">DRENIAK ENGINEERING</span>
+            <h3>Meet the team</h3>
+            <p>
+              Leadership biographies and photographs will be shared following
+              client approval.
+            </p>
+            <Link className="text-link" href="/engineering/consultation">
+              Book a Consultation <ArrowUpRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="engineering-credentials">
+        <div className="section-heading compact">
+          <span className="eyebrow">{engineering.legalName}</span>
+          <h2 id="engineering-credentials">
+            Professional credentials & registrations
+          </h2>
+        </div>
+        <Standards division="engineering" full />
+      </section>
+      <section
+        className="engineering-commitment"
+        aria-labelledby="engineering-commitment"
+      >
+        <span className="eyebrow">LOOKING BEYOND DELIVERY</span>
+        <h2 id="engineering-commitment">
+          Commitment to quality, sustainability & innovation
+        </h2>
+        <p>
+          Quality, sustainability and innovation guide our engineering approach.
+          We bring these priorities to the decisions that shape safe, efficient
+          and sustainable projects.
+        </p>
+      </section>
+      {children}
+    </>
+  );
+}
+
+export function EngineeringCareers() {
+  return (
+    <>
+      <PageIntro
+        eyebrow="CAREERS / DRENIAK ENGINEERING"
+        title={
+          <>
+            Grow with
+            <br />
+            <em>purpose.</em>
+          </>
+        }
+        description="Opportunities to contribute to engineering in Uganda and beyond."
+      />
+      {engineeringOpenings.length ? (
+        <div className="engineering-openings">
+          {engineeringOpenings.map((opening) => (
+            <article className="insight-card" key={opening.id}>
+              <span className="eyebrow">{opening.location}</span>
+              <h2>{opening.title}</h2>
+              <p>{opening.description}</p>
+              <a className="text-link" href={opening.applicationUrl}>
+                Apply for this role <ArrowUpRight size={17} />
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <section className="insights-empty">
+          <div>
+            <span className="eyebrow">CURRENT OPPORTUNITIES</span>
+            <h2>No current openings.</h2>
+            <p>
+              There are no vacancies listed at the moment. Please check back for
+              future opportunities.
+            </p>
+          </div>
+          <Mark stroke />
+        </section>
+      )}
+    </>
+  );
+}

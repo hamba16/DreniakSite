@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { divisions, pages } from "../../src/lib/site";
+import { divisions, getPages } from "../../src/lib/site";
 test("all intended pages load without broken assets, horizontal overflow or browser errors", async ({
   page,
 }) => {
@@ -13,7 +13,10 @@ test("all intended pages load without broken assets, horizontal overflow or brow
     "/privacy",
     "/portal",
     "/asset-management/assessment",
-    ...divisions.flatMap((d) => [`/${d}`, ...pages.map((p) => `/${d}/${p}`)]),
+    ...divisions.flatMap((d) => [
+      `/${d}`,
+      ...getPages(d).map((p) => `/${d}/${p}`),
+    ]),
   ];
   for (const route of routes) {
     const response = await page.goto(route);
@@ -145,6 +148,11 @@ test("key pages satisfy automated WCAG A/AA checks", async ({ page }) => {
     "/asset-management/services",
     "/asset-management/sectors",
     "/asset-management/insights",
+    "/engineering/about",
+    "/engineering/services",
+    "/engineering/sectors",
+    "/engineering/careers",
+    "/engineering/consultation",
   ]) {
     await page.goto(route);
     await page.waitForTimeout(1100);

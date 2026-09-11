@@ -1,3 +1,10 @@
+import { engineering as engineeringContent } from "@/content/engineering";
+import {
+  EngineeringAbout,
+  EngineeringSectors,
+  EngineeringCareers,
+} from "./engineering-pages";
+import { ServicePillarIcon } from "./category-icons";
 import Image from "next/image";
 import { Suspense } from "react";
 import Link from "next/link";
@@ -67,13 +74,28 @@ export function DivisionHome({ division }: { division: Division }) {
           </h1>
           <p>
             {engineering
-              ? "From site assessment to post-construction support. Engineering that connects the ambition with the physical delivery."
+              ? "Engineering consultancy in Uganda. Consultancy & research, construction, supervision and contract management, connected by a focus on safe, efficient and sustainable projects."
               : "A longer view of what you own. A clearer understanding of what it can become."}
           </p>
-          <Link className="button light" href={`/${division}/contact`}>
-            {engineering ? "Discuss your project" : "Book a Consultation"}
+          <Link
+            className="button light"
+            href={
+              engineering ? "/engineering/consultation" : `/${division}/contact`
+            }
+          >
+            Book a Consultation
             <ArrowUpRight size={19} />
           </Link>
+          {engineering && (
+            <a
+              className="engineering-hero-whatsapp text-link"
+              href="https://wa.me/256704175005"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Chat on WhatsApp <ArrowUpRight size={17} />
+            </a>
+          )}
         </div>
         <div className="division-hero-foot">
           <span>
@@ -119,7 +141,13 @@ export function DivisionHome({ division }: { division: Division }) {
         <div className="service-preview-grid">
           {(engineering ? engineeringServices : data.services).map((s, i) => (
             <Link href={`/${division}/services#service-${i}`} key={s.name}>
-              <span className="eyebrow">0{i + 1}</span>
+              {engineering ? (
+                <span className="eyebrow">0{i + 1}</span>
+              ) : (
+                <span className="category-icon">
+                  <ServicePillarIcon index={i} />
+                </span>
+              )}
               <h3>{s.name}</h3>
               <p>{s.description}</p>
               <ArrowUpRight size={22} />
@@ -167,6 +195,70 @@ export function DivisionHome({ division }: { division: Division }) {
   );
 }
 
+function CompanyFootprint() {
+  return (
+    <section className="footprint">
+      <div>
+        <span className="eyebrow">OUR FOOTPRINT</span>
+        <h2>
+          Rooted in Africa.
+          <br />A global ambition.
+        </h2>
+        <p>UK | East Africa</p>
+      </div>
+      <div
+        className="footprint-graphic"
+        role="img"
+        aria-label="Dreniak footprint connects the UK and East Africa"
+      >
+        <svg viewBox="0 0 500 280" aria-hidden="true">
+          <defs>
+            <pattern
+              id="dots"
+              width="15"
+              height="15"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="2" cy="2" r="1" fill="currentColor" opacity=".3" />
+            </pattern>
+          </defs>
+          <rect width="500" height="280" fill="url(#dots)" />
+          <path
+            d="M125 80 Q340 20 350 205"
+            fill="none"
+            stroke="currentColor"
+            strokeDasharray="3 6"
+          />
+          <circle cx="125" cy="80" r="6" fill="currentColor" />
+          <circle cx="350" cy="205" r="6" fill="currentColor" />
+          <circle
+            cx="125"
+            cy="80"
+            r="20"
+            fill="none"
+            stroke="currentColor"
+            opacity=".3"
+          />
+          <circle
+            cx="350"
+            cy="205"
+            r="20"
+            fill="none"
+            stroke="currentColor"
+            opacity=".3"
+          />
+          <text x="115" y="42" fill="currentColor" fontSize="13">
+            UK
+          </text>
+          <text x="325" y="250" fill="currentColor" fontSize="13">
+            EAST AFRICA
+          </text>
+        </svg>
+      </div>
+    </section>
+  );
+}
+
 export function AboutContent({
   division = "asset-management",
   parent = false,
@@ -175,6 +267,12 @@ export function AboutContent({
   parent?: boolean;
 }) {
   const engineering = division === "engineering";
+  if (engineering && !parent)
+    return (
+      <EngineeringAbout>
+        <CompanyFootprint />
+      </EngineeringAbout>
+    );
   return (
     <>
       <PageIntro
@@ -313,65 +411,7 @@ export function AboutContent({
           </div>
         </div>
       </section>
-      <section className="footprint">
-        <div>
-          <span className="eyebrow">OUR FOOTPRINT</span>
-          <h2>
-            Rooted in Africa.
-            <br />A global ambition.
-          </h2>
-          <p>UK | East Africa</p>
-        </div>
-        <div
-          className="footprint-graphic"
-          role="img"
-          aria-label="Dreniak footprint connects the UK and East Africa"
-        >
-          <svg viewBox="0 0 500 280" aria-hidden="true">
-            <defs>
-              <pattern
-                id="dots"
-                width="15"
-                height="15"
-                patternUnits="userSpaceOnUse"
-              >
-                <circle cx="2" cy="2" r="1" fill="currentColor" opacity=".3" />
-              </pattern>
-            </defs>
-            <rect width="500" height="280" fill="url(#dots)" />
-            <path
-              d="M125 80 Q340 20 350 205"
-              fill="none"
-              stroke="currentColor"
-              strokeDasharray="3 6"
-            />
-            <circle cx="125" cy="80" r="6" fill="currentColor" />
-            <circle cx="350" cy="205" r="6" fill="currentColor" />
-            <circle
-              cx="125"
-              cy="80"
-              r="20"
-              fill="none"
-              stroke="currentColor"
-              opacity=".3"
-            />
-            <circle
-              cx="350"
-              cy="205"
-              r="20"
-              fill="none"
-              stroke="currentColor"
-              opacity=".3"
-            />
-            <text x="115" y="42" fill="currentColor" fontSize="13">
-              UK
-            </text>
-            <text x="325" y="250" fill="currentColor" fontSize="13">
-              EAST AFRICA
-            </text>
-          </svg>
-        </div>
-      </section>
+      <CompanyFootprint />
       <Standards division={division} />
     </>
   );
@@ -386,6 +426,8 @@ export function DivisionPage({
 }) {
   const engineering = division === "engineering";
   switch (page) {
+    case "careers":
+      return <EngineeringCareers />;
     case "about":
       return <AboutContent division={division} />;
     case "services":
@@ -394,7 +436,7 @@ export function DivisionPage({
           <PageIntro
             eyebrow={
               engineering
-                ? "FULL PROJECT-LIFECYCLE DELIVERY"
+                ? "ENGINEERING CONSULTANCY UGANDA"
                 : "SIX CONNECTED SERVICE PILLARS"
             }
             title={
@@ -406,7 +448,7 @@ export function DivisionPage({
             }
             description={
               engineering
-                ? "Site assessment, design integration, construction management and post-construction support."
+                ? "Engineering Consultancy & Research, Construction, Supervision and Contract Management. Tell us about your project, site or engineering challenge."
                 : "Engineering, intelligence, finance and economics. One connected approach to the lifetime value of infrastructure."
             }
           />
@@ -438,32 +480,11 @@ export function DivisionPage({
             }
             description={
               engineering
-                ? "Our project-lifecycle approach brings assessment, design, construction management and post-construction support together."
+                ? "Construction Engineering leads our work, alongside five connected areas of engineering expertise."
                 : "We serve organisations, institutions and economies that own complex, long-life infrastructure."
             }
           />
-          {engineering ? (
-            <div className="engineering-sectors">
-              <div className="sector-featured">
-                {["Site & context", "Design & delivery"].map((s, i) => (
-                  <article key={s}>
-                    <span className="eyebrow">0{i + 1} / ENGINEERING</span>
-                    <h2>{s}</h2>
-                    <p>
-                      {i === 0
-                        ? "Site assessment, planning and regulatory compliance establish the foundation for project delivery."
-                        : "Design integration, construction management and post-construction support connect each stage of the project lifecycle."}
-                    </p>
-                    <Link className="text-link" href="/engineering/contact">
-                      Discuss your requirements <ArrowUpRight size={17} />
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <Sectors />
-          )}
+          {engineering ? <EngineeringSectors /> : <Sectors />}
         </>
       );
     case "projects":
@@ -487,7 +508,11 @@ export function DivisionPage({
       return (
         <>
           <PageIntro
-            eyebrow="PERSPECTIVES / DARREN KAMUNUGA"
+            eyebrow={
+              engineering
+                ? "ENGINEERING / INFO HUB"
+                : "PERSPECTIVES / DARREN KAMUNUGA"
+            }
             title={
               <>
                 Thinking beyond
@@ -498,9 +523,12 @@ export function DivisionPage({
             description="Perspectives on infrastructure, engineering, asset management and the economies they serve."
           />
           <div className="insight-categories">
-            <span>Industry insights</span>
-            <span>Project updates</span>
-            <span>Industry papers</span>
+            {(engineering
+              ? engineeringContent.insightCategories
+              : ["Industry insights", "Project updates", "Industry papers"]
+            ).map((category) => (
+              <span key={category}>{category}</span>
+            ))}
           </div>
           {insights.length ? (
             insights.map((item) => (
@@ -557,17 +585,28 @@ export function DivisionPage({
           <Standards division={division} full />
         </>
       );
+    case "consultation":
     case "contact":
       return (
         <>
           <PageIntro
-            eyebrow="A CONVERSATION WORTH STARTING"
+            eyebrow={
+              page === "consultation"
+                ? "PROJECT INQUIRY / ENGINEERING"
+                : "A CONVERSATION WORTH STARTING"
+            }
             title={
               engineering ? (
                 <>
-                  Let’s talk about
+                  {page === "consultation"
+                    ? "Book a Consultation"
+                    : "Let’s talk about"}
                   <br />
-                  <em>your next project.</em>
+                  <em>
+                    {page === "consultation"
+                      ? "Your project starts here."
+                      : "your next project."}
+                  </em>
                 </>
               ) : (
                 <>
@@ -654,7 +693,7 @@ export function DivisionPage({
             }
             description={
               engineering
-                ? "We connect site assessment, planning, design, construction and post-construction support."
+                ? "We connect engineering consultancy and research, construction, supervision and contract management."
                 : "We help organisations understand what they own, maximise how it performs, determine where capital should go, and ensure infrastructure creates value far beyond the asset itself."
             }
           />

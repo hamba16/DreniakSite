@@ -932,6 +932,127 @@ em {
 .intro-statement > .text-link {
   margin-top: 28px;
 }
+.navigation > .mobile-consultation {
+  display: none;
+}
+.header-utilities .header-consultation {
+  color: white;
+  font-weight: 600;
+}
+.engineering-hero-whatsapp {
+  display: flex;
+  width: fit-content;
+  margin-top: 20px;
+  color: white;
+}
+.cta-actions {
+  min-width: 0;
+}
+.engineering-contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 22px;
+  font-size: 12px;
+}
+.engineering-contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+}
+.engineering-registrations {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+  padding-left: 18px;
+  list-style: disc;
+  font-size: 13px;
+  color: var(--muted);
+}
+.engineering-overview .story-lead {
+  font-size: clamp(18px, 1.5vw, 23px);
+  line-height: 1.65;
+}
+.engineering-overview p + p {
+  margin-top: 25px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.engineering-values,
+.engineering-commitment {
+  padding: 65px 0;
+}
+.engineering-value-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 35px;
+}
+.engineering-value-grid > div {
+  border-top: 1px solid var(--accent);
+  padding-top: 24px;
+}
+.engineering-value-grid h3 {
+  font-size: 22px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.engineering-sector-lead {
+  grid-template-columns: minmax(0, 1fr);
+  background: color-mix(in srgb, var(--accent), transparent 96%);
+}
+.engineering-sector-lead .eyebrow {
+  margin-top: 26px;
+}
+.engineering-sector-lead h2 {
+  max-width: none;
+  margin-top: 18px;
+  font-size: clamp(30px, 3.3vw, 46px);
+}
+.engineering-sector-grid {
+  margin: 40px 0 65px;
+}
+.engineering-sector-grid article > div {
+  min-width: 0;
+}
+.engineering-sector-grid h3 {
+  overflow-wrap: anywhere;
+}
+.engineering-sector-grid .text-link {
+  font-size: 11px;
+}
+.engineering-commitment {
+  border-top: 1px solid var(--line);
+}
+.engineering-commitment h2 {
+  max-width: 800px;
+  margin: 20px 0;
+  font-size: clamp(29px, 3vw, 42px);
+  line-height: 1.2;
+}
+.engineering-commitment p {
+  max-width: 750px;
+  color: var(--muted);
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .navigation > .mobile-consultation {
+    display: flex;
+  }
+  .engineering-value-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .engineering-value-grid h3 {
+    font-size: 19px;
+  }
+  .engineering-sector-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cta-actions {
+    width: 100%;
+  }
+}
 .journey {
   background: var(--indigo);
   color: white;
@@ -961,10 +1082,6 @@ em {
   color: white;
   background: #ffffff08;
   border-bottom-color: white;
-}
-.stage-number {
-  font-size: 8px;
-  color: #a3b3c0;
 }
 .journey-tabs > button .stage-arrow {
   position: absolute;
@@ -1007,6 +1124,7 @@ em {
   border-top: 1px solid #ccc;
 }
 .service-preview-grid > a {
+  min-width: 0;
   position: relative;
   padding: 30px 30px 65px;
   border-right: 1px solid #ccc;
@@ -1020,6 +1138,7 @@ em {
   color: #666;
 }
 .service-preview-grid h3 {
+  overflow-wrap: anywhere;
   font-size: 23px;
   line-height: 1.2;
   margin-top: 32px;
@@ -1530,8 +1649,11 @@ em {
   min-width: 20px;
   color: var(--accent);
 }
-.service h2 > button > span:nth-last-child(2) {
-  flex: 1;
+.service h2 > button > .service-title {
+  flex: 1 1 0%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .service h2 small {
   display: block;
@@ -1543,6 +1665,22 @@ em {
 }
 .service-content {
   padding: 5px 35px 40px 111px;
+}
+.asset-services .service h2 > button {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 20px;
+}
+.asset-services .service-icon {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+.asset-services .service-content {
+  padding-left: 60px;
+}
+.category-icon {
+  display: inline-flex;
+  color: var(--accent);
 }
 .service-content > p:first-child {
   font-size: 16px;
@@ -1611,10 +1749,6 @@ em {
   justify-content: space-between;
   color: var(--accent);
   align-items: center;
-}
-.sector-top > span {
-  font-size: 9px;
-  color: #666;
 }
 .sector-featured h3,
 .engineering-sectors h2 {
@@ -2694,12 +2828,10 @@ em {
     padding: 0 6%;
   }
   .journey-tabs {
-    overflow-x: auto;
-    display: flex;
-    scrollbar-width: thin;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .journey-tabs > button {
-    min-width: 123px;
+    min-width: 0;
     padding: 20px 12px;
     gap: 15px;
     font-size: 9px;
@@ -2707,7 +2839,7 @@ em {
   .journey-tabs > button .stage-arrow {
     bottom: 23px;
     width: 13px;
-    right: 9px;
+    right: 2px;
   }
   .journey-explanation {
     gap: 13px;
@@ -3011,6 +3143,12 @@ em {
   }
   .service-content {
     padding: 5px 0 30px 33px;
+  }
+  .asset-services .service h2 > button {
+    grid-template-columns: 28px minmax(0, 1fr) 17px;
+  }
+  .asset-services .service-content {
+    padding-left: 41px;
   }
   .service-content > p:first-child {
     font-size: 13px;

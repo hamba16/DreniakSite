@@ -1,10 +1,11 @@
+import { engineering } from "@/content/engineering";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DivisionPage, AssessmentPage } from "@/components/division-pages";
 import { Breadcrumb, CTA } from "@/components/shared";
 import {
   divisions,
-  pages,
+  getPages,
   pageTitles,
   names,
   type Division,
@@ -13,7 +14,7 @@ import {
 export function generateStaticParams() {
   return [
     ...divisions.flatMap((division) =>
-      pages.map((page) => ({ division, page })),
+      getPages(division).map((page) => ({ division, page })),
     ),
     { division: "asset-management", page: "assessment" },
   ];
@@ -28,11 +29,12 @@ export async function generateMetadata({
   const title = `${page === "assessment" ? "Asset Management Maturity Assessment" : pageTitles[page as PageName] || "Page"} — ${names[division as Division]}`;
   const description =
     division === "engineering"
-      ? `${title}. Dreniak Engineering: site assessment, design integration, construction management and post-construction support in Uganda.`
+      ? engineering.description
       : `${title}. Infrastructure asset management, lifecycle planning and economic value for organisations across East Africa and the UK.`;
   return {
     title,
     description,
+    ...(division === "engineering" ? { keywords: engineering.keywords } : {}),
     alternates: { canonical: `/${division}/${page}` },
     openGraph: { title, description, images: [`/og/${division}`] },
     twitter: { images: [`/og/${division}`] },
@@ -46,7 +48,7 @@ export default async function Page({
   const { division, page } = await params;
   if (
     !divisions.includes(division as Division) ||
-    (!pages.includes(page as PageName) &&
+    (!getPages(division as Division).includes(page as PageName) &&
       !(division === "asset-management" && page === "assessment"))
   )
     notFound();
@@ -70,7 +72,9 @@ export default async function Page({
           />
         )}
       </div>
-      {page !== "contact" && <CTA division={division as Division} />}
+      {page !== "contact" && page !== "consultation" && (
+        <CTA division={division as Division} />
+      )}
     </main>
   );
 }
