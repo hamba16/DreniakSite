@@ -14,12 +14,20 @@ import {
   GraduationCap,
   Building,
   ShieldCheck,
+  ScanSearch,
+  Wrench,
+  CircleCheck,
+  TrendingUp,
 } from "lucide-react";
 import { Logo, Mark, Motif } from "./brand";
 import { Newsletter } from "./forms";
 import { names, socialLinks, type Division } from "@/lib/site";
 import { DivisionLink } from "./interactions";
 import data from "@/content/brief.json";
+import { ConceptualImage, ConceptualImageNote } from "./conceptual-image";
+import { assetSectorImages, interventionImage } from "@/content/visual-assets";
+import Image from "next/image";
+import { publishedMedia } from "@/lib/public-content";
 export function Footer() {
   return (
     <footer className="footer">
@@ -106,7 +114,7 @@ export function CTA({
       <Motif />
       <div>
         <span className="eyebrow">
-          THE NEXT CHAPTER STARTS WITH A CONVERSATION
+          SPEAK WITH DRENIAK
         </span>
         <h2>
           {division === "engineering" ? (
@@ -117,8 +125,7 @@ export function CTA({
             </>
           ) : (
             <>
-              A longer view.
-              <br />A better starting point.
+              A better starting point <br />for your assets.
             </>
           )}
         </h2>
@@ -215,14 +222,30 @@ const sectorIcons = [
   HeartPulse,
   GraduationCap,
 ];
-export function Sectors({ preview = false }: { preview?: boolean }) {
+export async function Sectors({
+  preview = false,
+  imagery = false,
+}: {
+  preview?: boolean;
+  imagery?: boolean;
+}) {
+  let media: Awaited<ReturnType<typeof publishedMedia>> = [];
+  try {
+    media = await publishedMedia("asset-management");
+  } catch {
+    media = [];
+  }
   return (
     <>
-      <div className="sector-featured">
+      {imagery && <ConceptualImageNote />}
+      <div
+        className={`sector-featured ${imagery ? "sector-photo-featured" : ""}`}
+      >
         {data.sectors.slice(0, 4).map((s, i) => {
           const Icon = sectorIcons[i];
           return (
             <article key={s.name}>
+              {imagery && (media[i] ? <Image className="conceptual-image" src={media[i].public_url} alt={media[i].alt_text || s.name} width={900} height={600} /> : <ConceptualImage asset={assetSectorImages[i]} />)}
               <div className="sector-top">
                 <Icon size={32} strokeWidth={1.5} aria-hidden="true" />
               </div>
@@ -244,11 +267,14 @@ export function Sectors({ preview = false }: { preview?: boolean }) {
             <span className="eyebrow">ORGANISATIONS & ESTATES</span>
             <h2>Value across every portfolio.</h2>
           </div>
-          <div className="sector-secondary">
+          <div
+            className={`sector-secondary ${imagery ? "sector-photo-grid" : ""}`}
+          >
             {data.sectors.slice(4).map((s, i) => {
               const Icon = sectorIcons[i + 4];
               return (
                 <article key={s.name}>
+                  {imagery && (media[i + 4] ? <Image className="conceptual-image" src={media[i + 4].public_url} alt={media[i + 4].alt_text || s.name} width={900} height={600} /> : <ConceptualImage asset={assetSectorImages[i + 4]} />)}
                   <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
                   <div>
                     <h3>{s.name}</h3>
@@ -301,18 +327,29 @@ export function PageIntro({
     </div>
   );
 }
-export function ProjectApproach() {
+const projectStageIcons = [ScanSearch, Wrench, CircleCheck, TrendingUp];
+
+export function ProjectApproach({
+  engineering = false,
+}: {
+  engineering?: boolean;
+}) {
   return (
-    <div className="projects-ready">
+    <div
+      className={`projects-ready ${engineering ? "project-visual-depth" : ""}`}
+    >
       <div className="project-placeholder">
+        {engineering && (
+          <ConceptualImage
+            asset={interventionImage}
+            variant="project"
+            caption="Conceptual infrastructure intervention"
+          />
+        )}
         <Mark stroke />
         <span className="eyebrow">OUR PROJECT APPROACH</span>
         <h2>
-          The work.
-          <br />
-          The thinking.
-          <br />
-          The lasting value.
+          The thinking <br /> behind the work <br /> and its lasting value.
         </h2>
         <p>
           We connect the immediate infrastructure challenge with the decisions
@@ -321,17 +358,28 @@ export function ProjectApproach() {
       </div>
       <div className="case-framework">
         {["Problem", "Intervention", "Result", "Long-term Value"].map(
-          (s, i) => (
-            <div key={s}>
-              <span>0{i + 1}</span>
-              <h3>{s}</h3>
-              <ArrowRight size={20} />
-            </div>
-          ),
+          (s, i) => {
+            const Icon = projectStageIcons[i];
+            return (
+              <div key={s}>
+                {engineering ? (
+                  <Icon
+                    className="project-stage-icon"
+                    size={28}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <span>0{i + 1}</span>
+                )}
+                <h3>{s}</h3>
+                <ArrowRight size={20} />
+              </div>
+            );
+          },
         )}
         <p className="fine-print">
-          Problem. Intervention. Result. Long-term Value. A connected view of
-          the challenge, the response and the value infrastructure creates.
+          We consider the problem, the intervention it calls for and the result, then look at the value the infrastructure creates over time.
         </p>
       </div>
     </div>

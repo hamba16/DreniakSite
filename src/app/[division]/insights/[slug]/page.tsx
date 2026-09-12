@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { insights, divisions, type Division } from "@/lib/site";
+import { divisions, type Division } from "@/lib/site";
 import { Breadcrumb } from "@/components/shared";
+import { publishedInsights } from "@/lib/public-content";
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string; division: string }>;
 }) {
   const { slug, division } = await params;
-  const item = insights.find((i) => i.slug === slug);
+  const databaseItems = await publishedInsights(division as Division);
+  const item = databaseItems.find((i) => i.slug === slug);
   return item
     ? {
         title: item.title,
@@ -23,7 +25,8 @@ export default async function Insight({
   params: Promise<{ slug: string; division: string }>;
 }) {
   const { slug, division } = await params;
-  const item = insights.find((i) => i.slug === slug);
+  const databaseItems = await publishedInsights(division as Division);
+  const item = databaseItems.find((i) => i.slug === slug);
   if (!item || !divisions.includes(division as Division)) notFound();
   return (
     <main id="main" className="page-container">

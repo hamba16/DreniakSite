@@ -1,3 +1,6 @@
+import { ConceptualImage, hasConceptualImage } from "./conceptual-image";
+import { insightImages } from "@/content/visual-assets";
+import { ProjectGallery } from "./project-gallery";
 import { engineering as engineeringContent } from "@/content/engineering";
 import {
   EngineeringAbout,
@@ -23,6 +26,7 @@ import {
 } from "./interactions";
 import { PageIntro, Standards, CTA, Sectors, ProjectApproach } from "./shared";
 import { EnquiryForm, Newsletter } from "./forms";
+import { ConvergenceDiagram } from "./convergence-diagram";
 import {
   type Division,
   type PageName,
@@ -31,9 +35,25 @@ import {
   insights,
 } from "@/lib/site";
 import data from "@/content/brief.json";
+import { publicCompanyProfile, publicServices } from "@/lib/public-content";
+import { publishedInsights, type PublishedInsight } from "@/lib/public-content";
 
-export function DivisionHome({ division }: { division: Division }) {
+export async function DivisionHome({ division }: { division: Division }) {
   const engineering = division === "engineering";
+  let profile = null;
+  let databaseServices: Awaited<ReturnType<typeof publicServices>> = [];
+  try {
+    [profile, databaseServices] = await Promise.all([
+      publicCompanyProfile(division),
+      publicServices(division),
+    ]);
+  } catch {
+    profile = null;
+    databaseServices = [];
+  }
+  const services = databaseServices.length
+    ? databaseServices
+    : engineering ? engineeringServices : data.services;
   return (
     <>
       <section className="division-hero">
@@ -50,33 +70,13 @@ export function DivisionHome({ division }: { division: Division }) {
         />
         <div className="division-hero-overlay" />
         <div className="division-hero-content">
-          <span className="eyebrow">
-            DRENIAK {names[division].toUpperCase()}
-          </span>
+          <span className="eyebrow">{profile?.landing_kicker || `DRENIAK ${names[division].toUpperCase()}`}</span>
           <h1>
-            {engineering ? (
-              <>
-                Built with purpose.
-                <br />
-                Delivered with
-                <br />
-                <em>precision.</em>
-              </>
-            ) : (
-              <>
-                Infrastructure
-                <br />
-                understood.
-                <br />
-                <em>Value multiplied.</em>
-              </>
-            )}
+            {profile?.landing_title || (engineering ? "Built with purpose. Delivered with precision." : "Infrastructure understood. Value multiplied.")}
           </h1>
-          <p>
-            {engineering
-              ? "Engineering consultancy in Uganda. Consultancy & research, construction, supervision and contract management, connected by a focus on safe, efficient and sustainable projects."
-              : "A longer view of what you own. A clearer understanding of what it can become."}
-          </p>
+          <p>{profile?.landing_description || (engineering
+            ? "Engineering consultancy in Uganda. Consultancy & research, construction, supervision and contract management, connected by a focus on safe, efficient and sustainable projects."
+            : "A longer view of what you own. A clearer understanding of what it can become.")}</p>
           <Link
             className="button light"
             href={
@@ -108,16 +108,12 @@ export function DivisionHome({ division }: { division: Division }) {
       </section>
       {!engineering && <CapabilityJourney />}
       <section className="content-section intro-statement">
-        <span className="eyebrow">
-          {engineering
-            ? "A COMPLETE VIEW OF DELIVERY"
-            : "THE VALUE BEYOND THE ASSET"}
-        </span>
+        <span className="eyebrow">{profile?.landing_intro_label || (engineering ? "A COMPLETE VIEW OF DELIVERY" : "THE VALUE BEYOND THE ASSET")}</span>
         <Reveal>
           <h2>
-            {engineering
-              ? "Good engineering sees the whole project. Great engineering sees what comes after."
-              : "We help organisations understand what they own, maximise how it performs, determine where capital should go, and ensure infrastructure creates value far beyond the asset itself."}
+            {profile?.landing_intro || (engineering
+              ? "Good engineering considers the whole project; great engineering also considers what comes after delivery."
+              : "We help organisations understand what they own, maximise how it performs, determine where capital should go, and ensure infrastructure creates value far beyond the asset itself.")}
           </h2>
         </Reveal>
         <Link className="text-link" href={`/${division}/approach`}>
@@ -129,9 +125,7 @@ export function DivisionHome({ division }: { division: Division }) {
           <div>
             <span className="eyebrow">CONNECTED CAPABILITIES</span>
             <h2>
-              {engineering
-                ? "From the ground up."
-                : "Every stage. A longer view."}
+              {engineering ? "From the ground up." : "Services throughout the asset lifecycle."}
             </h2>
           </div>
           <Link className="text-link" href={`/${division}/services`}>
@@ -139,7 +133,7 @@ export function DivisionHome({ division }: { division: Division }) {
           </Link>
         </div>
         <div className="service-preview-grid">
-          {(engineering ? engineeringServices : data.services).map((s, i) => (
+          {services.map((s, i) => (
             <Link href={`/${division}/services#service-${i}`} key={s.name}>
               {engineering ? (
                 <span className="eyebrow">0{i + 1}</span>
@@ -168,8 +162,7 @@ export function DivisionHome({ division }: { division: Division }) {
               know your assets?
             </h2>
             <p>
-              Six questions to reflect on your asset management maturity. A
-              useful starting point for a more informed conversation.
+              Reflect on your asset management maturity with six questions that can help inform a conversation with our team.
             </p>
             <Link className="button" href="/asset-management/assessment">
               Assess your starting point <ArrowUpRight size={18} />
@@ -280,9 +273,9 @@ export function AboutContent({
         title={
           parent ? (
             <>
-              We started with engineering.
+              We started with infrastructure.
               <br />
-              <em>We are building towards economies.</em>
+              <em>We are building towards lasting value.</em>
             </>
           ) : engineering ? (
             <>
@@ -305,7 +298,7 @@ export function AboutContent({
         <div>
           <span className="eyebrow">OUR STORY / EST. SUMMER 2024</span>
           <h2>
-            Engineering was
+            Infrastructure was
             <br />
             where we started.
           </h2>
@@ -313,8 +306,8 @@ export function AboutContent({
         </div>
         <div>
           <p className="story-lead">
-            Engineering was where we started. Understanding the lifetime and
-            economic value of what we build is where Dreniak is going.
+            We began with infrastructure. Understanding its lifetime and
+            economic value is where Dreniak is going.
           </p>
           <p className="origin-story">{data.story}</p>
           <span className="eyebrow">DARREN KAMUNUGA · THE DRENIAK STORY</span>
@@ -342,35 +335,30 @@ export function AboutContent({
             ? "Every stage, connected."
             : "Different disciplines. Shared intelligence."}
         </h2>
-        <div className="convergence">
-          {(engineering
-            ? [
-                "Assessment",
-                "Design",
-                "Construction",
-                "Handover",
-                "Maintenance",
-              ]
-            : [
-                "Engineering",
-                "Asset Management",
-                "Finance",
-                "Economics",
-                "Technology",
-              ]
-          ).map((s, i) => (
-            <div key={s}>
-              <span>{s}</span>
-              {i < 4 && <b>×</b>}
-            </div>
-          ))}
-          <Mark />
-        </div>
-        <p>
-          {engineering
-            ? "A whole-lifecycle approach to physical delivery."
-            : "Engineering × Asset Management × Finance × Economics × Technology"}
-        </p>
+        <ConvergenceDiagram
+          items={
+            engineering
+              ? [
+                  "Assessment",
+                  "Design",
+                  "Construction",
+                  "Handover",
+                  "Maintenance",
+                ]
+              : [
+                  "Infrastructure",
+                  "Asset Management",
+                  "Finance",
+                  "Economics",
+                  "Technology",
+                ]
+          }
+          caption={
+            engineering
+              ? "A whole-lifecycle approach to physical delivery."
+              : undefined
+          }
+        />
       </section>
       <section className="values-section">
         <div className="section-heading">
@@ -417,7 +405,7 @@ export function AboutContent({
   );
 }
 
-export function DivisionPage({
+export async function DivisionPage({
   division,
   page,
 }: {
@@ -425,6 +413,14 @@ export function DivisionPage({
   page: PageName;
 }) {
   const engineering = division === "engineering";
+  let databaseInsights: PublishedInsight[] = [];
+  if (page === "insights") {
+    try {
+      databaseInsights = await publishedInsights(division);
+    } catch {
+      databaseInsights = [];
+    }
+  }
   switch (page) {
     case "careers":
       return <EngineeringCareers />;
@@ -449,7 +445,7 @@ export function DivisionPage({
             description={
               engineering
                 ? "Engineering Consultancy & Research, Construction, Supervision and Contract Management. Tell us about your project, site or engineering challenge."
-                : "Engineering, intelligence, finance and economics. One connected approach to the lifetime value of infrastructure."
+                : "Our approach combines engineering, intelligence, finance and economics to address the lifetime value of infrastructure."
             }
           />
           <ServiceAccordion
@@ -480,11 +476,11 @@ export function DivisionPage({
             }
             description={
               engineering
-                ? "Construction Engineering leads our work, alongside five connected areas of engineering expertise."
+                ? "Construction Engineering is our lead focus, supported by five areas of engineering expertise."
                 : "We serve organisations, institutions and economies that own complex, long-life infrastructure."
             }
           />
-          {engineering ? <EngineeringSectors /> : <Sectors />}
+          {engineering ? <EngineeringSectors imagery /> : <Sectors imagery />}
         </>
       );
     case "projects":
@@ -499,39 +495,59 @@ export function DivisionPage({
                 <em>the vision.</em>
               </>
             }
-            description="Engineering delivery and asset intelligence, connected by a focus on long-term value."
+            description="Engineering delivery and asset intelligence guide our work on the long-term value of infrastructure."
           />
-          <ProjectApproach />
+          {engineering && <ProjectGallery />}
+          <ProjectApproach engineering={engineering} />
         </>
       );
     case "insights":
       return (
         <>
-          <PageIntro
-            eyebrow={
-              engineering
-                ? "ENGINEERING / INFO HUB"
-                : "PERSPECTIVES / DARREN KAMUNUGA"
+          <div
+            className={
+              hasConceptualImage(insightImages[division])
+                ? "insights-hero"
+                : undefined
             }
-            title={
-              <>
-                Thinking beyond
-                <br />
-                <em>the immediate.</em>
-              </>
+          >
+            <PageIntro
+              eyebrow={
+                engineering
+                  ? "ENGINEERING / INFO HUB"
+                  : "PERSPECTIVES / DARREN KAMUNUGA"
+              }
+              title={
+                <>
+                  Perspectives on <br /> <em>infrastructure.</em>
+                </>
+              }
+              description="Perspectives on infrastructure, engineering, asset management and the economies they serve."
+            />
+            <ConceptualImage
+              asset={insightImages[division]}
+              variant="editorial"
+              caption="Conceptual editorial imagery"
+            />
+          </div>
+          <div
+            className={`insight-categories ${engineering ? "engineering-category-tags" : ""}`}
+            role={engineering ? "list" : undefined}
+            aria-label={
+              engineering ? "Engineering insight categories" : undefined
             }
-            description="Perspectives on infrastructure, engineering, asset management and the economies they serve."
-          />
-          <div className="insight-categories">
+          >
             {(engineering
               ? engineeringContent.insightCategories
               : ["Industry insights", "Project updates", "Industry papers"]
             ).map((category) => (
-              <span key={category}>{category}</span>
+              <span key={category} role={engineering ? "listitem" : undefined}>
+                {category}
+              </span>
             ))}
           </div>
-          {insights.length ? (
-            insights.map((item) => (
+          {databaseInsights.length ? (
+            databaseInsights.map((item) => (
               <article className="insight-card" key={item.slug}>
                 <span className="eyebrow">
                   {item.category} · {item.date}
@@ -551,14 +567,10 @@ export function DivisionPage({
                   THE LONGER VIEW / DRENIAK PERSPECTIVES
                 </span>
                 <h2>
-                  Good questions
-                  <br />
-                  deserve room.
+                  Ideas from <br /> Dreniak.
                 </h2>
                 <p>
-                  Explore the questions that connect engineering, asset
-                  management and economics. Join our newsletter for perspectives
-                  on infrastructure and lasting value.
+                  Our newsletter explores questions across engineering, asset management and economics, with perspectives on infrastructure and its lasting value.
                 </p>
               </div>
               <Mark stroke />
@@ -576,9 +588,7 @@ export function DivisionPage({
             eyebrow="STANDARDS & GOVERNANCE"
             title={
               <>
-                A considered framework.
-                <br />
-                <em>A higher standard.</em>
+                A considered framework <br /> <em>for higher standards.</em>
               </>
             }
           />
@@ -710,7 +720,7 @@ export function DivisionPage({
               </h2>
               <p>
                 {engineering
-                  ? "A site becomes a project. A project becomes an asset. The decisions made at every stage shape what that infrastructure can deliver throughout its life."
+                  ? "From the first decisions about a site through its development into an asset, each stage shapes what the infrastructure can deliver throughout its life."
                   : "Our ambition goes beyond maintaining assets. We want to create infrastructure harmony: where buildings, transport, utilities, institutions and investment work together to strengthen businesses, communities and entire economies."}
               </p>
               <Link href={`/${division}/services`} className="text-link">
@@ -719,8 +729,8 @@ export function DivisionPage({
             </div>
             <div className="approach-image">
               <Image
-                src={`/images/${division}.webp`}
-                alt="Conceptual infrastructure photography"
+                src={`/images/natural/${division}.webp`}
+                alt={engineering ? "Conceptual illustration of a concrete civic structure under construction" : "Conceptual illustration of a viaduct crossing a green valley towards a city"}
                 fill
                 sizes="(max-width: 760px) 100vw, 45vw"
               />
@@ -770,9 +780,7 @@ export function PortalPage() {
         <LockKeyhole size={32} strokeWidth={1.2} />
         <span className="eyebrow">CLIENT PORTAL — SIGN IN</span>
         <h2>
-          A more connected
-          <br />
-          client experience.
+          Stay connected <br /> to your projects.
         </h2>
         <p>
           The client portal is being prepared for Phase 2. Sign-in and document

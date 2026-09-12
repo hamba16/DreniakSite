@@ -9,7 +9,17 @@ import {
 } from "@/components/interactions";
 import { Logo, Mark, Motif } from "@/components/brand";
 import { Footer } from "@/components/shared";
-export default function Home() {
+import { FounderCard } from "@/components/founder-card";
+import { homepageContent } from "@/lib/public-content";
+export default async function Home() {
+  let content = null;
+  try {
+    content = await homepageContent();
+  } catch {
+    content = null;
+  }
+  const heroTitle = content?.hero_title || "Engineering the Longevity of Civilisation.";
+  const premiseHeading = content?.premise_heading || "We started with engineering. We are building towards economies.";
   return (
     <>
       <Header />
@@ -25,14 +35,10 @@ export default function Home() {
               <Mark className="logo-trace" stroke />
             </div>
             <span className="hero-kicker eyebrow">
-              ENGINEERING · INTELLIGENCE · LONGEVITY
+              {content?.hero_kicker || "ENGINEERING · INTELLIGENCE · LONGEVITY"}
             </span>
             <h1>
-              Engineering the
-              <br />
-              Longevity of
-              <br />
-              <span>Civilisation.</span>
+              {heroTitle}
             </h1>
             <div className="hero-rule">
               <span />
@@ -57,21 +63,16 @@ export default function Home() {
           <Motif density={190} />
           <div className="section-heading">
             <span className="eyebrow">
-              <i className="red-dot" /> THE DRENIAK PERSPECTIVE
+            <i className="red-dot" /> {content?.premise_label || "THE DRENIAK PERSPECTIVE"}
             </span>
             <span className="eyebrow">01 / ONE ORIGIN</span>
           </div>
+          <div className="premise-grid">
           <Reveal>
-            <h2>
-              We started with
-              <br />
-              <span>engineering.</span>
-              <br />
-              We are building
-              <br />
-              towards <em>economies.</em>
-            </h2>
+            <h2>{premiseHeading}</h2>
           </Reveal>
+          <FounderCard />
+          </div>
           <div className="premise-bottom">
             <span className="eyebrow">BUILD. CONNECT. DELIVER.</span>
             <Link href="/story" className="text-link">
@@ -166,9 +167,7 @@ export default function Home() {
         <div className="parent-closing">
           <Mark />
           <p>
-            The things we build should outlast us.
-            <br />
-            <span>The value they create should go further.</span>
+            {content?.closing_text || "The things we build should outlast us. The value they create should go further."}
           </p>
           <span className="eyebrow">LIVE THE FUTURE.</span>
         </div>
