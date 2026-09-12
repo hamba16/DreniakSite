@@ -55,8 +55,24 @@ async function run() {
   ...engineering.values.map((name, sort_order) => ({ division: "engineering", name, text: name, sort_order })),
   ]);
   await insert("services", [
-  ...brief.services.map((service, sort_order) => ({ division: "asset-management", ...service, editorial_status: "published", sort_order })),
-  ...engineering.services.map((service, sort_order) => ({ division: "engineering", ...service, editorial_status: service.editorialStatus, sort_order })),
+  ...brief.services.map((service, sort_order) => ({
+    division: "asset-management",
+    name: service.name,
+    description: service.description,
+    includes: service.includes,
+    value: service.value,
+    editorial_status: "published",
+    sort_order,
+  })),
+  ...engineering.services.map((service, sort_order) => ({
+    division: "engineering",
+    name: service.name,
+    description: service.description,
+    includes: service.includes,
+    value: service.value,
+    editorial_status: service.editorialStatus,
+    sort_order,
+  })),
   ]);
   await insert("sectors", [
   ...brief.sectors.map((sector, sort_order) => ({ division: "asset-management", ...sector, sort_order })),
