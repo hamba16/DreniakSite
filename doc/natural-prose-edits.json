@@ -1,0 +1,244 @@
+[
+  {
+    "id": 1,
+    "file": "src/content/engineering.ts",
+    "pages": "/engineering; /engineering/services",
+    "flag": "Abstract definition opener",
+    "before": "Engineering advice and research help clarify a project's requirements and the options available. We support informed decisions by examining the engineering questions behind a project.",
+    "after": "We examine the engineering questions behind a project to clarify its requirements and available options. That research and advice support informed decisions."
+  },
+  {
+    "id": 2,
+    "file": "src/content/engineering.ts",
+    "pages": "/engineering; /engineering/services",
+    "flag": "Abstract definition opener",
+    "before": "Construction brings engineering plans into physical form. We focus on the practical work of building and the requirements that guide delivery.",
+    "after": "We put engineering plans into practice through construction, with attention to the requirements that guide the building work."
+  },
+  {
+    "id": 3,
+    "file": "src/content/engineering.ts",
+    "pages": "/engineering; /engineering/services",
+    "flag": "Abstract definition opener",
+    "before": "Supervision follows work as it progresses against the project's requirements. It helps identify issues that need attention and keeps delivery discussions grounded in what is happening on site.",
+    "after": "As work progresses, supervision tracks it against the project's requirements. Site observations help identify issues needing attention and inform discussions about delivery."
+  },
+  {
+    "id": 4,
+    "file": "src/content/engineering.ts",
+    "pages": "/engineering; /engineering/services",
+    "flag": "Abstract definition opener",
+    "before": "Contract management helps organise the obligations and processes agreed for a project. It supports clear records and communication as the parties work through delivery.",
+    "after": "The obligations and processes agreed for a project need to be organised throughout delivery. Contract management supports that work through clear records and communication between the parties."
+  },
+  {
+    "id": 5,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/engineering",
+    "flag": "Repeated connective framing",
+    "before": "Engineering consultancy in Uganda. Consultancy & research, construction, supervision and contract management, connected by a focus on safe, efficient and sustainable projects.",
+    "after": "Our engineering consultancy in Uganda covers consultancy & research, construction, supervision and contract management, with a focus on safe, efficient and sustainable projects.",
+    "status": "Reverted at user request: restore original division hero design and copy."
+  },
+  {
+    "id": 6,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/asset-management",
+    "flag": "Paired slogan fragments",
+    "before": "A longer view of what you own. A clearer understanding of what it can become.",
+    "after": "Understand what you own and what it can become over its lifetime.",
+    "status": "Reverted at user request: restore original division hero design and copy."
+  },
+  {
+    "id": 7,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/engineering",
+    "flag": "Formulaic good/great contrast",
+    "before": "Good engineering sees the whole project. Great engineering sees what comes after.",
+    "after": "Good engineering considers the whole project; great engineering also considers what comes after delivery."
+  },
+  {
+    "id": 8,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/asset-management",
+    "flag": "Repeated longer-view slogan",
+    "before": "Every stage. A longer view.",
+    "after": "Services throughout the asset lifecycle."
+  },
+  {
+    "id": 9,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/asset-management",
+    "flag": "Uniform paired sentences",
+    "before": "Six questions to reflect on your asset management maturity. A useful starting point for a more informed conversation.",
+    "after": "Reflect on your asset management maturity with six questions that can help inform a conversation with our team."
+  },
+  {
+    "id": 10,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/asset-management/services",
+    "flag": "Fragment followed by generic connective",
+    "before": "Engineering, intelligence, finance and economics. One connected approach to the lifetime value of infrastructure.",
+    "after": "Our approach combines engineering, intelligence, finance and economics to address the lifetime value of infrastructure."
+  },
+  {
+    "id": 11,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/engineering/sectors",
+    "flag": "Unnecessary connected adjective",
+    "before": "Construction Engineering leads our work, alongside five connected areas of engineering expertise.",
+    "after": "Construction Engineering is our lead focus, supported by five areas of engineering expertise."
+  },
+  {
+    "id": 12,
+    "file": "src/components/division-pages.tsx",
+    "pages": "Both division projects pages",
+    "flag": "Generic connective framing",
+    "before": "Engineering delivery and asset intelligence, connected by a focus on long-term value.",
+    "after": "Engineering delivery and asset intelligence guide our work on the long-term value of infrastructure."
+  },
+  {
+    "id": 13,
+    "file": "src/components/division-pages.tsx",
+    "pages": "Both division insights pages",
+    "flag": "Abstract slogan heading",
+    "before": "Thinking beyond <br /> <em>the immediate.</em>",
+    "after": "Perspectives on <br /> <em>infrastructure.</em>"
+  },
+  {
+    "id": 14,
+    "file": "src/components/division-pages.tsx",
+    "pages": "Both division insights pages",
+    "flag": "Personified empty-state slogan",
+    "before": "Good questions <br /> deserve room.",
+    "after": "Ideas from <br /> Dreniak."
+  },
+  {
+    "id": 15,
+    "file": "src/components/division-pages.tsx",
+    "pages": "Both division insights pages",
+    "flag": "Generic invitation and repeated value phrasing",
+    "before": "Explore the questions that connect engineering, asset management and economics. Join our newsletter for perspectives on infrastructure and lasting value.",
+    "after": "Our newsletter explores questions across engineering, asset management and economics, with perspectives on infrastructure and its lasting value."
+  },
+  {
+    "id": 16,
+    "file": "src/components/division-pages.tsx",
+    "pages": "Both division standards pages",
+    "flag": "Paired slogan fragments",
+    "before": "A considered framework. <br /> <em>A higher standard.</em>",
+    "after": "A considered framework <br /> <em>for higher standards.</em>"
+  },
+  {
+    "id": 17,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/engineering/approach",
+    "flag": "Repetitive chained short sentences",
+    "before": "A site becomes a project. A project becomes an asset. The decisions made at every stage shape what that infrastructure can deliver throughout its life.",
+    "after": "From the first decisions about a site through its development into an asset, each stage shapes what the infrastructure can deliver throughout its life."
+  },
+  {
+    "id": 18,
+    "file": "src/components/division-pages.tsx",
+    "pages": "/portal",
+    "flag": "Generic connected-experience claim",
+    "before": "A more connected <br /> client experience.",
+    "after": "Stay connected <br /> to your projects."
+  },
+  {
+    "id": 19,
+    "file": "src/components/shared.tsx",
+    "pages": "Both division pages: shared CTA",
+    "flag": "Cliched chapter metaphor",
+    "before": "THE NEXT CHAPTER STARTS WITH A CONVERSATION",
+    "after": "SPEAK WITH DRENIAK"
+  },
+  {
+    "id": 20,
+    "file": "src/components/shared.tsx",
+    "pages": "Asset Management: shared CTA",
+    "flag": "Repeated longer-view fragments",
+    "before": "A longer view. <br />A better starting point.",
+    "after": "A better starting point <br />for your assets."
+  },
+  {
+    "id": 21,
+    "file": "src/components/shared.tsx",
+    "pages": "Both division projects pages",
+    "flag": "Three uniform fragments",
+    "before": "The work. <br /> The thinking. <br /> The lasting value.",
+    "after": "The thinking <br /> behind the work <br /> and its lasting value."
+  },
+  {
+    "id": 22,
+    "file": "src/components/shared.tsx",
+    "pages": "Both division projects pages",
+    "flag": "Repeated connected-view abstraction",
+    "before": "Problem. Intervention. Result. Long-term Value. A connected view of the challenge, the response and the value infrastructure creates.",
+    "after": "We consider the problem, the intervention it calls for and the result, then look at the value the infrastructure creates over time."
+  },
+  {
+    "id": 23,
+    "file": "src/components/engineering-pages.tsx",
+    "pages": "/engineering/about",
+    "flag": "Repetition and abstract priorities",
+    "before": "Quality, sustainability and innovation guide our engineering approach. We bring these priorities to the decisions that shape safe, efficient and sustainable projects.",
+    "after": "Quality, sustainability and innovation guide our decisions throughout a project, with attention to its safety, efficiency and sustainability."
+  },
+  {
+    "id": 24,
+    "file": "src/components/engineering-pages.tsx",
+    "pages": "/engineering/careers",
+    "flag": "Generic purpose slogan",
+    "before": "Grow with <br /> <em>purpose.</em>",
+    "after": "Careers in <br /> <em>engineering.</em>"
+  },
+  {
+    "id": 25,
+    "file": "src/components/forms.tsx",
+    "pages": "All pages: newsletter",
+    "flag": "Repeated longer-view slogan",
+    "before": "A longer view, in your inbox.",
+    "after": "The Dreniak newsletter."
+  },
+  {
+    "id": 26,
+    "file": "src/components/forms.tsx",
+    "pages": "All pages: newsletter",
+    "flag": "Repeated abstract value pairing",
+    "before": "Perspectives on infrastructure and lasting value.",
+    "after": "Read about infrastructure and the value it creates over time."
+  },
+  {
+    "id": 27,
+    "file": "src/components/forms.tsx",
+    "pages": "Both contact pages; Engineering consultation",
+    "flag": "Generic right-conversation phrase",
+    "before": "A little context helps us start the right conversation…",
+    "after": "Describe what you would like to discuss…"
+  },
+  {
+    "id": 28,
+    "file": "src/app/layout.tsx",
+    "pages": "Shared meta description",
+    "flag": "Fragmented slogan opening",
+    "before": "One origin. Two disciplines. Dreniak brings engineering and asset management together to engineer the longevity of civilisation.",
+    "after": "Dreniak brings engineering and asset management together to engineer the longevity of civilisation."
+  },
+  {
+    "id": 29,
+    "file": "src/lib/assessment.ts",
+    "pages": "/asset-management/assessment",
+    "flag": "Three-beat result slogan",
+    "before": "Refine. Integrate. Grow.",
+    "after": "Refine your approach as it grows."
+  },
+  {
+    "id": 30,
+    "file": "src/components/conceptual-image.tsx",
+    "pages": "Both sectors pages",
+    "flag": "Contrast-pivot caption",
+    "before": "Conceptual imagery illustrating types of infrastructure, not photographs of Dreniak projects.",
+    "after": "These generated illustrations show types of infrastructure. They do not depict Dreniak projects."
+  }
+]

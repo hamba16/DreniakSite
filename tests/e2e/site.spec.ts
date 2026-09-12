@@ -102,7 +102,7 @@ test("assessment completes honestly and can be revised", async ({ page }) => {
   }
   await expect(page.locator(".score")).toContainText("100");
   await expect(
-    page.getByRole("heading", { name: "Refine. Integrate. Grow." }),
+    page.getByRole("heading", { name: "Refine your approach as it grows." }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Start again" }).click();
   await expect(
@@ -216,7 +216,7 @@ test("reduced-motion navigation and unavailable newsletter capture are usable", 
   await expect(page).toHaveURL(/\/asset-management$/);
   await expect(page.locator(".division-wipe")).toHaveCount(0);
   await page
-    .getByRole("textbox", { name: "A longer view, in your inbox." })
+    .getByRole("textbox", { name: "The Dreniak newsletter." })
     .fill("review@example.com");
   await page.getByRole("button", { name: "Subscribe to newsletter" }).click();
   await expect(page.getByRole("status")).toContainText("not available yet");
