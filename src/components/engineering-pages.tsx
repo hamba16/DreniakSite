@@ -10,12 +10,15 @@ import {
 } from "lucide-react";
 import { engineering, engineeringOpenings } from "@/content/engineering";
 import { Mark, Motif } from "./brand";
+import { ConvergenceDiagram } from "./convergence-diagram";
 import { Reveal } from "./interactions";
 import { PageIntro, Standards } from "./shared";
+import { ConceptualImage, ConceptualImageNote } from "./conceptual-image";
+import { engineeringSectorImages } from "@/content/visual-assets";
 
 const sectorIcons = [Route, DraftingCompass, Waves, ClipboardList, Mountain];
 
-export function EngineeringSectors() {
+export function EngineeringSectors({ imagery = false }: { imagery?: boolean }) {
   return (
     <div className="engineering-sectors">
       <div className="sector-featured engineering-sector-lead">
@@ -37,11 +40,17 @@ export function EngineeringSectors() {
           </Link>
         </article>
       </div>
-      <div className="sector-secondary engineering-sector-grid">
+      {imagery && <ConceptualImageNote />}
+      <div
+        className={`sector-secondary engineering-sector-grid ${imagery ? "sector-photo-grid" : ""}`}
+      >
         {engineering.sectors.map((sector, index) => {
           const Icon = sectorIcons[index];
           return (
             <article key={sector}>
+              {imagery && (
+                <ConceptualImage asset={engineeringSectorImages[index]} />
+              )}
               <Icon size={28} strokeWidth={1.5} aria-hidden="true" />
               <div>
                 <h3>{sector}</h3>
@@ -121,22 +130,16 @@ export function EngineeringAbout({ children }: { children: React.ReactNode }) {
       <section className="thinking" aria-labelledby="engineering-philosophy">
         <span className="eyebrow">EVERY STAGE, CONNECTED</span>
         <h2 id="engineering-philosophy">Engineering philosophy</h2>
-        <div className="convergence">
-          {[
+        <ConvergenceDiagram
+          items={[
             "Assessment",
             "Design",
             "Construction",
             "Handover",
             "Maintenance",
-          ].map((stage, index) => (
-            <div key={stage}>
-              <span>{stage}</span>
-              {index < 4 && <b>×</b>}
-            </div>
-          ))}
-          <Mark />
-        </div>
-        <p>A whole-lifecycle approach to physical delivery.</p>
+          ]}
+          caption="A whole-lifecycle approach to physical delivery."
+        />
       </section>
       <section aria-labelledby="engineering-expertise">
         <div className="section-heading compact">
@@ -186,9 +189,7 @@ export function EngineeringAbout({ children }: { children: React.ReactNode }) {
           Commitment to quality, sustainability & innovation
         </h2>
         <p>
-          Quality, sustainability and innovation guide our engineering approach.
-          We bring these priorities to the decisions that shape safe, efficient
-          and sustainable projects.
+          Quality, sustainability and innovation guide our decisions throughout a project, with attention to its safety, efficiency and sustainability.
         </p>
       </section>
       {children}
@@ -203,9 +204,7 @@ export function EngineeringCareers() {
         eyebrow="CAREERS / DRENIAK ENGINEERING"
         title={
           <>
-            Grow with
-            <br />
-            <em>purpose.</em>
+            Careers in <br /> <em>engineering.</em>
           </>
         }
         description="Opportunities to contribute to engineering in Uganda and beyond."

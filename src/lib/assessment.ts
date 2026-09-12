@@ -90,7 +90,7 @@ export function scoreAssessment(answers: number[]) {
     };
   return {
     score,
-    label: "Refine. Integrate. Grow.",
+    label: "Refine your approach as it grows.",
     description:
       "Build on your established approach with scenario planning, continuous improvement and wider economic value.",
   };

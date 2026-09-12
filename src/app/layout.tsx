@@ -4,6 +4,7 @@ import { Experience } from "@/components/interactions";
 import { AnalyticsConsent } from "@/components/forms";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
+import "./editorial.css";
 const inter = localFont({
   src: [
     {
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: "Dreniak — Live the Future", template: "%s | Dreniak" },
   description:
-    "One origin. Two disciplines. Dreniak brings engineering and asset management together to engineer the longevity of civilisation.",
+    "Dreniak brings engineering and asset management together to engineer the longevity of civilisation.",
   openGraph: {
     type: "website",
     locale: "en_GB",

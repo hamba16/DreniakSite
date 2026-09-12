@@ -128,7 +128,7 @@ export function EnquiryForm({ division }: { division: Division }) {
           minLength={20}
           maxLength={5000}
           required
-          placeholder="A little context helps us start the right conversation…"
+          placeholder="Describe what you would like to discuss…"
         />
       </label>
       <div className="honeypot" aria-hidden="true">
@@ -205,8 +205,8 @@ export function Newsletter() {
   }
   return (
     <form className="newsletter" onSubmit={submit}>
-      <label htmlFor={emailId}>A longer view, in your inbox.</label>
-      <p>Perspectives on infrastructure and lasting value.</p>
+      <label htmlFor={emailId}>The Dreniak newsletter.</label>
+      <p>Read about infrastructure and the value it creates over time.</p>
       <div className="newsletter-input">
         <input
           id={emailId}

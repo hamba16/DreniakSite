@@ -26,7 +26,7 @@ export const engineering = {
     {
       name: "Engineering Consultancy & Research",
       description:
-        "Engineering advice and research help clarify a project's requirements and the options available. We support informed decisions by examining the engineering questions behind a project.",
+        "We examine the engineering questions behind a project to clarify its requirements and available options. That research and advice support informed decisions.",
       includes: ["Engineering advice", "Engineering research"],
       value: "A clearer basis for engineering decisions.",
       editorialStatus: "drafted, pending client refinement",
@@ -34,7 +34,7 @@ export const engineering = {
     {
       name: "Construction",
       description:
-        "Construction brings engineering plans into physical form. We focus on the practical work of building and the requirements that guide delivery.",
+        "We put engineering plans into practice through construction, with attention to the requirements that guide the building work.",
       includes: ["Construction works", "Practical delivery"],
       value: "A practical connection between plans and construction.",
       editorialStatus: "drafted, pending client refinement",
@@ -42,7 +42,7 @@ export const engineering = {
     {
       name: "Supervision",
       description:
-        "Supervision follows work as it progresses against the project's requirements. It helps identify issues that need attention and keeps delivery discussions grounded in what is happening on site.",
+        "As work progresses, supervision tracks it against the project's requirements. Site observations help identify issues needing attention and inform discussions about delivery.",
       includes: ["Review of work in progress", "Site observations"],
       value: "A clearer view of progress and issues requiring attention.",
       editorialStatus: "drafted, pending client refinement",
@@ -50,7 +50,7 @@ export const engineering = {
     {
       name: "Contract Management",
       description:
-        "Contract management helps organise the obligations and processes agreed for a project. It supports clear records and communication as the parties work through delivery.",
+        "The obligations and processes agreed for a project need to be organised throughout delivery. Contract management supports that work through clear records and communication between the parties.",
       includes: [
         "Contract administration",
         "Contract records and communication",
