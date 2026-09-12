@@ -1,0 +1,21 @@
+{
+  "available": [
+    "engineering-highway",
+    "engineering-structural",
+    "engineering-water",
+    "engineering-geotechnical",
+    "engineering-management",
+    "asset-government",
+    "asset-energy",
+    "asset-transport",
+    "asset-cities",
+    "asset-real-estate",
+    "asset-logistics",
+    "asset-healthcare",
+    "asset-education",
+    "engineering-intervention",
+    "engineering-insights",
+    "asset-insights"
+  ],
+  "pending": []
+}
