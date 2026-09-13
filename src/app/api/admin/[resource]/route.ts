@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { checkAdminRateLimit, requireAdmin, schemas, type AdminResource } from "@/lib/admin";
 
 function resourceName(value: string): AdminResource | null {
-  return value in schemas ? (value as AdminResource) : null;
+  return Object.hasOwn(schemas, value) ? (value as AdminResource) : null;
 }
 
 export async function GET(request: Request, { params }: { params: Promise<{ resource: string }> }) {

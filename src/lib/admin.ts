@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createClient } from "@/utils/supabase/server";
+import { adminDatabase, adminSession, sameOrigin } from "./admin-auth/server";
 import { consumeLimit, requestKey } from "./intake";
 
 export const divisionSchema = z.enum(["engineering", "asset-management"]);
@@ -21,17 +21,12 @@ export const schemas = {
 export type AdminResource = keyof typeof schemas;
 
 export async function requireAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-  if (userError || !user) throw new Error("Authentication required.");
-  const { data: admin, error } = await supabase.from("admins").select("id").eq("id", user.id).maybeSingle();
-  if (error || !admin) throw new Error("Administrator access required.");
-  return { supabase, user };
+  const user = await adminSession();
+  if (!user) throw new Error("Authentication required.");
+  return { supabase: adminDatabase(), user };
 }
 
 export function checkAdminRateLimit(request: Request, resource: string) {
+  sameOrigin(request);
   if (!consumeLimit(requestKey(request, `admin:${resource}`))) throw new Error("Too many requests.");
 }

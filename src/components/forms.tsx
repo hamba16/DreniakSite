@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, LoaderCircle } from "lucide-react";
 import { engineering as engineeringContent } from "@/content/engineering";
 import type { Division } from "@/lib/site";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 export function EnquiryForm({ division }: { division: Division }) {
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error"
@@ -244,6 +244,7 @@ export function Newsletter() {
   );
 }
 export function AnalyticsConsent() {
+  const pathname = usePathname();
   const [show, setShow] = useState(false);
   const [allowed, setAllowed] = useState(false);
   const id = process.env.NEXT_PUBLIC_GA_ID;
@@ -252,7 +253,7 @@ export function AnalyticsConsent() {
     setAllowed(value);
     setShow(false);
   }
-  return id ? (
+  return id && !pathname.startsWith("/admin") ? (
     <ConsentLoader
       id={id}
       show={show}
