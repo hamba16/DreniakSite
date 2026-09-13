@@ -8,6 +8,8 @@ import { chromium, expect, type Browser, type BrowserContext, type Page } from "
 import jsQR from "jsqr";
 import { PNG } from "pngjs";
 import { testDatabase, rpc } from "./database";
+import { contentForms } from "../../src/lib/admin-content-forms";
+import { verifyContentForms } from "./content-lifecycle";
 
 const origin = "http://localhost:3100";
 function otp(secret: string, offset = 0) {
@@ -38,16 +40,30 @@ async function main() {
       if (!storageAvailable) { res.writeHead(503).end(); return; }
       if (req.headers.apikey !== credential) { res.writeHead(403).end(); return; }
       let raw = ""; for await (const chunk of req) raw += chunk;
-      const path = new URL(req.url!, "http://localhost").pathname;
+      const requestUrl = new URL(req.url!, "http://localhost");
+      const path = requestUrl.pathname;
+      const resource = path.replace("/rest/v1/", "");
       let result: unknown;
       if (path === "/rest/v1/rpc/admin_auth") {
         const { p_action, p_data } = JSON.parse(raw);
         result = await rpc(db, p_action, p_data);
-      } else if (path === "/rest/v1/services") {
-        if (req.method === "POST") {
+      } else if (Object.hasOwn(contentForms, resource)) {
+        // Fixed table/column allowlists; values always use query parameters.
+        const fields = contentForms[resource].fields.map((field) => field.key);
+        const id = requestUrl.searchParams.get("id")?.replace(/^eq\./, "");
+        if (req.method === "POST" || req.method === "PATCH") {
           const value = JSON.parse(raw);
-          result = (await db.query("insert into public.services(name, description) values ($1, $2) returning *", [value.name, value.description])).rows[0];
-        } else result = (await db.query("select * from public.services")).rows;
+          const keys = Object.keys(value).filter((key) => fields.includes(key));
+          const values = keys.map((key) => value[key]);
+          const query = req.method === "POST"
+            ? `insert into public.${resource} (${keys.map((key) => `"${key}"`).join(",")}) values (${keys.map((_, i) => `$${i + 1}`).join(",")}) returning *`
+            : `update public.${resource} set ${keys.map((key, i) => `"${key}" = $${i + 1}`).join(",")} where id = $${keys.length + 1} returning *`;
+          result = (await db.query(query, req.method === "POST" ? values : [...values, id])).rows[0];
+        } else if (req.method === "DELETE") {
+          await db.query(`delete from public.${resource} where id = $1`, [id]); result = null;
+        } else result = (await db.query(`select * from public.${resource} order by created_at desc`)).rows;
+      } else if (path === "/rest/v1/media") {
+        result = (await db.query("select * from public.media")).rows;
       } else { res.writeHead(404).end(); return; }
       res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(result));
     } catch { res.writeHead(500, { "Content-Type": "application/json" }).end(JSON.stringify({ message: "Test database error" })); }
@@ -73,7 +89,7 @@ async function main() {
       await new Promise<void>((resolve) => { process.once("SIGINT", resolve); process.once("SIGTERM", resolve); });
       return;
     }
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, args: process.argv.includes("--inspect") ? ["--remote-debugging-port=9223"] : [] });
     const contexts: BrowserContext[] = [];
     async function context(ip: number) {
       const ctx = await browser!.newContext({ baseURL: origin, extraHTTPHeaders: { "x-forwarded-for": `127.0.0.${ip}` } });
@@ -86,6 +102,7 @@ async function main() {
     async function post(ctx: BrowserContext, action: string, body: object, requestOrigin = origin) {
       return ctx.request.post(`${origin}/api/admin/auth/${action}`, { headers: { origin: requestOrigin }, data: body });
     }
+    const enrollmentCodes = new Map<string, string>();
     async function enroll(page: Page, label: string) {
       await page.goto(`${origin}/admin`);
       await page.getByRole("button", { name: "Register authenticator", exact: true }).click();
@@ -94,7 +111,9 @@ async function main() {
       const image = page.getByAltText("Scan to register this authenticator");
       await expect(image).toBeVisible();
       const secret = decodeQR((await image.getAttribute("src"))!);
-      await page.getByLabel("Six-digit code").fill(otp(secret));
+      const confirmationCode = otp(secret);
+      enrollmentCodes.set(secret, confirmationCode);
+      await page.getByLabel("Six-digit code").fill(confirmationCode);
       await page.getByRole("button", { name: "Confirm authenticator" }).click();
       await expect(page.getByRole("status")).toContainText("Authenticator registered");
       return secret;
@@ -109,13 +128,22 @@ async function main() {
     assert.equal((await visitors[0].request.post(`${origin}/api/admin/auth/begin`, { data: { label: "No origin" } })).status(), 403);
     assert.equal((await post(visitors[0], "confirm", { code: "000000" })).status(), 400);
     const a = await enroll(pages[0], "Primary iPhone");
-    assert.equal((await post(visitors[0], "login", { code: otp(a) })).status(), 401, "Enrollment code is already consumed");
-    await pages[0].getByLabel("Six-digit code").fill(otp(a, 1));
+    assert.equal((await post(visitors[0], "login", { code: enrollmentCodes.get(a) })).status(), 401, "Enrollment code is already consumed");
+    const loginCodeA = otp(a, 1);
+    await pages[0].getByLabel("Six-digit code").fill(loginCodeA);
     await pages[0].getByRole("button", { name: "Sign in", exact: true }).click();
     await expect(pages[0].getByRole("heading", { name: "Content dashboard" })).toBeVisible();
     const session = (await visitors[0].cookies()).find((cookie) => cookie.name === "__Host-dreniak_admin");
     assert.ok(session?.httpOnly && session.secure && session.sameSite === "Strict");
     assert.ok(!(await pages[0].evaluate(() => document.cookie)).includes("dreniak_admin"));
+    if (process.argv.includes("--content")) {
+      await verifyContentForms(browser, visitors[0], db, origin);
+      if (process.argv.includes("--inspect")) {
+        console.log("Content browser available for inspection on CDP port 9223.");
+        await new Promise<void>((resolve) => { process.once("SIGINT", resolve); process.once("SIGTERM", resolve); });
+      }
+      return;
+    }
     const saved = await visitors[0].request.post(`${origin}/api/admin/services`, { headers: { origin }, data: { division: null, name: "Lifecycle test", description: "Preserved CMS contract", includes: [], value: "", editorial_status: "published", sort_order: 0 } });
     assert.equal(saved.status(), 201);
     assert.equal((await db.query("select name from public.services")).rows.length, 1);
@@ -158,7 +186,7 @@ async function main() {
     await pages[1].goto(`${origin}/admin/authenticators`);
     await expect(pages[1]).toHaveURL(`${origin}/admin`);
     const replayContext = await context(20);
-    assert.equal((await post(replayContext, "login", { code: otp(a, 1) })).status(), 401);
+    assert.equal((await post(replayContext, "login", { code: loginCodeA })).status(), 401);
     const badContext = await context(21);
     for (let i = 0; i < 5; i++) assert.equal((await post(badContext, "login", { code: "abcdef" })).status(), 400);
     assert.equal((await post(badContext, "login", { code: "abcdef" })).status(), 429);
