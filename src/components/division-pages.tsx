@@ -37,6 +37,10 @@ import {
 import data from "@/content/brief.json";
 import { publicCompanyProfile, publicServices } from "@/lib/public-content";
 import { publishedInsights, type PublishedInsight } from "@/lib/public-content";
+import {
+  assetManagementFeaturedProjects,
+  assetManagementProjectCards,
+} from "@/content/project-case-studies";
 
 export async function DivisionHome({ division }: { division: Division }) {
   const engineering = division === "engineering";
@@ -484,6 +488,84 @@ export async function DivisionPage({
         </>
       );
     case "projects":
+      if (!engineering) {
+        const featuredStudies = assetManagementFeaturedProjects.filter(
+          (study) => study.isPublished,
+        );
+
+        return (
+          <>
+            <PageIntro
+              eyebrow="PROJECTS & PORTFOLIO"
+              title={
+                <>
+                  The work behind
+                  <br />
+                  <em>lasting value.</em>
+                </>
+              }
+              description="We support organisations to improve how they understand, manage and invest in the assets that shape economic performance."
+            />
+            <div className="asset-projects-summary">
+              <p>
+                Recent case studies that connect asset decisions to operational,
+                financial and portfolio-level performance.
+              </p>
+            </div>
+            <div className="asset-projects-grid">
+              {featuredStudies.map((study) => (
+                <article key={study.slug} className="asset-project-card asset-project-card-featured">
+                  <div className="asset-project-topline">
+                    <span className="eyebrow">{study.location}</span>
+                    {study.status && <span className="project-status">{study.status}</span>}
+                  </div>
+                  <h3>{study.title}</h3>
+                  <p className="asset-project-subtitle">{study.subtitle}</p>
+                  <p className="asset-project-summary">{study.summary}</p>
+                  <div className="asset-project-tags">
+                    {study.serviceLinks?.slice(0, 2).map((link) => (
+                      <span key={link.label}>{link.label}</span>
+                    ))}
+                  </div>
+                  <Link
+                    href={`/asset-management/projects/${study.slug}`}
+                    className="text-link"
+                  >
+                    Read the case study <ArrowUpRight size={16} />
+                  </Link>
+                </article>
+              ))}
+            </div>
+            <div className="asset-projects-secondary">
+              {assetManagementProjectCards.map((card) => (
+                <article key={card.title} className="asset-project-card asset-project-card-secondary">
+                  <div className="asset-project-topline">
+                    <span className="eyebrow">{card.location}</span>
+                    <span className="project-status">{card.sector}</span>
+                  </div>
+                  <h3>{card.title}</h3>
+                  <p className="asset-project-subtitle">{card.hook}</p>
+                  <p className="asset-project-summary">{card.body}</p>
+                  <div className="asset-project-tags">
+                    {card.capabilityTags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <p className="asset-project-value-line">{card.valueLine}</p>
+                  <Link
+                    href={card.href || "/asset-management/projects"}
+                    className="text-link"
+                  >
+                    View project <ArrowUpRight size={16} />
+                  </Link>
+                </article>
+              ))}
+            </div>
+            <ProjectApproach engineering={engineering} />
+          </>
+        );
+      }
+
       return (
         <>
           <PageIntro

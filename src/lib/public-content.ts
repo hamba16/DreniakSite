@@ -1,4 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
+import {
+  assetManagementFeaturedProjects,
+  type ProjectCaseStudy,
+} from "@/content/project-case-studies";
 import type { Division } from "./site";
 
 export interface PublicCompanyProfile {
@@ -30,6 +34,8 @@ export interface PublishedInsight {
   externalUrl?: string;
   author: string;
 }
+
+export type PublishedCaseStudy = ProjectCaseStudy;
 
 export async function publishedRows<T>(table: string, division: Division) {
   const supabase = await createClient();
@@ -80,4 +86,28 @@ export async function publishedInsights(division: Division): Promise<PublishedIn
     externalUrl: item.external_url || undefined,
     author: item.author,
   }));
+}
+
+export async function publishedCaseStudies(division: Division): Promise<PublishedCaseStudy[]> {
+  if (division !== "asset-management") return [];
+
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("case_studies")
+      .select("*")
+      .eq("division", division)
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true });
+
+    if (error) throw error;
+
+    return ((data || []) as PublishedCaseStudy[]).map((item) => ({
+      ...item,
+      sections: Array.isArray(item.sections) ? item.sections : [],
+      serviceLinks: Array.isArray(item.serviceLinks) ? item.serviceLinks : undefined,
+    }));
+  } catch {
+    return assetManagementFeaturedProjects.filter((item) => item.isPublished);
+  }
 }
