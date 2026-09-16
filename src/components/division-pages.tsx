@@ -1,6 +1,8 @@
 import { ConceptualImage, hasConceptualImage } from "./conceptual-image";
 import { insightImages } from "@/content/visual-assets";
 import { ProjectGallery } from "./project-gallery";
+import { LeadershipSection } from "./leadership-section";
+import { ProjectLabel } from "./project-label";
 import { engineering as engineeringContent } from "@/content/engineering";
 import {
   EngineeringAbout,
@@ -273,13 +275,13 @@ export function AboutContent({
   return (
     <>
       <PageIntro
-        eyebrow={parent ? "ONE ORIGIN. TWO DISCIPLINES." : "WHO WE ARE"}
+        eyebrow={parent ? "THE DRENIAK STORY" : "WHO WE ARE"}
         title={
           parent ? (
             <>
-              We started with infrastructure.
+              Infrastructure first.
               <br />
-              <em>We are building towards lasting value.</em>
+              <em>Value for the long term.</em>
             </>
           ) : engineering ? (
             <>
@@ -302,16 +304,16 @@ export function AboutContent({
         <div>
           <span className="eyebrow">OUR STORY / EST. SUMMER 2024</span>
           <h2>
-            Infrastructure was
+            A practical
             <br />
-            where we started.
+            beginning.
           </h2>
           <Mark stroke />
         </div>
         <div>
           <p className="story-lead">
-            We began with infrastructure. Understanding its lifetime and
-            economic value is where Dreniak is going.
+            Our work starts with infrastructure and looks to the value it
+            creates over time.
           </p>
           <p className="origin-story">{data.story}</p>
           <span className="eyebrow">DARREN KAMUNUGA · THE DRENIAK STORY</span>
@@ -379,30 +381,7 @@ export function AboutContent({
           </Reveal>
         ))}
       </section>
-      <section className="leadership">
-        <div>
-          <span className="eyebrow">LEADERSHIP</span>
-          <h2>
-            A personal ambition.
-            <br />A shared future.
-          </h2>
-        </div>
-        <div className="leader-card">
-          <div className="leader-avatar">
-            <Motif density={170} />
-            <span>DK</span>
-            <Mark />
-          </div>
-          <div>
-            <span className="eyebrow">DRENIAK LIMITED</span>
-            <h3>Darren Kamunuga</h3>
-            <p>Founder · Enquiries & consultations</p>
-            <a className="text-link" href="mailto:info@dreniak.com">
-              Start a conversation <ArrowUpRight size={16} />
-            </a>
-          </div>
-        </div>
-      </section>
+      <LeadershipSection context={parent ? "story" : division} />
       <CompanyFootprint />
       <Standards division={division} />
     </>
@@ -501,7 +480,7 @@ export async function DivisionPage({
                 <>
                   The work behind
                   <br />
-                  <em>lasting value.</em>
+                  <em>long-term value.</em>
                 </>
               }
               description="We support organisations to improve how they understand, manage and invest in the assets that shape economic performance."
@@ -516,15 +495,15 @@ export async function DivisionPage({
               {featuredStudies.map((study) => (
                 <article key={study.slug} className="asset-project-card asset-project-card-featured">
                   <div className="asset-project-topline">
-                    <span className="eyebrow">{study.location}</span>
-                    {study.status && <span className="project-status">{study.status}</span>}
+                    <ProjectLabel kind="location">{study.location}</ProjectLabel>
+                    {study.status && <ProjectLabel kind="status">{study.status}</ProjectLabel>}
                   </div>
                   <h3>{study.title}</h3>
                   <p className="asset-project-subtitle">{study.subtitle}</p>
                   <p className="asset-project-summary">{study.summary}</p>
                   <div className="asset-project-tags">
                     {study.serviceLinks?.slice(0, 2).map((link) => (
-                      <span key={link.label}>{link.label}</span>
+                      <ProjectLabel key={link.label} kind="category">{link.label}</ProjectLabel>
                     ))}
                   </div>
                   <Link
@@ -540,15 +519,15 @@ export async function DivisionPage({
               {assetManagementProjectCards.map((card) => (
                 <article key={card.title} className="asset-project-card asset-project-card-secondary">
                   <div className="asset-project-topline">
-                    <span className="eyebrow">{card.location}</span>
-                    <span className="project-status">{card.sector}</span>
+                    <ProjectLabel kind="location">{card.location}</ProjectLabel>
+                    <ProjectLabel kind="category">{card.sector}</ProjectLabel>
                   </div>
                   <h3>{card.title}</h3>
                   <p className="asset-project-subtitle">{card.hook}</p>
                   <p className="asset-project-summary">{card.body}</p>
                   <div className="asset-project-tags">
                     {card.capabilityTags.map((tag) => (
-                      <span key={tag}>{tag}</span>
+                      <ProjectLabel key={tag} kind="category">{tag}</ProjectLabel>
                     ))}
                   </div>
                   <p className="asset-project-value-line">{card.valueLine}</p>
@@ -652,7 +631,7 @@ export async function DivisionPage({
                   Ideas from <br /> Dreniak.
                 </h2>
                 <p>
-                  Our newsletter explores questions across engineering, asset management and economics, with perspectives on infrastructure and its lasting value.
+                  Our newsletter explores questions across engineering, asset management and economics, with perspectives on infrastructure and the value it creates over time.
                 </p>
               </div>
               <Mark stroke />

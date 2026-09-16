@@ -180,7 +180,7 @@ export function Standards({
         <h2>
           {engineering
             ? "Accountable by design."
-            : "A framework for lasting value."}
+            : "A framework for durable value."}
         </h2>
         <p>
           {engineering
@@ -349,7 +349,7 @@ export function ProjectApproach({
         <Mark stroke />
         <span className="eyebrow">OUR PROJECT APPROACH</span>
         <h2>
-          The thinking <br /> behind the work <br /> and its lasting value.
+          The thinking <br /> behind the work <br /> and its lifetime impact.
         </h2>
         <p>
           We connect the immediate infrastructure challenge with the decisions

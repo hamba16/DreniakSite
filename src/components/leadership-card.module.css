@@ -1,0 +1,14 @@
+.card { --portrait-accent: #0d3251; min-width: 0; }
+.card[data-context="engineering"] { --portrait-accent: #991923; }
+.portrait { position: relative; isolation: isolate; display: grid; place-items: center; aspect-ratio: 4 / 4.5; overflow: hidden; background: #f1efe9; }
+.pattern { position: absolute; inset: 0; background: url('/brand/motif-indigo.svg') repeat center / 240px 110.4px; opacity: .05; filter: saturate(.35); }
+.card[data-context="engineering"] .pattern { background-image: url('/brand/motif-red.svg'); }
+.portrait[data-backdrop="vignette"] .pattern { opacity: .06; mask-image: radial-gradient(ellipse at 50% 43%, transparent 15%, #000 85%); }
+.initials { position: relative; color: var(--portrait-accent); font-size: clamp(64px, 7vw, 108px); font-weight: 350; letter-spacing: -.08em; }
+.caption { padding: 20px 0 8px; }
+.scope { color: var(--portrait-accent); text-transform: uppercase; font-size: 9px; letter-spacing: .13em; margin-bottom: 9px; }
+.caption h3 { font-size: clamp(22px, 2vw, 28px); line-height: 1.15; letter-spacing: -.04em; }
+.title { font-size: 13px; color: #555; margin-top: 8px; }
+.contacts { display: grid; justify-items: start; margin-top: 12px; }
+.contact { display: inline-flex; align-items: center; min-height: 44px; gap: 8px; font-size: 12px; color: var(--portrait-accent); overflow-wrap: anywhere; max-width: 100%; text-decoration: underline; text-underline-offset: 4px; }
+.contact:focus-visible { outline: 2px solid var(--portrait-accent); outline-offset: 4px; }

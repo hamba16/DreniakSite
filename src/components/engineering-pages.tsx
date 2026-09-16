@@ -9,7 +9,8 @@ import {
   Mountain,
 } from "lucide-react";
 import { engineering, engineeringOpenings } from "@/content/engineering";
-import { Mark, Motif } from "./brand";
+import { Mark } from "./brand";
+import { LeadershipSection } from "./leadership-section";
 import { ConvergenceDiagram } from "./convergence-diagram";
 import { Reveal } from "./interactions";
 import { PageIntro, Standards } from "./shared";
@@ -148,29 +149,7 @@ export function EngineeringAbout({ children }: { children: React.ReactNode }) {
         </div>
         <EngineeringSectors />
       </section>
-      <section className="leadership" aria-labelledby="engineering-leadership">
-        <div>
-          <span className="eyebrow">THE PEOPLE BEHIND THE WORK</span>
-          <h2 id="engineering-leadership">Leadership & team</h2>
-        </div>
-        <div className="leader-card">
-          <div className="leader-avatar" aria-hidden="true">
-            <Motif density={170} />
-            <Mark />
-          </div>
-          <div>
-            <span className="eyebrow">DRENIAK ENGINEERING</span>
-            <h3>Meet the team</h3>
-            <p>
-              Leadership biographies and photographs will be shared following
-              client approval.
-            </p>
-            <Link className="text-link" href="/engineering/consultation">
-              Book a Consultation <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <LeadershipSection context="engineering" />
       <section aria-labelledby="engineering-credentials">
         <div className="section-heading compact">
           <span className="eyebrow">{engineering.legalName}</span>

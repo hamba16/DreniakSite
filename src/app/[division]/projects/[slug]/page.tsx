@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/shared";
+import { ProjectLabel } from "@/components/project-label";
 import { assetManagementFeaturedProjects } from "@/content/project-case-studies";
 import { publishedCaseStudies } from "@/lib/public-content";
 import { divisions, type Division } from "@/lib/site";
@@ -60,10 +61,9 @@ export default async function ProjectCaseStudyPage({
       <Breadcrumb division={allowedDivision} label="Projects" />
       <article className="case-study-article">
         <div className="case-study-meta-top">
-          <span className="eyebrow">
-            {study.sector} · {study.location}
-          </span>
-          {study.status && <span className="eyebrow">{study.status}</span>}
+          <ProjectLabel kind="category" href={study.sectorLink}>{study.sector}</ProjectLabel>
+          <ProjectLabel kind="location">{study.location}</ProjectLabel>
+          {study.status && <ProjectLabel kind="status">{study.status}</ProjectLabel>}
         </div>
         <h1>{study.title}</h1>
         <p className="case-study-subtitle">{study.subtitle}</p>
@@ -72,27 +72,14 @@ export default async function ProjectCaseStudyPage({
         {study.capability && (
           <p className="case-study-capability">{study.capability}</p>
         )}
-        {study.sectorLink ? (
-          <div className="case-study-tags">
-            <Link href={study.sectorLink} className="text-link">
-              {study.sector}
-            </Link>
-            <span>{study.location}</span>
-          </div>
-        ) : (
-          <div className="case-study-tags">
-            <span>{study.sector}</span>
-            <span>{study.location}</span>
-          </div>
-        )}
         <p className="case-study-opening">“{study.opening}”</p>
 
         {study.serviceLinks && study.serviceLinks.length > 0 && (
           <div className="case-study-links">
             {study.serviceLinks.map((item) => (
-              <Link key={item.label} href={item.href} className="text-link">
+              <ProjectLabel key={item.label} kind="category" href={item.href}>
                 {item.label}
-              </Link>
+              </ProjectLabel>
             ))}
           </div>
         )}

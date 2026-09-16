@@ -65,7 +65,7 @@ export default async function Home() {
             <span className="eyebrow">
             <i className="red-dot" /> {content?.premise_label || "THE DRENIAK PERSPECTIVE"}
             </span>
-            <span className="eyebrow">01 / ONE ORIGIN</span>
+            <span className="eyebrow">01 / THE STARTING POINT</span>
           </div>
           <div className="premise-grid">
           <Reveal>

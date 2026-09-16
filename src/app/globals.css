@@ -290,6 +290,8 @@ em {
 .logo {
   width: 210px;
   height: auto;
+  transform: scale(0.95);
+  transform-origin: center;
 }
 .motif {
   position: absolute;
@@ -2065,6 +2067,7 @@ em {
 }
 .asset-project-topline {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -2072,17 +2075,6 @@ em {
 .asset-project-topline > .eyebrow {
   font-size: 8px;
   letter-spacing: 0.12em;
-}
-.project-status {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--line);
-  background: #f4f4f2;
-  color: var(--indigo);
-  padding: 6px 8px;
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 .asset-project-card h3 {
   font-size: clamp(24px, 2vw, 33px);
@@ -2105,16 +2097,6 @@ em {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: auto;
-}
-.asset-project-tags > span {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--line);
-  padding: 7px 9px;
-  font-size: 8px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: white;
 }
 .asset-project-card .text-link {
   margin-top: 8px;
@@ -2168,18 +2150,6 @@ em {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 0.9rem;
-}
-.case-study-tags > span,
-.case-study-tags > a,
-.case-study-links > a {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--line);
-  background: #fff;
-  padding: 0.55rem 0.8rem;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 .case-study-links {
   margin-top: 0.5rem;

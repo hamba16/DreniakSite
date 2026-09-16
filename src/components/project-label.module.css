@@ -1,0 +1,7 @@
+.label { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; padding: 7px 9px; border: 1px solid transparent; border-radius: 0; font-size: 10px; line-height: 1.5; letter-spacing: .055em; text-transform: uppercase; overflow-wrap: anywhere; }
+.label[data-kind="category"], .label[data-kind="status"][data-tone="tinted"] { background: color-mix(in srgb, var(--accent) 6%, white); border-color: color-mix(in srgb, var(--accent) 23%, white); color: var(--accent); }
+.label[data-kind="location"], .label[data-kind="status"][data-tone="quiet"] { color: #5b5956; font-size: 9px; letter-spacing: .08em; padding-inline: 0; }
+.label[data-kind="location"]::before, .label[data-kind="status"][data-tone="quiet"]::before { content: ''; flex: 0 0 4px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: .7; }
+a.label { min-height: 44px; }
+a.label:hover { background: color-mix(in srgb, var(--accent) 11%, white); }
+a.label:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
