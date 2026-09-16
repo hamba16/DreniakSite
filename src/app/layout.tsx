@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import { Experience } from "@/components/interactions";
 import { AnalyticsConsent } from "@/components/forms";
 import { siteUrl } from "@/lib/site";
@@ -57,6 +58,7 @@ export default function RootLayout({
         </a>
         <Experience>{children}</Experience>
         <AnalyticsConsent />
+        <Analytics />
       </body>
     </html>
   );
