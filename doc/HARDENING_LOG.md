@@ -102,3 +102,17 @@ The italic font competes with LCP resources despite only a small number of itali
 - I did not delete `public/images/natural/engineering.webp` or `asset-management.webp`; both are reachable from the Approach page.
 - `image.png` is unreferenced by `src`, but it is only excluded from deploy context for now so recovery remains possible until the deletion is separately reviewed.
 - Lighthouse, cross-browser traces, production env checks, and side-by-side image comparisons remain blocked by the missing linked preview/project.
+
+## C2 — avoid optimizing and preloading the footer wordmark
+
+### What I found
+
+The shared `Logo` component always used `next/image` priority, so both header and footer instances emitted a preload. The logo files are local SVGs, for which the image optimizer adds no useful raster transformation.
+
+### What I changed
+
+The component now opts out of the optimizer and accepts an explicit `priority` flag. Header and homepage hero instances remain priority; the footer instance is no longer preloaded.
+
+### What I did not do
+
+The three SVGs were not collapsed or SVGO-optimized. Their outlined brand geometry requires pixel comparison at 1x, 2x, and 3x before that change can be defended.

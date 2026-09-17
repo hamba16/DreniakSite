@@ -217,7 +217,7 @@ export function Header({ division }: { division?: Division }) {
     <header className={`site-header ${division}`}>
       <div className="header-top">
         <Link href={`/${division}`} className="brand-link">
-          <Logo />
+          <Logo priority />
           <span>{names[division]}</span>
         </Link>
         <div className="header-utilities">

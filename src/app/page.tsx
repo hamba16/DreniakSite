@@ -31,7 +31,7 @@ export default async function Home() {
           </div>
           <div className="hero-center">
             <div className="hero-logo">
-              <Logo />
+              <Logo priority />
               <Mark className="logo-trace" stroke />
             </div>
             <span className="hero-kicker eyebrow">

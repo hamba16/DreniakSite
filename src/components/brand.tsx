@@ -22,9 +22,11 @@ export function Mark({
 export function Logo({
   dark = true,
   className = "",
+  priority = false,
 }: {
   dark?: boolean;
   className?: string;
+  priority?: boolean;
 }) {
   return (
     <Image
@@ -33,7 +35,8 @@ export function Logo({
       height={114}
       alt="Dreniak — Live the Future"
       className={`logo ${className}`}
-      priority
+      unoptimized
+      priority={priority}
     />
   );
 }
