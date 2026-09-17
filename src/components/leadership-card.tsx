@@ -27,8 +27,8 @@ export function LeadershipCard({
             src={leader.portrait.src}
             alt={leader.name}
             fill
-            sizes="(max-width: 640px) 90vw, (max-width: 1000px) 45vw, 25vw"
-            style={{ objectFit: "contain", objectPosition: leader.portrait.position ?? "center bottom" }}
+            sizes="(max-width: 700px) 90vw, (max-width: 1000px) 45vw, 33vw"
+            style={{ objectFit: "cover", objectPosition: leader.portrait.position ?? "center bottom" }}
           />
         ) : (
           <span className={styles.initials} aria-hidden="true">{leader.initials}</span>

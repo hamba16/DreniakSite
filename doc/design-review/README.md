@@ -18,7 +18,7 @@ Comparison artifacts: [portraits](portrait-directions.png) and [project labels](
 
 `src/content/leadership.ts` is the single source for team records. The user subsequently confirmed Derrick's number, +256 704 175 005, for his story-page card. It links to `tel:+256704175005` and is omitted from his Engineering card. Tania and Jude have no invented contact details.
 
-Add a transparent portrait cutout using `portrait.src` and optional `portrait.position`. Portrait and initials share the exact same frame and patterned backdrop. An opaque photo requires background removal for the digital backdrop to remain visible behind the person. No real headshots were supplied or tested.
+Add a transparent portrait cutout using `portrait.src` and optional `portrait.position`. Portrait and initials share the exact same frame and patterned backdrop. Darren and Derrick's supplied JPEGs in `public/images/Team` are preserved; background-removed PNG derivatives are wired into their cards with individual crop positions. The derivatives were made with imagegen and retain transparency for the live red/indigo vignette. Both portraits were checked through Next.js image optimization on the story and division About pages at 1440px and 390px, with no browser page errors or horizontal overflow. Tania and Jude retain their initials.
 
 ## Scope
 
