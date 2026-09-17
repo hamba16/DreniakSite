@@ -97,6 +97,7 @@ export default async function Home() {
                 src="/images/engineering.webp"
                 alt="Conceptual architectural image of monumental concrete infrastructure"
                 fill
+                priority
                 sizes="(max-width: 760px) 100vw, 60vw"
               />
               <div className="panel-shade" />
@@ -133,6 +134,7 @@ export default async function Home() {
                 src="/images/asset-management.webp"
                 alt="Conceptual image of a transport viaduct and a distant African skyline"
                 fill
+                fetchPriority="low"
                 sizes="(max-width: 760px) 100vw, 60vw"
               />
               <div className="panel-shade" />

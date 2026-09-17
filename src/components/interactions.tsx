@@ -398,7 +398,7 @@ export function ServiceAccordion({
   const [active, setActive] = useState<number | null>(0);
   useEffect(() => {
     function syncHash() {
-      const match = window.location.hash.match(/^#service-(\d)$/);
+      const match = window.location.hash.match(/^#service-(\d+)$/);
       if (match) {
         const index = Number(match[1]);
         if (index < services.length) {
@@ -475,6 +475,8 @@ export function ServiceAccordion({
   );
 }
 export function Assessment() {
+  const questionCount = assessmentQuestions.length;
+  const questionCountLabel = questionCount === 6 ? "Six" : String(questionCount);
   const [answers, setAnswers] = useState<number[]>([]);
   const [step, setStep] = useState(0);
   const [finished, setFinished] = useState(false);
@@ -538,9 +540,12 @@ export function Assessment() {
         <>
           <div className="assessment-top">
             <span className="eyebrow">ASSET MANAGEMENT MATURITY</span>
-            <span>0{step + 1} / 06</span>
+            <span>
+              {String(step + 1).padStart(2, "0")} /{" "}
+              {String(questionCount).padStart(2, "0")}
+            </span>
           </div>
-          <progress max={6} value={step + 1} aria-label="Assessment progress" />
+          <progress max={questionCount} value={step + 1} aria-label="Assessment progress" />
           <span className="eyebrow">{q.area}</span>
           <h2 ref={heading} tabIndex={-1}>
             {q.question}
@@ -585,18 +590,18 @@ export function Assessment() {
               className="button"
               disabled={answers[step] === undefined}
               onClick={() => {
-                if (step === 5) {
+                if (step === questionCount - 1) {
                   setFinished(true);
                   requestAnimationFrame(() => heading.current?.focus());
                 } else go(step + 1);
               }}
             >
-              {step === 5 ? "See my result" : "Next question"}{" "}
+              {step === questionCount - 1 ? "See my result" : "Next question"}{" "}
               <ArrowRight size={18} />
             </button>
           </div>
           <p className="fine-print">
-            Six questions. Approximately two minutes. No email required.
+            {questionCountLabel} questions. Approximately two minutes. No email required.
           </p>
         </>
       )}

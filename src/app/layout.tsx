@@ -13,11 +13,6 @@ const inter = localFont({
       weight: "100 900",
       style: "normal",
     },
-    {
-      path: "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-italic.woff2",
-      weight: "100 900",
-      style: "italic",
-    },
   ],
   variable: "--font-inter",
   display: "swap",

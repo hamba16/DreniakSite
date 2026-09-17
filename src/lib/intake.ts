@@ -72,10 +72,14 @@ export async function readSubmission(request: Request) {
   }
 }
 export function requestKey(request: Request, category: string) {
-  const ip =
-    process.env.TRUST_PROXY === "true"
-      ? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-        "unknown"
-      : "local";
+  const forwardedHeader =
+    process.env.VERCEL === "1"
+      ? "x-vercel-forwarded-for"
+      : process.env.TRUST_PROXY === "true"
+        ? "x-forwarded-for"
+        : null;
+  const ip = forwardedHeader
+    ? request.headers.get(forwardedHeader)?.split(",")[0]?.trim() || "unknown"
+    : "local";
   return `${category}:${ip}`;
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { checkAdminRateLimit, requireAdmin, schemas, type AdminResource } from "@/lib/admin";
 
 function resourceName(value: string): AdminResource | null {
@@ -29,6 +30,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ res
     const { id: _id, ...record } = parsed.data;
     const { data, error } = await supabase.from(resource as never).insert(record as never).select().single();
     if (error) throw error;
+    revalidateTag("public-content", "max");
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Request failed." }, { status: 403 });
@@ -47,6 +49,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ re
     const { id, ...record } = parsed.data;
     const { data, error } = await supabase.from(resource as never).update(record as never).eq("id", id).select().single();
     if (error) throw error;
+    revalidateTag("public-content", "max");
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Request failed." }, { status: 403 });
@@ -63,6 +66,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ r
     if (!id) return NextResponse.json({ error: "An id is required." }, { status: 400 });
     const { error } = await supabase.from(resource as never).delete().eq("id", id);
     if (error) throw error;
+    revalidateTag("public-content", "max");
     return new NextResponse(null, { status: 204 });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Request failed." }, { status: 403 });

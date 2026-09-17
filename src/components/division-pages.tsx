@@ -397,11 +397,19 @@ export async function DivisionPage({
 }) {
   const engineering = division === "engineering";
   let databaseInsights: PublishedInsight[] = [];
+  let databaseServices: Awaited<ReturnType<typeof publicServices>> = [];
   if (page === "insights") {
     try {
       databaseInsights = await publishedInsights(division);
     } catch {
       databaseInsights = [];
+    }
+  }
+  if (page === "services") {
+    try {
+      databaseServices = await publicServices(division);
+    } catch {
+      databaseServices = [];
     }
   }
   switch (page) {
@@ -432,7 +440,13 @@ export async function DivisionPage({
             }
           />
           <ServiceAccordion
-            services={engineering ? engineeringServices : data.services}
+            services={
+              databaseServices.length
+                ? databaseServices
+                : engineering
+                  ? engineeringServices
+                  : data.services
+            }
             engineering={engineering}
           />
         </>

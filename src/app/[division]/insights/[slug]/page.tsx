@@ -3,6 +3,17 @@ import { notFound } from "next/navigation";
 import { divisions, type Division } from "@/lib/site";
 import { Breadcrumb } from "@/components/shared";
 import { publishedInsights } from "@/lib/public-content";
+
+export async function generateStaticParams() {
+  return (await Promise.all(
+    divisions.map(async (division) => {
+      const insights = await publishedInsights(division);
+      return insights.map((item) => ({ division, slug: item.slug }));
+    }),
+  )).flat();
+}
+
+export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: {

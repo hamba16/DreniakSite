@@ -31,6 +31,7 @@ export function ConceptualImage({
           width={1200}
           height={800}
           sizes="(max-width: 760px) 88vw, 43vw"
+          placeholder="blur"
         />
       </div>
       {caption && <figcaption>{caption}</figcaption>}

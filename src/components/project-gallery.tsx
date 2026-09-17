@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import constructionProgress from "../../public/images/projects/construction-progress.webp";
+import agRosaRender from "../../public/images/projects/ag-rosa-render.webp";
 
 export function ProjectGallery() {
   return (
@@ -17,13 +19,13 @@ export function ProjectGallery() {
       <div className="project-gallery-grid">
         <figure>
           <div className="project-gallery-image">
-            <Image src="/images/projects/construction-progress.webp" alt="Site photograph of a concrete building frame, masonry and scaffolding during construction" fill sizes="(max-width: 760px) 86vw, 42vw" />
+            <Image src={constructionProgress} alt="Site photograph of a concrete building frame, masonry and scaffolding during construction" fill sizes="(max-width: 760px) 86vw, 42vw" placeholder="blur" />
           </div>
           <figcaption><span className="eyebrow">ON SITE</span><h3>Construction in progress</h3><p>Site photograph from Dreniak’s project files.</p></figcaption>
         </figure>
         <figure>
           <div className="project-gallery-image">
-            <Image src="/images/projects/ag-rosa-render.webp" alt="Supplied architectural rendering of AG Rosa, showing balconies, planted terraces and the entrance" fill sizes="(max-width: 760px) 86vw, 42vw" />
+            <Image src={agRosaRender} alt="Supplied architectural rendering of AG Rosa, showing balconies, planted terraces and the entrance" fill sizes="(max-width: 760px) 86vw, 42vw" placeholder="blur" />
           </div>
           <figcaption><span className="eyebrow">ARCHITECTURAL VIEW</span><h3>AG Rosa</h3><p>Project rendering supplied by Dreniak.</p></figcaption>
         </figure>
