@@ -1,6 +1,7 @@
 import { leaders } from "@/content/leadership";
 import { LeadershipCard } from "./leadership-card";
 import styles from "./leadership-section.module.css";
+import { PortraitOptions } from "./portrait-options";
 
 export function LeadershipSection({ context }: {
   context: "story" | "engineering" | "asset-management";
@@ -16,6 +17,7 @@ export function LeadershipSection({ context }: {
         <span className="eyebrow">{context === "engineering" ? "THE PEOPLE BEHIND THE WORK" : "LEADERSHIP"}</span>
         <h2 id="leadership-heading">{context === "engineering" ? "Leadership & team" : <>A personal ambition.<br />A shared future.</>}</h2>
       </div>
+      {shared && <PortraitOptions />}
       <div className={styles.grid} data-count={members.length}>
         {members.map((leader) => (
           <LeadershipCard

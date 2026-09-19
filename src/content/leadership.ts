@@ -19,7 +19,7 @@ export const leaders: readonly Leader[] = [
     scope: "Dreniak Limited",
     email: "d.kamunuga@dreniak.com",
     phone: { label: "+44 7789 063938", href: "tel:+447789063938" },
-    portrait: { src: "/images/Team/darren-cutout.png", position: "50% 30%" },
+    portrait: { src: "/images/Team/Darren 2.jpg", position: "50% 30%" },
   },
   {
     id: "derrick-nkurunungi",
@@ -29,7 +29,7 @@ export const leaders: readonly Leader[] = [
     scope: "Dreniak Engineering",
     email: "derricknkurunungi7@gmail.com",
     phone: { label: "+256 704 175 005", href: "tel:+256704175005" },
-    portrait: { src: "/images/Team/derrick-cutout.png", position: "48% bottom" },
+    portrait: { src: "/images/Team/Derrick studio.jpg", position: "50% 50%" },
   },
   {
     id: "tania-judith-bita-olielo",
