@@ -132,9 +132,9 @@ test("Engineering content, registrations and About order match the agreed brief"
   );
   for (const label of ["URSB", "URA", "trading license"])
     await expect(page.locator(".standards-section")).toContainText(label);
-  await expect(page.locator(".leadership")).toContainText(
-    "following client approval",
-  );
+  // Leadership contacts are confirmed; portraits and biographies remain a content follow-up.
+  await expect(page.locator(".leadership")).toContainText("Leadership & team");
+  await expect(page.locator(".leadership")).toContainText("Derrick Nkurunungi");
   await expect(page.locator(".footprint-graphic")).toBeVisible();
   await page.goto("/engineering/sectors");
   await expect(page.locator(".engineering-sector-lead h2")).toHaveText(

@@ -1714,14 +1714,6 @@ em {
 .leadership {
   padding: 70px 0;
   border-top: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 50px;
-}
-.leadership h2 {
-  font-size: 35px;
-  line-height: 1.15;
-  margin-top: 20px;
 }
 .leader-card {
   display: flex;
@@ -2955,10 +2947,6 @@ em {
   .standards-section h2 {
     font-size: 34px;
   }
-  .leadership {
-    grid-template-columns: 1fr 1.5fr;
-    gap: 30px;
-  }
   .leader-card {
     gap: 20px;
   }
@@ -3593,14 +3581,6 @@ em {
   .value-number {
     font-size: 9px;
     margin-top: 4px;
-  }
-  .leadership {
-    grid-template-columns: 1fr;
-    padding: 45px 0;
-    gap: 30px;
-  }
-  .leadership h2 {
-    font-size: 32px;
   }
   .leader-avatar {
     min-width: 110px;

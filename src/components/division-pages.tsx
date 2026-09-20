@@ -34,7 +34,6 @@ import {
   type PageName,
   names,
   engineeringServices,
-  insights,
 } from "@/lib/site";
 import data from "@/content/brief.json";
 import { publicCompanyProfile, publicServices } from "@/lib/public-content";

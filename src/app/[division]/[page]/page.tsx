@@ -11,6 +11,7 @@ import {
   type Division,
   type PageName,
 } from "@/lib/site";
+export const dynamicParams = false;
 export function generateStaticParams() {
   return [
     ...divisions.flatMap((division) =>

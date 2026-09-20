@@ -26,7 +26,7 @@ Node 20.9+ is required by Next.js; this build was developed with Node 24.13.0. T
 - Engineering: confirmed company overview, mission, vision and values; four services; Construction Engineering as the featured sector with five supporting areas; Careers and a dedicated consultation page. ERB is retained alongside URSB, URA and trading-license registrations. Draft service copy is identified in the content layer.
 - Six-question maturity assessment with transparent indicative scoring, answer review, restart and context passed into an enquiry.
 - Contact: client and server validation, consent, honeypot, request size/origin checks, throttling, SMTP delivery adapter, explicit unavailable/error states and email fallback.
-- Newsletter: validated capture, consent timestamp/version, authenticated storage webhook or persistent filesystem adapter. No ESP integration.
+- Newsletter: validated capture with Supabase as the subscriber system of record and Buttondown as the delivery provider. Legacy authenticated webhook and persistent filesystem adapters remain available explicitly for migration or local use.
 - Portal entry: honest Phase 2 surface with no fake credentials or document access.
 - SEO: route metadata, canonical URLs, social images for all three brands, sitemap, robots, favicon and Apple icon.
 - Optional GA4 behind visitor consent; privacy and preference reset surface.
@@ -47,12 +47,21 @@ Node 20.9+ is required by Next.js; this build was developed with Node 24.13.0. T
 
 Copy `.env.example` to `.env.local` and fill values locally; never commit secrets. Set the canonical URL to the actual preview origin when testing a preview. `SMTP_*` settings are server-only; the recipient is fixed to `info@dreniak.com`, attention Darren Kamunuga. The submitter is used only for Reply-To. SMTP 587 requires STARTTLS; 465 uses TLS directly. Delivery is reported only after SMTP accepts the recipient. This does not prove inbox placement.
 
-In development, newsletter records go to ignored `.data/newsletter.jsonl`. In production choose one:
+In production, Buttondown is the default provider:
 
-1. `NEWSLETTER_WEBHOOK_URL` and `NEWSLETTER_WEBHOOK_TOKEN`: an Hamba-controlled HTTPS endpoint that commits the JSON record to durable storage before returning a success status. Implement deduplication, access controls and unsubscribe/deletion handling there.
-2. `NEWSLETTER_DATA_DIR`: an absolute directory on a persistent, access-controlled server volume. Do not set this to ephemeral serverless storage. Each record is JSONL with email, consent, consent version, timestamp and source. Deduplicate normalized email addresses when importing for a newsletter.
+1. `BUTTONDOWN_API_KEY`: server-only Buttondown API token.
+2. `BUTTONDOWN_API_BASE_URL=https://api.buttondown.email/v1`: Buttondown API base URL.
 
-Without configuration, both endpoints fail explicitly and the UI never claims a successful send/signup. Contact enquiries are not silently written to local files. No external email or newsletter provider was configured or contacted during the build.
+Each signup is upserted into Supabase's `newsletter_subscribers` table before Buttondown is called. A Buttondown outage is logged and returned as a successful capture because Supabase is authoritative; a reconciliation queue is intentionally deferred until subscriber volume justifies durable queue infrastructure. Buttondown requests use collision behavior `add`, so duplicate signups are treated as successful and do not create duplicate Supabase rows.
+
+The legacy adapters remain available by setting `NEWSLETTER_PROVIDER` explicitly:
+
+1. `NEWSLETTER_PROVIDER=webhook` with `NEWSLETTER_WEBHOOK_URL` and `NEWSLETTER_WEBHOOK_TOKEN`: an Hamba-controlled HTTPS endpoint that commits the JSON record to durable storage before returning a success status.
+2. `NEWSLETTER_PROVIDER=filesystem` with `NEWSLETTER_DATA_DIR`: an absolute directory on a persistent, access-controlled server volume. Do not set this to ephemeral serverless storage. Each record is JSONL with email, consent, consent version, timestamp and source.
+
+Without Buttondown credentials, the signup endpoint fails explicitly and the UI never claims a successful signup. Contact enquiries are not silently written to local files.
+
+Buttondown manages unsubscribe links in sent emails. Buttondown supports account-configured webhooks, but unsubscribe webhook payload/signature verification has not yet been connected to this site. Until that integration is implemented, reconcile Buttondown unsubscribes into `newsletter_subscribers.status='unsubscribed'` manually before each send.
 
 The included rate limit is per running process. Enable `TRUST_PROXY` only where the host overwrites forwarded client IP headers. Multi-instance production hosting should enforce a shared/platform rate limit; the application fallback is deliberately bounded and is not a distributed limiter.
 
@@ -73,7 +82,7 @@ The browser suite covers desktop and mobile routing, image errors, overflow, div
 ## Before public launch
 
 - Confirm red / indigo division assignment, Inter substitution, and preferred office-hours timezone (implemented as East Africa Time).
-- Supply and verify email delivery and durable newsletter storage. Test actual receipt with Darren after setup.
+- Add `BUTTONDOWN_API_KEY` to the deployment environment, apply the newsletter migration, and manually verify a test subscriber appears in both Supabase and the Buttondown dashboard. Reconcile Buttondown unsubscribe events manually until a verified webhook contract is implemented.
 - Supply approved Engineering leadership biographies/portraits, real case studies, the named Insights owner and initial articles. Refine the drafted service descriptions when client copy is available.
 - Instagram and Facebook use the supplied `@dreniak_limited` handle, published at the user's direction. LinkedIn remains omitted because no account URL was supplied.
 - Confirm privacy/retention details against the final hosting and delivery services.

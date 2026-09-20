@@ -27,7 +27,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ res
     const { supabase } = await requireAdmin();
     const parsed = schemas[resource].safeParse(await request.json());
     if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
-    const { id: _id, ...record } = parsed.data;
+    const record = { ...parsed.data };
+    delete record.id;
     const { data, error } = await supabase.from(resource as never).insert(record as never).select().single();
     if (error) throw error;
     revalidateTag("public-content", "max");

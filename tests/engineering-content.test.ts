@@ -5,7 +5,7 @@ import { engineering, engineeringOpenings } from "../src/content/engineering";
 import { getPages } from "../src/lib/site";
 
 test("Engineering supplied description, mission, vision and named content remain verbatim", () => {
-  const source = readFileSync("ENGINEERING_UPDATE_BRIEF.md", "utf8");
+  const source = readFileSync("doc/ENGINEERING_UPDATE_BRIEF.md", "utf8");
   for (const text of [
     engineering.description,
     engineering.mission,

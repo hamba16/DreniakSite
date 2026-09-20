@@ -187,10 +187,13 @@ test("metadata, robots, sitemap, social cards and not-found responses are valid"
     if (route.startsWith("/og"))
       expect(r.headers()["content-type"]).toContain("image/png");
   }
-  expect((await request.get("/engineering/assessment")).status()).toBe(404);
-  expect(
-    (await request.get("/asset-management/insights/nonexistent")).status(),
-  ).toBe(404);
+  for (const route of [
+    "/engineering/assessment",
+    "/asset-management/careers",
+    "/not-a-division/about",
+  ]) {
+    expect((await request.get(route)).status(), route).toBe(404);
+  }
 });
 
 test("service deep links open the right pillar and assessment context reaches the enquiry form", async ({
@@ -210,6 +213,16 @@ test("service deep links open the right pillar and assessment context reaches th
 test("reduced-motion navigation and unavailable newsletter capture are usable", async ({
   page,
 }) => {
+  await page.route("**/api/newsletter", async (route) => {
+    await route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({
+        error:
+          "Newsletter signup is not available yet. Please email info@dreniak.com to register your interest.",
+      }),
+    });
+  });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/#divisions");
   await page.getByRole("link", { name: /Enter Asset Management/ }).click();

@@ -65,7 +65,7 @@ export function Footer() {
             </a>
           ))}
         </div>
-        <Newsletter />
+        {process.env.NEXT_PUBLIC_NEWSLETTER_ENABLED !== "false" && <Newsletter />}
       </div>
       <div className="footer-contact">
         <a href="mailto:info@dreniak.com">

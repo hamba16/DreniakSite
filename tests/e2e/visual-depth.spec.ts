@@ -42,7 +42,10 @@ test("available commissioned images load with reserved space, conceptual framing
       await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveAttribute("alt", /^Conceptual illustration:/);
       // Content hashes prevent an earlier toned image sharing the new image's cache key.
-      await expect(image).toHaveAttribute("src", /%2F_next%2Fstatic%2Fmedia%2F[a-z-]+\.[a-f0-9]+\.webp/);
+      await expect(image).toHaveAttribute(
+        "src",
+        /\/_next\/image\?url=%2F_next%2Fstatic%2Fmedia%2F[a-z-]+\.[a-z0-9_-]+\.webp&w=\d+&q=\d+/,
+      );
       expect(await image.evaluate((node) => getComputedStyle(node).filter)).toBe("none");
       await expect
         .poll(() =>
@@ -141,6 +144,13 @@ test("slow image responses do not move surrounding content", async ({
     });
     await page.goto(route, { waitUntil: "domcontentloaded" });
     await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator(".conceptual-image").first()).toBeVisible();
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
     const before = await page
       .locator(".conceptual-image")
       .evaluateAll((nodes) =>
