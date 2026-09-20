@@ -24,6 +24,13 @@ export async function upsertNewsletterSubscriber(
 ) {
   const { error } = await database()
     .from("newsletter_subscribers")
-    .upsert(subscriber, { onConflict: "email" });
+    // Repeated capture must not erase an unsubscribe or its original consent proof.
+    .upsert(subscriber, { onConflict: "email", ignoreDuplicates: true });
   if (error) throw new Error(`Supabase newsletter upsert failed: ${error.message}`);
+}
+
+export async function unsubscribeNewsletterSubscriber(email: string) {
+  const { error } = await database().from("newsletter_subscribers")
+    .update({ status: "unsubscribed" }).eq("email", email);
+  if (error) throw new Error("Newsletter unsubscribe persistence failed");
 }

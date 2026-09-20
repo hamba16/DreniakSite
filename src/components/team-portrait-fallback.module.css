@@ -1,0 +1,5 @@
+.fallback { position: absolute; inset: 0; isolation: isolate; display: grid; place-content: center; justify-items: center; background: #f1efe9; color: var(--portrait-accent, var(--indigo)); }
+.motif { position: absolute; inset: 12%; display: grid; place-items: center; opacity: .055; pointer-events: none; }
+.motif svg { width: 100%; height: auto; }
+.initials { position: relative; font-family: var(--font-inter), sans-serif; font-size: clamp(64px, 7vw, 108px); font-weight: 350; letter-spacing: -.07em; line-height: 1.2; }
+.rule { position: relative; width: 28px; height: 1px; background: currentColor; margin-top: 24px; }

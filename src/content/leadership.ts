@@ -19,7 +19,10 @@ export const leaders: readonly Leader[] = [
     scope: "Dreniak Limited",
     email: "d.kamunuga@dreniak.com",
     phone: { label: "+44 7789 063938", href: "tel:+447789063938" },
-    portrait: { src: "/images/Team/Darren 2.jpg", position: "50% 30%" },
+    // Warm ivory matches the existing portrait frame and approved founder photo.
+    // Background-only edits pair the leadership photos without tinting skin/clothes;
+    // the separate approved Darren founder.jpg is intentionally unchanged.
+    portrait: { src: "/images/Team/darren-ivory.webp", position: "50% 30%" },
   },
   {
     id: "derrick-nkurunungi",
@@ -29,7 +32,7 @@ export const leaders: readonly Leader[] = [
     scope: "Dreniak Engineering",
     email: "derricknkurunungi7@gmail.com",
     phone: { label: "+256 704 175 005", href: "tel:+256704175005" },
-    portrait: { src: "/images/Team/Derrick studio.jpg", position: "50% 50%" },
+    portrait: { src: "/images/Team/derrick-ivory.webp", position: "50% 50%" },
   },
   {
     id: "tania-judith-bita-olielo",

@@ -1,76 +1,47 @@
-# Dreniak implementation handoff
+﻿# DreniakSite implementation handoff
 
-Implemented in `D:\PROBOOK\DreniakSite`.
+Final repository pass: 20 September 2026. This document supersedes the historical completion counts and open-item lists in HARDENING_SUMMARY.md, HARDENING_LOG.md, REFINEMENT_HANDOFF.md and the visual-depth handoffs. Those files remain historical evidence, not the current launch checklist.
 
-## Review the site
+## Code-complete — verification record
 
-The production build runs at **http://localhost:3000** while the local server is active. Start it again with `npm start` after `npm run build`, or use `npm run dev` for development.
+- Shared `TeamPortraitFallback` renders an Inter monogram over the existing warm ivory portrait surface and Dreniak arc mark. Optional portrait data selects the image or fallback; leadership cards on Story and division About pages and the founder card share the component. Tania and Jude exercise the real no-image path without temporary production fixtures.
+- Darren's main leadership image and Derrick's image use matched light studio backgrounds derived from existing `#f1efe9` portrait styling. Original files are retained. The separate approved `Darren founder.jpg` is unchanged. New assets are `public/images/Team/darren-ivory.webp` and `derrick-ivory.webp`. Background-only imagegen prompts asked to preserve identity, clothing, pose and crop and match the approved light founder treatment; the second edit used the first as its color reference. Both were encoded to WebP at quality 92. Reasoning is recorded beside the data mapping.
+- Apple touch icon already exists: `public/apple-icon.png`, 180 × 180, referenced by root metadata. Verified visually and covered by a browser test for metadata URL, HTTP status, PNG decoding, size and nonempty artwork.
+- Public enquiry/newsletter throttling is environment-selectable: `RATE_LIMIT_STORE=memory` is the existing five-attempt/ten-minute bounded single-process default; `supabase` uses an atomic PostgreSQL upsert shared across instances. No new service or host SDK is required. A configured-store failure returns 503, never an unthrottled fallback. Raw IP addresses are hashed before storage; expired buckets are cleaned in bounded batches. The migration restricts both table and RPC to the service role. Tests exercise limits, expiry, independent buckets, permissions, hashing and endpoint failure behavior.
+- Buttondown unsubscribe receiver: `POST /api/webhooks/buttondown`. Verifies HMAC-SHA256 of raw bytes with a constant-time comparison and a 16 KB body cap. The documented payload contains a subscriber ID; the receiver retrieves its current Buttondown state and updates the normalized email's Supabase row only when currently unsubscribed. Repeated delivery is idempotent; late/replayed events for a currently subscribed recipient are ignored. Provider/database failures return 503 so delivery can be retried. Tests cover forged signatures, malformed/oversized input, repeated delivery, changed state and persistence failure.
+- The configured Buttondown account returned HTTP 200 for read-only `GET /v1/webhooks` on this pass. No plan-tier limitation was found; no webhook or subscriber was created/changed during that check. Registering the signed callback requires the final public URL. Official contracts: [webhooks and signatures](https://docs.buttondown.com/api-webhooks-introduction), [subscriber lookup](https://docs.buttondown.com/api-subscribers-retrieve).
+- Capture keeps Supabase authoritative and retries transient Buttondown errors. Duplicate capture now preserves existing unsubscribe status and original consent evidence. `scripts/reconcile-newsletter.ts` provides a portable paginated retry command; it defaults to dry-run and requires `--apply` for provider writes. It never changes a Buttondown subscriber's type to force reactivation. Tests verify duplicate handling and suppression preservation.
+- Newsletter consent version is centrally defined as `2026-09-10`, the existing signup-statement version. All storage adapters receive that value. The new migration removes the conflicting database default rather than inventing consent evidence; existing records are not rewritten. Tests assert the persisted version. This identifier is not an approval date for the privacy policy.
+- Other audit items: Motion's animation feature bundle loads asynchronously through LazyMotion; all three OG cards are prerendered at build time; the sitemap includes published case studies; robots excludes admin/design-review routes. Footer year is already derived at render time (rebuild/revalidation refreshes static pages). Existing 404/error shells retain working recovery controls. Vercel Analytics now obeys the same visitor consent gate as GA4 and is opt-in via `NEXT_PUBLIC_VERCEL_ANALYTICS=true`.
+- Source sweep for `TODO|FIXME|XXX|placeholder|coming soon` found no unresolved implementation markers. Remaining matches are form hints, Next Image blur placeholders, CSS selectors, and intentional content-empty surfaces. The previously deferred delivery reconciliation comment now points to the executable retry command. All 16 commissioned conceptual assets are present. Optional SVG minification/source-photo recompression was reviewed and rejected as unnecessary churn to approved artwork; no feature depends on it.
 
-- Parent experience: `/`
-- Division gateway: `/#divisions`
-- Engineering: `/engineering`
-- Asset Management: `/asset-management`
-- Maturity assessment: `/asset-management/assessment`
-- Shared story: `/story`
-- Phase 2 portal entry: `/portal`
-
-There are **23 implemented page routes**, including the shared story, privacy and portal surfaces. Both divisions have Home, About, Approach, Services, Sectors, Projects, Insights, Contact and Standards. Article-detail architecture is ready for supplied Insights content.
-
-## Implementation decisions
-
-- Original logo curves and outlined wordmark/tagline were extracted from the supplied brand PDF. Original source files remain in place.
-- Engineering uses Business Red `#991923`; Asset Management uses Indigo `#0d3251`. Parent branding stays predominantly black and white.
-- Inter is bundled and self-hosted as the explicitly permitted body/headline font substitute. Sweet Sans Pro remains in the original outlined logo artwork.
-- Two conceptual infrastructure photographs were generated and bundled as optimized WebP assets. They are never presented as completed Dreniak projects.
-- Values, story, mission, vision, all six service pillars and eight sectors are preserved verbatim and checked programmatically.
-- ISO 55000 is presented as the governing framework, not an invented certification. The Engineering ERB registration is identified only for that division.
-- Engineering uses the supplied lifecycle services. Public copy presents the company approach directly, without editorial draft/pending labels. Projects describe the delivery framework; no named completed projects were supplied.
-- The maturity tool is functional and self-reported: six equally weighted answers scored 0–3, total divided by 18 and rounded to 100. It is explicitly not an audit or certification. No answers are sent automatically; a score is shared only when a visitor follows the contact link and submits an enquiry.
-- Enquiries route through server-only SMTP to `info@dreniak.com`, attention Darren Kamunuga. Without configured delivery, the form reports that it could not send and provides a direct email link.
-- Newsletter capture writes to Supabase first and syncs Buttondown for delivery. Missing Buttondown configuration is an explicit unavailable state, while a Buttondown sync failure remains an honest successful capture because Supabase is authoritative. Legacy webhook/filesystem adapters remain behind an explicit provider setting.
-- Portal authentication and authenticated document/project views remain Phase 2. No credentials are solicited or fake sign-in provided.
-- Instagram and Facebook links use the supplied `@dreniak_limited` handle at the user's direction. LinkedIn has no supplied account URL. GA4 is optional and requires explicit visitor consent before loading.
-- Office hours are shown as 08:00–18:00 East Africa Time; confirm this timezone before launch.
-
-## Verification evidence
+## Final checks
 
 | Check | Result |
 | --- | --- |
-| Production build | Pass; no build warnings |
-| TypeScript | Pass |
-| ESLint | Pass; no warnings |
-| Content / validation / persistence tests | 10 passed |
-| Complete desktop/mobile browser suite | 38 passed against the production server |
-| All 23 page routes, desktop and mobile | HTTP 200, one H1, no detected horizontal overflow, broken rendered images or JavaScript errors |
-| Accessibility | No automated WCAG 2 A/AA or WCAG 2.1 A/AA violations detected on 12 audited routes at both tested sizes |
-| Division gateway and switching | Pass, desktop and mobile |
-| Keyboard capability tabs and service accordion | Pass |
-| Assessment scoring, completion and restart | Pass |
-| Enquiry unconfigured-delivery state | Pass; no false success |
-| Service deep links and assessment context in enquiries | Pass |
-| Reduced-motion navigation and newsletter unavailable state | Pass |
-| Social cards, sitemap, robots and icons | Valid HTTP responses; social cards are PNG |
-| Unknown division pages, invalid division/page combinations and unpublished articles | Correct 404 responses |
-| Packaging | No supplied brand PDF, brief, questionnaire or archived-site assets included in the social-card server trace |
+| `npm run lint` | Passed, no warnings |
+| `npm run typecheck` | Passed |
+| `npm test` | 14/14 passed, including real PostgreSQL-compatible PGlite migration execution |
+| `npm run build` | Passed; three OG routes prerendered |
+| `npm run start` | Fresh production process ready on port 3000 |
+| `npm run test:e2e` | Verification in progress; final result will replace this line |
+| Additional `npm run test:admin` | 6/6 passed |
+| Browser / screenshot review | Desktop reviewed; mobile and final Axe results pending |
+| Server shutdown | Pending completion of browser verification |
 
-The automated report is generated at `playwright-report/index.html`. Tests run against the local production server using Chromium desktop (1440 × 1000) and mobile emulation (390 × 844). The final verification sequence was run with the server stopped for lint, typecheck, unit tests and build, then with a clean `npm run start` process for the browser suite. These are automated and local browser checks, not a formal accessibility certification or physical-device test.
+The mandatory sequence began with no Next.js process running. Automated results are local Chromium desktop/mobile emulation, not hosted delivery, physical-device testing or a formal accessibility certification. Supabase migration logic is tested locally; the new production migration has not been applied. Credentials remain server-only and untracked. No deployment, DNS change, commit or push was performed.
 
-Fourteen review images are saved in `doc/preview`: desktop home, split, both divisions, services, About and assessment; mobile home, Asset Management, contact and assessment; and the three social cards. Recreate them with `node scripts/capture-preview.mjs` while the server is running.
+Evidence: `playwright-report/index.html` and `doc/preview/final-*.png`. The portrait tests capture Darren, Derrick, both real fallback entries and the complete leadership section at each viewport. They run full Story WCAG 2 A/AA and 2.1 A/AA Axe checks and explicitly calculate monogram contrast because Axe ignores decorative glyphs.
 
-## Launch dependencies
+## Remaining for the client
 
-1. Confirm colors, Inter substitution, timezone and final social handles.
-2. Configure the approved SMTP service and test actual receipt with Darren. SMTP integration is implemented with structured failure logging and Reply-To handling; real outbound delivery and inbox placement have not been tested.
-3. The `newsletter_subscribers` migration is applied to the configured Supabase project and Buttondown credentials have been verified. A live test subscriber is present in both systems (`d.kamunuga@dreniak.com`); Buttondown reports it as `unactivated`, pending its double-opt-in confirmation. Buttondown duplicate handling, bounded retries and structured failure logging are implemented. Buttondown manages unsubscribe links, but unsubscribe reconciliation is currently a documented manual gap until a verified Buttondown webhook contract is connected.
-4. Supply final Engineering content, leadership details/portraits, real case studies and Insights.
-5. Confirm final privacy/retention wording against the selected hosting and delivery services.
-6. Select/authorize the deployment target and publish a stakeholder preview. No site deployment, registrar change or Microsoft 365 DNS alteration was performed.
-7. Schedule the separately scoped client portal authentication and authorized document/status views for Phase 2.
+These are content, environment, integration and deployment operations for the current website scope, not deferred repository implementation.
 
-`.env.example` documents the setup values without secrets. `README.md` explains the architecture, commands, source content and integration behavior.
+1. **Content/business approval:** confirm final biographies and missing portraits, case-study publication permissions, Insights/careers content, office timezone, social handles and font substitution. Existing structured CMS forms and intentional empty/fallback displays support absent content.
+2. **Privacy content:** approve actual processors, retention periods, rights/contact wording and consent text. Specifically decide whether the privacy page should display a separately approved policy version/date. Do not equate its publication date with signup consent version `2026-09-10`. The current page has no policy-version reference; adding an approved one is an editorial content update. If the newsletter statement changes, update its version together with the approved text. Do not backfill historical consent dates without evidence.
+3. **Database/environment:** apply all checked-in Supabase migrations, including `20260920173005_public_intake_limits.sql`; keep service-role and admin encryption keys private. Select `RATE_LIMIT_STORE=supabase` for multi-instance/serverless hosting. Set `TRUST_PROXY=true` only when the host overwrites `x-forwarded-for`; Vercel uses its dedicated trusted header automatically. Without trusted proxy configuration, visitors deliberately share a conservative bucket. Verify the deployed RPC and permissions using the chosen project's credentials.
+4. **Email integration:** configure approved SMTP, test an actual enquiry and receipt/reply behavior, and verify SPF/DKIM/DMARC and inbox placement. This pass exercised the unavailable-delivery path, not live outbound mail.
+5. **Newsletter integration:** configure Buttondown credentials and the same random `BUTTONDOWN_WEBHOOK_SIGNING_KEY` in both environments. Register the final HTTPS `/api/webhooks/buttondown` URL for `subscriber.unsubscribed`; send a provider test and verify a real unsubscribe in Supabase after deployment. Configure the host's scheduled runner for `npx tsx scripts/reconcile-newsletter.ts --apply` (start with the default dry-run command). Monitor nonzero exits and provider delivery failures; suppression requires subscriber-led re-subscription, not operator overrides. No filesystem adapter on ephemeral hosting. Complete outstanding double opt-in in the owner's inbox if still pending; this pass did not inspect or change that subscriber.
+6. **Deployment/DNS:** select hosting, configure public URL and optional analytics, publish the preview/production build, connect DNS and verify hosted forms, CMS propagation, mobile Safari/Firefox and performance on the real origin. Static rebuilds/revalidation are an operational requirement after source content changes and at year rollover. No registrar or Microsoft 365 DNS alteration was made.
 
-## Public-copy revision
-
-At the user's direction, public editorial caveats were removed from the standards, project, leadership, Engineering and Insights content. The supplied Instagram and Facebook handle is now linked directly. ISO standards remain presented as frameworks; specific certification status and completed-project details have been requested because none were supplied.
-
-Final verification: with the production server stopped, `npm run lint`, `npm run typecheck`, `npm test` (10/10), and `npm run build` pass. A fresh `npm run start` process then served the site for the full `npm run test:e2e` suite (38/38 desktop/mobile tests), after which the server was stopped. The browser suite includes WCAG checks at both viewport configurations and invalid-route regression coverage. No credentials or source documents were added to public assets.
+The separately scoped Phase 2 authenticated client portal is a future product project, not part of this website's code-complete claim; `/portal` remains the agreed informational entry surface.

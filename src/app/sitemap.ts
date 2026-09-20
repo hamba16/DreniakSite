@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { divisions, getPages, siteUrl } from "@/lib/site";
-import { publishedInsights } from "@/lib/public-content";
+import { publishedInsights, publishedCaseStudies } from "@/lib/public-content";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const databaseInsights = (await Promise.all(divisions.map(async (division) => {
     try {
@@ -9,11 +9,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return [];
     }
   }))).flat();
+  const projects = await publishedCaseStudies("asset-management");
   return [
     "",
     "/story",
     "/privacy",
     "/asset-management/assessment",
+    ...projects.map(project => `/asset-management/projects/${project.slug}`),
     ...divisions.flatMap((d) => [
       `/${d}`,
       ...getPages(d).map((p) => `/${d}/${p}`),

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { founder } from "@/content/founder";
-import { Mark } from "./brand";
+import { TeamPortraitFallback } from "./team-portrait-fallback";
 
 export function FounderCard() {
   return (
@@ -16,9 +16,7 @@ export function FounderCard() {
           {founder.portrait ? (
             <Image src={founder.portrait} alt={founder.name} fill sizes="(max-width: 760px) 80vw, 28vw" />
           ) : (
-            <div className="founder-monogram" aria-label="Darren Kamunuga monogram">
-              <Mark stroke /><span>DK</span>
-            </div>
+            <TeamPortraitFallback name={founder.name} />
           )}
         </div>
         <div className="founder-card-caption">

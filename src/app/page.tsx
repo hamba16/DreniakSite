@@ -32,7 +32,6 @@ export default async function Home() {
           <div className="hero-center">
             <div className="hero-logo">
               <Logo priority />
-              <Mark className="logo-trace" stroke />
             </div>
             <span className="hero-kicker eyebrow">
               {content?.hero_kicker || "ENGINEERING · INTELLIGENCE · LONGEVITY"}

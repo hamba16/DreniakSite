@@ -2,6 +2,11 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import mark from "../../../../public/brand/mark-path.json";
+export const dynamic = "force-static";
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return ["parent", "engineering", "asset-management"].map(brand => ({ brand }));
+}
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ brand: string }> },

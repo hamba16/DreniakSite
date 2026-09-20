@@ -11,7 +11,8 @@ import {
 } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, useReducedMotion } from "motion/react";
+import { LazyMotion, useReducedMotion } from "motion/react";
+import * as motion from "motion/react-m";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -36,6 +37,7 @@ import { assessmentQuestions, scoreAssessment } from "@/lib/assessment";
 const TransitionContext = createContext<
   (href: string, division: Division) => void
 >(() => {});
+const loadMotionFeatures = () => import("./motion-features").then(module => module.default);
 export function Experience({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -63,6 +65,7 @@ export function Experience({ children }: { children: ReactNode }) {
     timeout.current = setTimeout(() => router.push(href), 350);
   }
   return (
+    <LazyMotion features={loadMotionFeatures} strict>
     <TransitionContext.Provider value={navigate}>
       <div key={pathname} className="page-enter">
         {children}
@@ -128,6 +131,7 @@ export function Experience({ children }: { children: ReactNode }) {
         </div>
       )}
     </TransitionContext.Provider>
+    </LazyMotion>
   );
 }
 export function DivisionLink({

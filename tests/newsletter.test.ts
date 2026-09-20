@@ -32,6 +32,7 @@ test("newsletter returns success only after email and consent are persisted", as
     );
     assert.equal(record.email, "verification@example.com");
     assert.equal(record.consent, true);
+    assert.equal(record.consentVersion, "2026-09-10");
     assert.equal(record.source, "dreniak-website");
     assert.ok(record.createdAt);
     const invalid = await POST(
@@ -64,12 +65,12 @@ test("newsletter returns success only after email and consent are persisted", as
 
 test("buttondown signup upserts Supabase before syncing and treats duplicates as success", async () => {
   const previous = {
-    provider: process.env.NEWSLETTER_PROVIDER,
-    enabled: process.env.NEXT_PUBLIC_NEWSLETTER_ENABLED,
-    key: process.env.BUTTONDOWN_API_KEY,
-    base: process.env.BUTTONDOWN_API_BASE_URL,
-    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    NEWSLETTER_PROVIDER: process.env.NEWSLETTER_PROVIDER,
+    NEXT_PUBLIC_NEWSLETTER_ENABLED: process.env.NEXT_PUBLIC_NEWSLETTER_ENABLED,
+    BUTTONDOWN_API_KEY: process.env.BUTTONDOWN_API_KEY,
+    BUTTONDOWN_API_BASE_URL: process.env.BUTTONDOWN_API_BASE_URL,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   };
   const calls: string[] = [];
   const originalFetch = globalThis.fetch;
@@ -79,10 +80,12 @@ test("buttondown signup upserts Supabase before syncing and treats duplicates as
   process.env.BUTTONDOWN_API_BASE_URL = "https://api.buttondown.email/v1";
   process.env.NEXT_PUBLIC_SUPABASE_URL = "https://supabase.example";
   process.env.SUPABASE_SERVICE_ROLE_KEY = "service-key";
-  globalThis.fetch = async (input) => {
+  globalThis.fetch = async (input, init) => {
     const url = String(input);
     calls.push(url);
     if (url.includes("/rest/v1/newsletter_subscribers")) {
+      assert.equal(JSON.parse(String(init?.body)).consent_version, "2026-09-10");
+      assert.match(String(new Headers(init?.headers).get("prefer")), /resolution=ignore-duplicates/);
       return new Response(null, { status: 201 });
     }
     return new Response(JSON.stringify({ code: "subscriber_exists" }), {
@@ -118,12 +121,12 @@ test("buttondown signup upserts Supabase before syncing and treats duplicates as
 
 test("buttondown sync failure does not hide a successful Supabase capture", async () => {
   const previous = {
-    provider: process.env.NEWSLETTER_PROVIDER,
-    enabled: process.env.NEXT_PUBLIC_NEWSLETTER_ENABLED,
-    key: process.env.BUTTONDOWN_API_KEY,
-    base: process.env.BUTTONDOWN_API_BASE_URL,
-    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    NEWSLETTER_PROVIDER: process.env.NEWSLETTER_PROVIDER,
+    NEXT_PUBLIC_NEWSLETTER_ENABLED: process.env.NEXT_PUBLIC_NEWSLETTER_ENABLED,
+    BUTTONDOWN_API_KEY: process.env.BUTTONDOWN_API_KEY,
+    BUTTONDOWN_API_BASE_URL: process.env.BUTTONDOWN_API_BASE_URL,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   };
   const originalFetch = globalThis.fetch;
   process.env.NEWSLETTER_PROVIDER = "buttondown";

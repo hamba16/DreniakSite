@@ -1,8 +1,8 @@
+import { consumePublicLimit } from "@/lib/public-rate-limit";
 import nodemailer from "nodemailer";
 import {
   enquirySchema,
   readSubmission,
-  consumeLimit,
   requestKey,
 } from "@/lib/intake";
 import { serverLog } from "@/lib/server-log";
@@ -31,7 +31,9 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  if (!consumeLimit(requestKey(request, "enquiry"))) {
+  const allowed = await consumePublicLimit(requestKey(request, "enquiry"));
+  if (allowed === null) return Response.json({ error: "Submissions are temporarily unavailable. Please try again later." }, { status: 503 });
+  if (!allowed) {
     serverLog("warn", "enquiry.rejected", { reason: "rate_limit", status: 429 });
     return Response.json(
       {

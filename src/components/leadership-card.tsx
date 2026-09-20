@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Leader } from "@/content/leadership";
 import styles from "./leadership-card.module.css";
+import { TeamPortraitFallback } from "./team-portrait-fallback";
 
 export function LeadershipCard({
   leader,
@@ -31,7 +32,7 @@ export function LeadershipCard({
             style={{ objectFit: "cover", objectPosition: leader.portrait.position ?? "center bottom" }}
           />
         ) : (
-          <span className={styles.initials} aria-hidden="true">{leader.initials}</span>
+          <TeamPortraitFallback name={leader.name} initials={leader.initials} />
         )}
       </div>
       <div className={styles.caption}>

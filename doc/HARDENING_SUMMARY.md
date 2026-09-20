@@ -1,5 +1,7 @@
 # Hardening pass summary
 
+Historical record. The 20 September 2026 final pass closes the repository follow-ups below; see [IMPLEMENTATION_HANDOFF.md](IMPLEMENTATION_HANDOFF.md) for current code, verification and client operations. In particular, distributed throttling, motion splitting, prerendered OG cards and sitemap coverage are now implemented; the old failing-suite counts are superseded.
+
 ## Completed
 
 - Public CMS reads no longer require the authenticated cookie client. They use an anonymous Supabase client with tagged, time-based caching and same-request deduplication.

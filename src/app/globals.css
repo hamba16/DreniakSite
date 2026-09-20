@@ -830,20 +830,6 @@ em {
   animation: none;
   color: var(--accent);
 }
-.logo-trace {
-  position: absolute;
-  left: 1.2%;
-  top: 4.5%;
-  width: 19.7%;
-  height: 92%;
-  color: var(--red);
-  pointer-events: none;
-}
-.logo-trace path {
-  stroke-width: 1.5;
-  stroke-dasharray: 1;
-  animation: trace-mark 1.5s ease both;
-}
 .insight-article {
   max-width: 850px;
   margin: 70px auto;
@@ -857,19 +843,6 @@ em {
   line-height: 1.9;
   color: #555;
   margin: 25px 0;
-}
-@keyframes trace-mark {
-  0% {
-    stroke-dashoffset: 1;
-    fill: transparent;
-  }
-  60% {
-    fill: transparent;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    fill: var(--red);
-  }
 }
 @keyframes wipe-fade {
   0%,

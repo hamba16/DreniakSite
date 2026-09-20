@@ -253,9 +253,9 @@ export function AnalyticsConsent() {
     setAllowed(value);
     setShow(false);
   }
-  return id && !pathname.startsWith("/admin") ? (
+  return (id || process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === "true") && !pathname.startsWith("/admin") ? (
     <ConsentLoader
-      id={id}
+      id={id || ""}
       show={show}
       allowed={allowed}
       setShow={setShow}
@@ -266,6 +266,7 @@ export function AnalyticsConsent() {
 }
 import { useEffect } from "react";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 function ConsentLoader({
   id,
   show,
@@ -300,7 +301,8 @@ function ConsentLoader({
           </button>
         </aside>
       )}
-      {allowed && (
+      {allowed && process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === "true" && <Analytics />}
+      {allowed && id && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`}

@@ -133,7 +133,8 @@ test("slow image responses do not move surrounding content", async ({
   page,
 }) => {
   test.setTimeout(60000);
-  for (const [route] of routes) {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const [route, assets] of routes) {
     let release!: () => void;
     const gate = new Promise<void>((resolve) => {
       release = resolve;
@@ -144,15 +145,17 @@ test("slow image responses do not move surrounding content", async ({
     });
     await page.goto(route, { waitUntil: "domcontentloaded" });
     await page.evaluate(() => document.fonts.ready);
-    await expect(page.locator(".conceptual-image").first()).toBeVisible();
+    // Streaming React can briefly retain hidden copies of a boundary. Measure
+    // rendered frames only, not detached/hidden copies captured by locator.all().
+    const frames = page.locator(".conceptual-image:visible");
+    await expect(frames).toHaveCount(assets.filter(asset => status.available.includes(asset.id)).length);
     await page.evaluate(
       () =>
         new Promise<void>((resolve) =>
           requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
         ),
     );
-    const before = await page
-      .locator(".conceptual-image")
+    const before = await frames
       .evaluateAll((nodes) =>
         nodes.map((node) => ({
           y: node.getBoundingClientRect().top + scrollY,
@@ -160,7 +163,7 @@ test("slow image responses do not move surrounding content", async ({
         })),
       );
     release();
-    for (const img of await page.locator(".conceptual-image img").all()) {
+    for (const img of await frames.locator("img").all()) {
       await img.scrollIntoViewIfNeeded();
       await expect
         .poll(() =>
@@ -170,7 +173,7 @@ test("slow image responses do not move surrounding content", async ({
         )
         .toBe(true);
     }
-    const after = await page.locator(".conceptual-image").evaluateAll((nodes) =>
+    const after = await frames.evaluateAll((nodes) =>
       nodes.map((node) => ({
         y: node.getBoundingClientRect().top + scrollY,
         h: node.getBoundingClientRect().height,

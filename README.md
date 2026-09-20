@@ -52,7 +52,7 @@ In production, Buttondown is the default provider:
 1. `BUTTONDOWN_API_KEY`: server-only Buttondown API token.
 2. `BUTTONDOWN_API_BASE_URL=https://api.buttondown.email/v1`: Buttondown API base URL.
 
-Each signup is upserted into Supabase's `newsletter_subscribers` table before Buttondown is called. A Buttondown outage is logged and returned as a successful capture because Supabase is authoritative; a reconciliation queue is intentionally deferred until subscriber volume justifies durable queue infrastructure. Buttondown requests use collision behavior `add`, so duplicate signups are treated as successful and do not create duplicate Supabase rows.
+Each signup is inserted into Supabase's `newsletter_subscribers` table before Buttondown is called. Duplicate capture preserves existing unsubscribe status and original consent evidence. A Buttondown outage is logged and returned as a successful capture because Supabase is authoritative. Run `npx tsx scripts/reconcile-newsletter.ts` for a read-only dry-run, then schedule that command with `--apply` on the selected host to retry provider sync. It paginates stored active captures and reports counts without printing subscriber emails. Buttondown collision behavior `add` handles duplicates without forcing suppressed subscribers active.
 
 The legacy adapters remain available by setting `NEWSLETTER_PROVIDER` explicitly:
 
@@ -61,9 +61,9 @@ The legacy adapters remain available by setting `NEWSLETTER_PROVIDER` explicitly
 
 Without Buttondown credentials, the signup endpoint fails explicitly and the UI never claims a successful signup. Contact enquiries are not silently written to local files.
 
-Buttondown manages unsubscribe links in sent emails. Buttondown supports account-configured webhooks, but unsubscribe webhook payload/signature verification has not yet been connected to this site. Until that integration is implemented, reconcile Buttondown unsubscribes into `newsletter_subscribers.status='unsubscribed'` manually before each send.
+Buttondown manages unsubscribe links in sent emails. Register `/api/webhooks/buttondown` for `subscriber.unsubscribed` and set the same `BUTTONDOWN_WEBHOOK_SIGNING_KEY` on the server and webhook. The receiver verifies the raw-body signature, retrieves current subscriber state, and updates Supabase idempotently. Failed lookups/writes return 503 for retry. Verify an actual provider delivery after deployment. See `doc/EMAIL_AND_NEWSLETTER_OPERATIONS.md`.
 
-The included rate limit is per running process. Enable `TRUST_PROXY` only where the host overwrites forwarded client IP headers. Multi-instance production hosting should enforce a shared/platform rate limit; the application fallback is deliberately bounded and is not a distributed limiter.
+`RATE_LIMIT_STORE=memory` is bounded per-process throttling. Use `RATE_LIMIT_STORE=supabase` after applying all migrations for distributed, atomic five-attempt/ten-minute windows on any hosting platform. Configured-store errors fail closed with 503. Enable `TRUST_PROXY` only where the host overwrites forwarded client IP headers; Vercel uses its dedicated header automatically.
 
 ## Verification
 
@@ -82,11 +82,11 @@ The browser suite covers desktop and mobile routing, image errors, overflow, div
 ## Before public launch
 
 - Confirm red / indigo division assignment, Inter substitution, and preferred office-hours timezone (implemented as East Africa Time).
-- Add `BUTTONDOWN_API_KEY` to the deployment environment, apply the newsletter migration, and manually verify a test subscriber appears in both Supabase and the Buttondown dashboard. Reconcile Buttondown unsubscribe events manually until a verified webhook contract is implemented.
+- Add Buttondown credentials, apply all migrations, register the signed unsubscribe webhook and schedule reconciliation. Verify a subscriber and unsubscribe through both systems after deployment.
 - Supply approved Engineering leadership biographies/portraits, real case studies, the named Insights owner and initial articles. Refine the drafted service descriptions when client copy is available.
 - Instagram and Facebook use the supplied `@dreniak_limited` handle, published at the user's direction. LinkedIn remains omitted because no account URL was supplied.
 - Confirm privacy/retention details against the final hosting and delivery services.
-- Configure `NEXT_PUBLIC_GA_ID` only if GA4 is selected; test consent acceptance, rejection and withdrawal with that configuration.
+- Configure `NEXT_PUBLIC_GA_ID` and/or `NEXT_PUBLIC_VERCEL_ANALYTICS=true` only for selected analytics services; both require visitor consent. Test acceptance, rejection and withdrawal in the deployed configuration.
 - Implement authenticated client portal access and document authorization in Phase 2. No auth provider has been chosen or connected.
 - Deploy to an approved staging host for stakeholder review. Registrar/DNS changes and Microsoft 365 mail records remain a deployment handoff; preserve existing email configuration.
 
