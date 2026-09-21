@@ -16,14 +16,16 @@ const routes = [
   ["/asset-management/insights", [insightImages["asset-management"]]],
 ] as const;
 
-test("all sixteen commissioned assets are available", async () => {
+test("reviewed photography replaces supported slots and unsupported slots stay omitted", async () => {
   expect(status.pending).toEqual([]);
   const commissioned = routes.flatMap(([, assets]) => assets.map(({ id }) => id));
   expect(commissioned).toHaveLength(16);
-  expect([...status.available].sort()).toEqual([...commissioned].sort());
+  expect(status.available).toHaveLength(8);
+  expect(status.omitted).toHaveLength(8);
+  expect([...status.available, ...status.omitted].sort()).toEqual([...commissioned].sort());
 });
 
-test("available commissioned images load with reserved space, conceptual framing and no overflow", async ({
+test("reviewed photographs load with credits, reserved space and no overflow", async ({
   page,
 }) => {
   test.setTimeout(120000);
@@ -40,7 +42,9 @@ test("available commissioned images load with reserved space, conceptual framing
     for (let index = 0; index < count; index++) {
       const image = images.nth(index);
       await image.scrollIntoViewIfNeeded();
-      await expect(image).toHaveAttribute("alt", /^Conceptual illustration:/);
+      await expect(image).not.toHaveAttribute("alt", /conceptual|illustration/i);
+      await expect(frames.nth(index).locator("..").locator('a[href^="https://commons.wikimedia.org/"]')).toHaveCount(1);
+      await expect(frames.nth(index).locator("..").locator('a[href^="https://creativecommons.org/licenses/"]')).toHaveCount(1);
       // Content hashes prevent an earlier toned image sharing the new image's cache key.
       await expect(image).toHaveAttribute(
         "src",

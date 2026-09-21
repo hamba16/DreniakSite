@@ -1,0 +1,54 @@
+{
+  "reviewed": "2026-09-21",
+  "export": "Sharp: EXIF orientation, width 2400 without enlargement, sRGB, WebP quality 88, effort 6. No generative changes.",
+  "assets": [
+    {
+      "id": "nairobi-expressway",
+      "source": "https://commons.wikimedia.org/wiki/File:Nairobi_Expressway,_2025_(01).jpg",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Nairobi_Expressway%2C_2025_%2801%29.jpg",
+      "originalSha256": "09b924f40e11ca4e97b5d058ec0ef54f2d42e04454baa0b8f42a5855a399a909",
+      "websiteFile": "public/images/photography/nairobi-expressway.webp",
+      "websiteSha256": "5d12ba67410d9781a6a49587ad961a6c359c8a30d53a86dfc32975cf7ac52c42"
+    },
+    {
+      "id": "mombasa-terminus",
+      "source": "https://commons.wikimedia.org/wiki/File:Standard_Gauge_Railway_Mombasa_Terminus.jpg",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Standard_Gauge_Railway_Mombasa_Terminus.jpg",
+      "originalSha256": "7026ac393899d65e9e67249ebd5f7e7b0ac1c84ded9e2dbcc53426a7a9de539a",
+      "websiteFile": "public/images/photography/mombasa-terminus.webp",
+      "websiteSha256": "300e496f425f9fc226e60bbaf537ef551a71ab56a596a4aa052fd00ec1b9ea16"
+    },
+    {
+      "id": "tanger-med",
+      "source": "https://commons.wikimedia.org/wiki/File:Vue_g%C3%A9n%C3%A9raleH13A0659.JPG",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/58/Vue_g%C3%A9n%C3%A9raleH13A0659.JPG",
+      "originalSha256": "c1205daf8631419501836700de86d97980d30cee4eb7eeaba70fa0a4b4915591",
+      "websiteFile": "public/images/photography/tanger-med.webp",
+      "websiteSha256": "97ba621f479e31f304b331ef6cbf5ac5e06e3510bb5d4c11d9ed039057b87cf4"
+    },
+    {
+      "id": "kariba-dam",
+      "source": "https://commons.wikimedia.org/wiki/File:The_way_to_Zambia_through_Kariba_Dam.jpg",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/45/The_way_to_Zambia_through_Kariba_Dam.jpg",
+      "originalSha256": "9cf47e8f2223da69e7777c77b0f641a707b86bc1207f1bfb29c8852baa10f7c7",
+      "websiteFile": "public/images/photography/kariba-dam.webp",
+      "websiteSha256": "411cca3ace39f6eacafdba68b446f5d13b0d0a7c411963d8f69cecff5beb70e3"
+    },
+    {
+      "id": "britam-tower",
+      "source": "https://commons.wikimedia.org/wiki/File:Britam_Tower_and_surrounding_buildings_in_sunlight_from_Radisson_Blu_hotel,_Nairobi,_KE.jpg",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/20/Britam_Tower_and_surrounding_buildings_in_sunlight_from_Radisson_Blu_hotel%2C_Nairobi%2C_KE.jpg",
+      "originalSha256": "86dad23596cdc0c04160076f9ffe9c17875121a4fd1429d2e7f47a31ba647cb6",
+      "websiteFile": "public/images/photography/britam-tower.webp",
+      "websiteSha256": "841e3c1968a54d12a3fbf9b9d97dadef96036682a4f3bf62efec5f1740176d7b"
+    },
+    {
+      "id": "nairobi-uhuru-park",
+      "source": "https://commons.wikimedia.org/wiki/File:Nairobi's_skyline_from_Uhuru_Park.jpg",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Nairobi%27s_skyline_from_Uhuru_Park.jpg",
+      "originalSha256": "95efa0e4baad9039043f8bb588bc215ba5384eddc009b41ee62b3d5e5edd176b",
+      "websiteFile": "public/images/photography/nairobi-uhuru-park.webp",
+      "websiteSha256": "8d284387030843fb22616e19d20f2032da82b88ec8718bd03f808ecf8dd55dcc"
+    }
+  ]
+}

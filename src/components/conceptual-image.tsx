@@ -1,9 +1,8 @@
 import Image from "next/image";
-import { visualImageFiles } from "@/content/visual-image-files";
-import status from "@/content/visual-depth-status.json";
+import { photographs, sectorPhotographs } from "@/content/photography";
 
 export function hasConceptualImage(asset: VisualAsset) {
-  return status.available.includes(asset.id);
+  return Boolean(sectorPhotographs[asset.id]);
 }
 
 export type VisualAsset = {
@@ -15,34 +14,25 @@ export type VisualAsset = {
 export function ConceptualImage({
   asset,
   variant = "sector",
-  caption,
 }: {
   asset: VisualAsset;
   variant?: "sector" | "editorial" | "project";
   caption?: string;
 }) {
-  if (!hasConceptualImage(asset)) return null;
+  const photoId = sectorPhotographs[asset.id];
+  if (!photoId) return null;
+  const photo = photographs[photoId];
   return (
     <figure className={`conceptual-figure conceptual-${variant}`}>
       <div className={`conceptual-image ${asset.division}`}>
         <Image
-          src={visualImageFiles[asset.id]}
-          alt={`Conceptual illustration: ${asset.alt}`}
-          width={1200}
-          height={800}
+          src={photo.image}
+          alt={photo.alt}
+          style={{ objectPosition: photo.position }}
           sizes="(max-width: 760px) 88vw, 43vw"
           placeholder="blur"
         />
       </div>
-      {caption && <figcaption>{caption}</figcaption>}
     </figure>
-  );
-}
-
-export function ConceptualImageNote() {
-  return (
-    <p className="conceptual-note">
-      These generated illustrations show types of infrastructure. They do not depict Dreniak projects.
-    </p>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from "./engineering-pages";
 import { ServicePillarIcon } from "./category-icons";
 import Image from "next/image";
+import { divisionPhotographs } from "@/content/photography";
 import { Suspense } from "react";
 import Link from "next/link";
 import {
@@ -801,14 +802,17 @@ export async function DivisionPage({
                 Explore our services <ArrowUpRight size={17} />
               </Link>
             </div>
+            <figure className="approach-photo">
             <div className="approach-image">
               <Image
-                src={`/images/natural/${division}.webp`}
-                alt={engineering ? "Conceptual illustration of a concrete civic structure under construction" : "Conceptual illustration of a viaduct crossing a green valley towards a city"}
+                src={divisionPhotographs[division].image}
+                alt={divisionPhotographs[division].alt}
+                style={{ objectPosition: divisionPhotographs[division].position }}
                 fill
                 sizes="(max-width: 760px) 100vw, 45vw"
               />
             </div>
+            </figure>
           </div>
           <Standards division={division} />
         </>

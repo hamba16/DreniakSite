@@ -18,7 +18,7 @@ export function ProjectGallery() {
       </div>
       <div className="project-gallery-grid">
         <figure>
-          <div className="project-gallery-image">
+          <div className="project-gallery-image project-gallery-image--site">
             <Image src={constructionProgress} alt="Site photograph of a concrete building frame, masonry and scaffolding during construction" fill sizes="(max-width: 760px) 86vw, 42vw" placeholder="blur" />
           </div>
           <figcaption><span className="eyebrow">ON SITE</span><h3>Construction in progress</h3><p>Site photograph from Dreniak’s project files.</p></figcaption>

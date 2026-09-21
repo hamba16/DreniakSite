@@ -14,7 +14,7 @@ import { LeadershipSection } from "./leadership-section";
 import { ConvergenceDiagram } from "./convergence-diagram";
 import { Reveal } from "./interactions";
 import { PageIntro, Standards } from "./shared";
-import { ConceptualImage, ConceptualImageNote } from "./conceptual-image";
+import { ConceptualImage } from "./conceptual-image";
 import { engineeringSectorImages } from "@/content/visual-assets";
 
 const sectorIcons = [Route, DraftingCompass, Waves, ClipboardList, Mountain];
@@ -41,7 +41,6 @@ export function EngineeringSectors({ imagery = false }: { imagery?: boolean }) {
           </Link>
         </article>
       </div>
-      {imagery && <ConceptualImageNote />}
       <div
         className={`sector-secondary engineering-sector-grid ${imagery ? "sector-photo-grid" : ""}`}
       >

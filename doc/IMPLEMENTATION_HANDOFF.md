@@ -1,6 +1,6 @@
 ﻿# DreniakSite implementation handoff
 
-Final repository pass: 20 September 2026. This document supersedes the historical completion counts and open-item lists in HARDENING_SUMMARY.md, HARDENING_LOG.md, REFINEMENT_HANDOFF.md and the visual-depth handoffs. Those files remain historical evidence, not the current launch checklist.
+Final repository pass: 20 September 2026; final handoff confirmed 21 September 2026. This document supersedes the historical completion counts and open-item lists in HARDENING_SUMMARY.md, HARDENING_LOG.md, REFINEMENT_HANDOFF.md and the visual-depth handoffs. Those files remain historical evidence, not the current launch checklist.
 
 ## Code-complete — verification record
 
@@ -24,10 +24,12 @@ Final repository pass: 20 September 2026. This document supersedes the historica
 | `npm test` | 14/14 passed, including real PostgreSQL-compatible PGlite migration execution |
 | `npm run build` | Passed; three OG routes prerendered |
 | `npm run start` | Fresh production process ready on port 3000 |
-| `npm run test:e2e` | Verification in progress; final result will replace this line |
+| `npm run test:e2e` | 42/42 passed in 114.3 seconds; zero failures, flaky tests or skips |
 | Additional `npm run test:admin` | 6/6 passed |
-| Browser / screenshot review | Desktop reviewed; mobile and final Axe results pending |
-| Server shutdown | Pending completion of browser verification |
+| Browser / screenshot review | Desktop/mobile portraits and monograms visually reviewed; zero Story WCAG Axe violations at both sizes; monogram contrast passes |
+| Server shutdown | Confirmed stopped: no Node process or listener on port 3000 at handoff |
+
+The first browser run exposed a transient hidden streamed-image test target; the corrected test measures visible frames and retains delayed-image and zero-layout-shift assertions. The entire mandatory sequence was then rerun successfully. The HTML report confirms all 42 tests passed without retries or skips. The reconciliation command also passed a read-only dry-run against configured storage (three captures checked; no provider writes).
 
 The mandatory sequence began with no Next.js process running. Automated results are local Chromium desktop/mobile emulation, not hosted delivery, physical-device testing or a formal accessibility certification. Supabase migration logic is tested locally; the new production migration has not been applied. Credentials remain server-only and untracked. No deployment, DNS change, commit or push was performed.
 

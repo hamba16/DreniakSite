@@ -2200,8 +2200,40 @@ em {
 .conceptual-note {
   margin: 26px 0;
 }
+.photo-credit a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.hero-photo-credit,
+.homepage-photo-credits,
+.approach-photo figcaption {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.hero-photo-credit,
+.homepage-photo-credits {
+  padding: 16px 7%;
+  margin: 0;
+}
+.homepage-photo-credits p {
+  margin: 4px 0;
+}
+.approach-photo {
+  min-width: 0;
+  margin: 0;
+}
+.approach-photo .approach-image {
+  height: clamp(360px, 35vw, 520px);
+}
+.approach-photo figcaption {
+  margin-top: 12px;
+}
 .sector-photo-featured .conceptual-figure {
   margin: -40px -40px 30px;
+}
+.sector-photo-featured .conceptual-figure figcaption {
+  padding: 0 24px;
 }
 .sector-photo-grid > article {
   display: grid;

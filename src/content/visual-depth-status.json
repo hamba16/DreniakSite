@@ -3,19 +3,22 @@
     "engineering-highway",
     "engineering-structural",
     "engineering-water",
-    "engineering-geotechnical",
-    "engineering-management",
-    "asset-government",
     "asset-energy",
     "asset-transport",
     "asset-cities",
     "asset-real-estate",
-    "asset-logistics",
+    "asset-logistics"
+  ],
+  "pending": [],
+  "omitted": [
+    "engineering-geotechnical",
+    "engineering-management",
+    "asset-government",
     "asset-healthcare",
     "asset-education",
     "engineering-intervention",
     "engineering-insights",
     "asset-insights"
   ],
-  "pending": []
+  "note": "Only reviewed photographs render. Omitted slots use text and icons until suitable photographs are approved."
 }

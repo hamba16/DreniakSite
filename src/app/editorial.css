@@ -5,7 +5,8 @@
 .project-gallery-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 40px; }
 .project-gallery figure { margin: 0; min-width: 0; }
 .project-gallery-image { position: relative; aspect-ratio: 3 / 4; background: #e8e6e0; }
-.project-gallery-image img { object-fit: contain; }
+.project-gallery-image img { object-fit: cover; }
+.project-gallery-image--site img { object-position: center top; }
 .project-gallery figcaption { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .project-gallery figcaption .eyebrow { color: var(--accent); font-size: 9px; }
 .project-gallery h3 { font-size: 27px; margin: 10px 0; }

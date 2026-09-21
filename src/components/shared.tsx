@@ -24,10 +24,8 @@ import { Newsletter } from "./forms";
 import { names, socialLinks, type Division } from "@/lib/site";
 import { DivisionLink } from "./interactions";
 import data from "@/content/brief.json";
-import { ConceptualImage, ConceptualImageNote } from "./conceptual-image";
+import { ConceptualImage } from "./conceptual-image";
 import { assetSectorImages, interventionImage } from "@/content/visual-assets";
-import Image from "next/image";
-import { publishedMedia } from "@/lib/public-content";
 export function Footer() {
   return (
     <footer className="footer">
@@ -229,15 +227,9 @@ export async function Sectors({
   preview?: boolean;
   imagery?: boolean;
 }) {
-  let media: Awaited<ReturnType<typeof publishedMedia>> = [];
-  try {
-    media = await publishedMedia("asset-management");
-  } catch {
-    media = [];
-  }
+  // Sector placement is explicit: upload order cannot establish subject or reuse rights.
   return (
     <>
-      {imagery && <ConceptualImageNote />}
       <div
         className={`sector-featured ${imagery ? "sector-photo-featured" : ""}`}
       >
@@ -245,7 +237,7 @@ export async function Sectors({
           const Icon = sectorIcons[i];
           return (
             <article key={s.name}>
-              {imagery && (media[i] ? <Image className="conceptual-image" src={media[i].public_url} alt={media[i].alt_text || s.name} width={900} height={600} /> : <ConceptualImage asset={assetSectorImages[i]} />)}
+              {imagery && <ConceptualImage asset={assetSectorImages[i]} />}
               <div className="sector-top">
                 <Icon size={32} strokeWidth={1.5} aria-hidden="true" />
               </div>
@@ -274,7 +266,7 @@ export async function Sectors({
               const Icon = sectorIcons[i + 4];
               return (
                 <article key={s.name}>
-                  {imagery && (media[i + 4] ? <Image className="conceptual-image" src={media[i + 4].public_url} alt={media[i + 4].alt_text || s.name} width={900} height={600} /> : <ConceptualImage asset={assetSectorImages[i + 4]} />)}
+                  {imagery && <ConceptualImage asset={assetSectorImages[i + 4]} />}
                   <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
                   <div>
                     <h3>{s.name}</h3>
