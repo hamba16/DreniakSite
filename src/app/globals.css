@@ -2193,6 +2193,14 @@ em {
   object-fit: cover;
   object-position: center;
 }
+.construction-photograph {
+  max-width: 540px;
+  margin-top: 28px;
+}
+.construction-photograph .conceptual-image {
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line);
+}
 .conceptual-figure figcaption,
 .conceptual-note {
   color: var(--muted);

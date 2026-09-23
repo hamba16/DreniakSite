@@ -1,5 +1,6 @@
 "use client";
 import { ServicePillarIcon } from "./category-icons";
+import { ConstructionPhotograph } from "./construction-photograph";
 import {
   createContext,
   useContext,
@@ -457,6 +458,7 @@ export function ServiceAccordion({
               className="service-content"
             >
               <p>{s.description}</p>
+              {engineering && s.name === "Construction" && <ConstructionPhotograph />}
               <div>
                 <span className="eyebrow">INCLUDES</span>
                 <ul>

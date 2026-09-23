@@ -16,6 +16,7 @@ import { Reveal } from "./interactions";
 import { PageIntro, Standards } from "./shared";
 import { ConceptualImage } from "./conceptual-image";
 import { engineeringSectorImages } from "@/content/visual-assets";
+import { ConstructionPhotograph } from "./construction-photograph";
 
 const sectorIcons = [Route, DraftingCompass, Waves, ClipboardList, Mountain];
 
@@ -39,6 +40,7 @@ export function EngineeringSectors({ imagery = false }: { imagery?: boolean }) {
           >
             Book a Consultation <ArrowUpRight size={17} />
           </Link>
+          {imagery && <ConstructionPhotograph />}
         </article>
       </div>
       <div
