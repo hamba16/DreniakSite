@@ -33,6 +33,9 @@ export function ConceptualImage({
           placeholder="blur"
         />
       </div>
+      {"credit" in photo && photo.credit && (
+        <figcaption>{photo.credit}</figcaption>
+      )}
     </figure>
   );
 }

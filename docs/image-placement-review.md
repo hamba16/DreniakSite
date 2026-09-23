@@ -63,23 +63,38 @@ Reuse: twice sitewide, once on each page. About's shared sector renderer is gate
 - Consultancy, Supervision and Contract Management remain text/icon based: scaffolding alone does not demonstrate advice, inspection or contract work.
 - About/story remain without new building imagery: no proven company-history connection. All existing approach/sector/project/homepage images are preserved.
 - Asset Management remains unchanged: no verified asset-in-use candidate and no photograph linked to named case studies.
-- Four to eight placements was an aim, not a quota; only two were justified.
+- Four to eight placements was an aim, not a quota; the later request added five
+  further photo uses only where the requested meaning and source quality passed
+  review.
 
 ## Images I placed that need the owner to confirm provenance before launch
 
 - `building-a-concrete-apartments-plastering-front-01.jpeg` → `building-a-plastering-front.webp`, used on `/engineering/services` and `/engineering/sectors`. Owner must confirm source, permission to publish, and any relationship to Dreniak before launch. Both captions say only “Site photograph”; neither asserts client, project name, location or Dreniak delivery.
+- `building-d-apartment-block-complete-wide-01.jpeg` → `engineering-management-site.webp`, used for Engineering → Project Management. The visible subject is suitable for the requested sector illustration, but the source, location and relationship to Dreniak remain unconfirmed.
+- `bunga-site.webp`, `muyenga-site.webp`, and `naalya-site.webp`, used on `/engineering/projects`. The Bunga, Muyenga and Naalya labels were supplied for this request; the owner must confirm that each label matches the photograph and that the files may be published.
 
 ## Uncertainty
 
-Provenance remains unconfirmed. The manifest's demonstrated subject mismatch means other uninspected files must not be trusted from filenames alone. No attempt was made to identify a location or client. Browser checks cover locally rendered content, not every possible future CMS revision.
+Provenance remains unconfirmed for every proposed-folder photograph. The manifest's demonstrated subject mismatch means filenames and labels must not be treated as project identification. No attempt was made to identify a client or exact location. The Project Management image is visibly a painted apartment-block scene but includes unfinished/site-work elements, so it should not be described as a completed asset. Browser checks cover locally rendered content, not every possible future CMS revision.
+
+## Additional requested placements
+
+- `engineering-management-site.webp` is used for the Engineering Project Management sector. It shows painted apartment blocks and site works, which supports project coordination without being presented as a named Dreniak project. It is an optimised copy of the proposed-folder image `building-d-apartment-block-complete-wide-01.jpeg`; its manifest description is flagged as uncertain.
+- Materials and Geotechnical Engineering is deliberately left without a photograph. African-context candidates reviewed from Wikimedia Commons showed identifiable people, branding, poor crop, or a scene dominated by water collection rather than geotechnical investigation. The previous U.S. Bureau of Reclamation drill-rig image was removed rather than retaining a non-African image.
+- `asset-government-parliament.webp` is used for the Asset Management Government sector. It is an optimised copy of [`Parliament-Of-Uganda.JPG`](https://commons.wikimedia.org/wiki/File:Parliament-Of-Uganda.JPG), a CC BY-SA 3.0 photograph by Andrew Regan. The visible credit is retained with the image.
+- `asset-healthcare-clinic.webp` is used for the Asset Management Healthcare sector. It is an optimised copy of [`Building a new maternity clinic in Rwamwanja`](https://commons.wikimedia.org/wiki/File:Building_a_new_maternity_clinic_in_Rwamwanja_(9086820962).jpg), by Andy Wheatley / UK Department for International Development, CC BY 2.0. The image shows a clinic building under construction; it is not presented as Dreniak work.
+- `asset-education-school.webp` is used for the Asset Management Education sector. It is an optimised copy of [`Ndekye Primary school in Rubirizi District in Western Uganda 01`](https://commons.wikimedia.org/wiki/File:Ndekye_Primary_school_in_Rubirizi_District_in_Western_Uganda_01.jpg), by BalukuBrian, CC BY-SA 4.0. It shows a school campus without identifiable people, vehicles or signage.
+- `bunga-site.webp`, `muyenga-site.webp`, and `naalya-site.webp` were added to the Engineering Projects gallery. They retain neutral alt text and captions stating that location and provenance require confirmation.
 
 ## Verification
 
 - `npm run typecheck` passed.
 - `npm run lint` passed.
 - `npm run build` passed.
-- Production rendering was checked at approximately 390px, 768px and 1440px viewport widths on `/engineering/services` and `/engineering/sectors`.
+- Production rendering was checked at approximately 390px, 768px and 1440px viewport widths on `/engineering/services`, `/engineering/sectors`, `/engineering/projects`, and `/asset-management/sectors`.
 - The optimized image loaded at all checked sizes with its intrinsic 1080 × 810 dimensions, remained a 4:3 crop, and did not produce horizontal overflow. The construction subject remained fully visible on mobile, tablet and desktop.
-- The optimized WebP was checked with `sharp`: format `webp`, 1080 × 810, no EXIF block and no GPS metadata.
-- No unused optimized image files were added. The only new image referenced by code is `public/images/projects/building-a-plastering-front.webp`.
+- All six new WebPs were checked with `sharp`: WebP format, no EXIF block and no GPS metadata. The source-derived dimensions and file sizes are recorded in the asset inventory.
+- The projects page loaded the Bunga, Muyenga and Naalya images at mobile and desktop widths. The Engineering sectors page loaded the Project Management image; Materials and Geotechnical remains intentionally icon-led. The Asset Management sectors page loaded the Government image and visible credit.
+- The Asset Management sectors page now also loads the Healthcare and Education images with visible source credits. The first education candidate was rejected because it included vehicles and visible transport branding; the selected campus image avoided those issues.
+- No temporary processing files or unused optimized image files remain. Every new optimized image is referenced by code.
 - No broken image paths were observed in the touched pages. A development-server stylesheet MIME warning was observed during an initial dev-server check; production rendering was used for the final visual checks and loaded normally.

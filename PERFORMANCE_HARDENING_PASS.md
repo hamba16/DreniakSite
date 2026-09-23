@@ -240,7 +240,7 @@ Twenty-two WebP files, 107KB–371KB each, at 1200×800 or 1536×1024. `next.con
 
 **C5 · S2 · The homepage LCP image has no priority.** `src/app/page.tsx` renders both division panel images with `fill` and `sizes` but no `priority`. On desktop the engineering panel is almost certainly the LCP element. The `/[division]` hero *does* have `priority` — so the pattern is understood, it was just missed here. Add `priority` to the first panel only; the second is a `fetchPriority="low"` candidate.
 
-**C6 · S3 · Dead weight in the repo.** `image.png` at the repo root is 358KB and referenced nowhere in `src/`. `public/images/natural/` holds 582KB across two files used in one place — confirm that usage (`division-pages.tsx:814`) is live and reachable before keeping them. Delete what is genuinely unreferenced; **list anything you delete in the log** so it can be recovered.
+**C6 · S3 · Dead weight in the repo.** `rest/image.png` is 358KB and was referenced nowhere in `src/`. `public/images/natural/` holds 582KB across two files used in one place — confirm that usage (`division-pages.tsx:814`) is live and reachable before keeping them. Delete what is genuinely unreferenced; **list anything you delete in the log** so it can be recovered.
 
 ---
 
@@ -255,7 +255,7 @@ doc/       45M    (brand guideline PDF, questionnaires, preview screenshots)
 
 There is no `.vercelignore`. Both directories are tracked and both are uploaded in the build context on every single deploy. This is the single largest contributor to deploy time and it buys nothing.
 
-**Fix:** add a `.vercelignore` covering `assets/`, `doc/`, `tests/`, `scripts/`, `*.md` (excluding anything the build genuinely reads), `image.png`. **Verify the build still succeeds afterwards** — `scripts/` and `doc/` may be read at build time by something; check before excluding. Longer term, source assets belong in Drive or Git LFS, not in the deploy context. Flag this as a recommendation, do not migrate it unilaterally.
+**Fix:** add a `.vercelignore` covering `assets/`, `doc/`, `tests/`, `scripts/`, `*.md` (excluding anything the build genuinely reads), `rest/`. **Verify the build still succeeds afterwards** — `scripts/` and `doc/` may be read at build time by something; check before excluding. Longer term, source assets belong in Drive or Git LFS, not in the deploy context. Flag this as a recommendation, do not migrate it unilaterally.
 
 **D2 · S3 · Build timing.** Baseline was 18.5s compile + 9.9s TypeScript + 1.0s for 37 static pages. That is healthy. Record it and make sure your changes do not balloon it — A1 will *increase* build time by prerendering more pages, which is the correct trade. Note the delta rather than treating it as a regression.
 
