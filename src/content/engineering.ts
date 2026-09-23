@@ -1,5 +1,6 @@
 // Confirmed copy: ENGINEERING_UPDATE_BRIEF.md. Draft fields remain editable here.
-// Session decisions: retain ERB; feature Construction Engineering separately;
+// ERB recognition applies to individual engineers, not the company itself.
+// Feature Construction Engineering separately;
 // use a dedicated consultation route and the existing shared contact accounts.
 export const engineering = {
   legalName: "DRENIAK (U) LIMITED",
@@ -17,7 +18,7 @@ export const engineering = {
     "Continuous Growth",
   ],
   registrations: [
-    "Engineers Registration Board of Uganda (ERB)",
+    "ERB-registered engineers on our team",
     "URSB registration",
     "Uganda Revenue Authority (URA) registration",
     "Valid trading license",

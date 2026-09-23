@@ -123,7 +123,9 @@ export default async function Home() {
                   </span>
                 </div>
               </div>
-              <span className="panel-caption">ERB-REGISTERED · UGANDA</span>
+              <span className="panel-caption">
+                ERB-REGISTERED ENGINEERS · UGANDA
+              </span>
             </DivisionLink>
             <DivisionLink
               division="asset-management"

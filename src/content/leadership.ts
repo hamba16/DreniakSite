@@ -32,7 +32,7 @@ export const leaders: readonly Leader[] = [
     scope: "Dreniak Engineering",
     email: "derricknkurunungi7@gmail.com",
     phone: { label: "+256 704 175 005", href: "tel:+256704175005" },
-    portrait: { src: "/images/Team/derrick-ivory.webp", position: "50% 50%" },
+    portrait: { src: "/images/Team/derrick-ivory-toned.png", position: "50% 50%" },
   },
   {
     id: "tania-judith-bita-olielo",
@@ -40,6 +40,7 @@ export const leaders: readonly Leader[] = [
     title: "Legal Consultant",
     initials: "TO",
     scope: "Dreniak Limited",
+    portrait: { src: "/images/Team/tania-ivory.png", position: "50% 50%" },
   },
   {
     id: "jude-karamura",
@@ -47,5 +48,6 @@ export const leaders: readonly Leader[] = [
     title: "Engineering Pro-Consultant",
     initials: "JK",
     scope: "Dreniak Engineering",
+    portrait: { src: "/images/Team/jude-ivory-toned.png", position: "50% 30%" },
   },
 ];

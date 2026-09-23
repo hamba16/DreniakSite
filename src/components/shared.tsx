@@ -162,7 +162,9 @@ export function Standards({
       <div className="standard-emblem">
         <Mark />
         <span>
-          {engineering ? "REGISTERED PRACTICE" : "ASSET MANAGEMENT FRAMEWORK"}
+          {engineering
+            ? "PROFESSIONAL REGISTRATION"
+            : "ASSET MANAGEMENT FRAMEWORK"}
         </span>
         <strong>
           {engineering ? "ERB" : "ISO"}
@@ -182,7 +184,7 @@ export function Standards({
         </h2>
         <p>
           {engineering
-            ? "Dreniak Engineering is registered with the Engineers Registration Board of Uganda. Engineering standards, safety and quality sit at the centre of our project-lifecycle approach."
+            ? "Our team includes engineers registered with the Engineers Registration Board of Uganda (ERB). This recognition applies to individual engineers, while Dreniak Engineering is registered with URSB and the Uganda Revenue Authority and holds a valid trading license."
             : "ISO 55000 provides the asset management framework at the centre of our approach: connecting organisational objectives with the value created by assets throughout their lives."}
         </p>
         {engineering && (

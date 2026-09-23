@@ -1242,13 +1242,15 @@ em {
   align-items: center;
 }
 .standard-emblem {
+  box-sizing: border-box;
   border: 1px solid var(--accent);
   padding: 35px 25px 20px;
   text-align: center;
   color: var(--accent);
   position: relative;
-  max-width: 330px;
+  max-width: min(330px, 100%);
   width: 100%;
+  min-width: 0;
   justify-self: center;
 }
 .standard-emblem:before {
@@ -1269,17 +1271,20 @@ em {
 }
 .standard-emblem > strong {
   font-weight: 400;
-  font-size: 30px;
+  font-size: clamp(24px, 5vw, 30px);
   display: block;
   margin-top: 16px;
   line-height: 1;
+  min-width: 0;
 }
 .standard-emblem b {
-  font-size: 68px;
+  font-size: clamp(40px, 14vw, 68px);
   letter-spacing: -0.06em;
   font-weight: 550;
   display: block;
   margin-top: 6px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .emblem-bottom {
   border-top: 1px solid color-mix(in srgb, var(--accent), transparent 70%);
@@ -3392,7 +3397,6 @@ em {
   }
   .standard-emblem b {
     font-size: clamp(44px, 14vw, 68px);
-    white-space: nowrap;
   }
   .standards-section h2 {
     font-size: 35px;

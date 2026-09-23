@@ -18,7 +18,7 @@ export async function generateMetadata({
     title,
     description:
       division === "engineering"
-        ? `ERB-registered Dreniak Engineering. ${engineering.description}`
+        ? `Dreniak Engineering works with engineers registered with the Engineers Registration Board of Uganda (ERB). ${engineering.description}`
         : "Infrastructure asset management and investment planning across East Africa and the UK. Understand, manage, invest, digitise, protect and grow.",
     ...(division === "engineering" ? { keywords: engineering.keywords } : {}),
     alternates: { canonical: `/${division}` },
