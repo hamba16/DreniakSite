@@ -37,6 +37,16 @@ export interface PublishedInsight {
   author: string;
 }
 
+export interface PublishedPartner {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  link: string;
+  sortOrder: number;
+  logo: { src: string; alt: string } | null;
+}
+
 export type PublishedCaseStudy = ProjectCaseStudy;
 
 function getPublicClient() {
@@ -137,6 +147,43 @@ const cachedPublishedMedia = unstable_cache(
 export const publishedMedia = cache((division: Division) =>
   cachedPublishedMedia(division),
 );
+
+const cachedPublishedPartners = unstable_cache(
+  async (): Promise<PublishedPartner[]> => {
+    const supabase = requirePublicClient();
+    const { data, error } = await supabase
+      .from("partners")
+      .select(
+        "id,name,description,category,link,sort_order,logo:media!partners_logo_media_id_fkey(public_url,alt_text)",
+      )
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true });
+    if (error) throw error;
+
+    return (data || []).map((item): PublishedPartner => {
+      const media = Array.isArray(item.logo) ? item.logo[0] : item.logo;
+      return {
+        id: item.id,
+        name: item.name,
+        description: item.description || "",
+        category: item.category || "",
+        link: item.link || "",
+        sortOrder: item.sort_order,
+        logo: media?.public_url
+          ? {
+              src: media.public_url,
+              alt: media.alt_text || `${item.name} logo`,
+            }
+          : null,
+      };
+    });
+  },
+  ["published-partners"],
+  { tags: ["public-content", "published-partners"], revalidate: 900 },
+);
+
+export const publishedPartners = cache(() => cachedPublishedPartners());
 
 const cachedPublishedInsights = unstable_cache(
   async (division: Division): Promise<PublishedInsight[]> => {

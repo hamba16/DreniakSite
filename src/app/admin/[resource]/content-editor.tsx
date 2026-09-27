@@ -28,7 +28,7 @@ export function ContentEditor({ resource }: { resource: string }) {
       .then(async (response) => { if (!response.ok) throw new Error(); return response.json() as Promise<ContentRecord[]>; })
       .then((data) => { setItems(data); setLoading(false); setLoadError(""); })
       .catch(() => { if (!controller.signal.aborted) { setLoading(false); setLoadError("We couldn’t load your saved content. Please try again."); } });
-    if (resource === "founder") {
+    if (resource === "founder" || resource === "partners") {
       fetch("/api/admin/media", { signal: controller.signal, cache: "no-store" })
         .then(async (response) => { if (!response.ok) throw new Error(); return response.json() as Promise<MediaChoice[]>; })
         .then((data) => { setMedia(data.filter((item) => item.media_type === "image")); setMediaError(false); })
@@ -101,12 +101,13 @@ export function ContentEditor({ resource }: { resource: string }) {
         {field.key === "body" ? <textarea aria-label={`Paragraph ${index + 1}`} value={entry} rows={4} onChange={(event) => update(field.key, entries.map((text, i) => i === index ? event.target.value : text))} /> : <input aria-label={`Included item ${index + 1}`} value={entry} onChange={(event) => update(field.key, entries.map((text, i) => i === index ? event.target.value : text))} />}
         <button type="button" className="content-text-button" aria-label={`Remove ${field.key === "body" ? "paragraph" : "item"} ${index + 1}`} onClick={() => update(field.key, entries.filter((_, i) => i !== index))}>Remove</button>
       </div>)}<button type="button" className="content-secondary" onClick={() => update(field.key, [...entries, ""])}>+ Add {field.key === "body" ? "paragraph" : "included item"}</button></div>;
-    } else if (field.type === "select" || field.type === "portrait") {
-      const choices = field.type === "portrait" ? [{ value: "", label: "No portrait" }, ...media.map((item, index) => ({ value: item.id, label: item.alt_text || `Image ${index + 1}` }))] : field.options!;
+    } else if (field.type === "select" || field.type === "portrait" || field.type === "media") {
+      const isMediaField = field.type === "portrait" || field.type === "media";
+      const choices = isMediaField ? [{ value: "", label: field.type === "portrait" ? "No portrait" : "No logo" }, ...media.map((item, index) => ({ value: item.id, label: item.alt_text || `Image ${index + 1}` }))] : field.options!;
       input = <><select {...common} value={String(value ?? "")} onChange={(event) => update(field.key, event.target.value || null)}>
-        {value && !choices.some((choice) => choice.value === value) && <option value={String(value)}>{field.type === "portrait" ? "Current portrait" : String(value)}</option>}
+        {value && !choices.some((choice) => choice.value === value) && <option value={String(value)}>{field.type === "portrait" ? "Current portrait" : field.type === "media" ? "Current logo" : String(value)}</option>}
         {choices.map((choice) => <option key={choice.value} value={choice.value}>{choice.label}</option>)}
-      </select>{field.type === "portrait" && <small>{mediaError ? "Images couldn’t be loaded. " : "Need a different image? "}<Link href="/admin/media">Open Media Library</Link>{mediaError && <button type="button" className="content-text-button" onClick={() => setReload((value) => value + 1)}>Retry</button>}</small>}</>;
+      </select>{isMediaField && <small>{mediaError ? "Images couldn’t be loaded. " : "Need a different image? "}<Link href="/admin/media">Open Media Library</Link>{mediaError && <button type="button" className="content-text-button" onClick={() => setReload((value) => value + 1)}>Retry</button>}</small>}</>;
     } else if (field.type === "checkbox") {
       input = <label className="content-toggle"><input {...common} type="checkbox" checked={value === true} onChange={(event) => update(field.key, event.target.checked)} /><span>{field.label}</span></label>;
     } else if (field.type === "textarea") {

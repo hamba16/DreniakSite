@@ -30,7 +30,7 @@ export const leaders: readonly Leader[] = [
     title: "Director, Engineering",
     initials: "DN",
     scope: "Dreniak Engineering",
-    email: "derricknkurunungi7@gmail.com",
+    email: "nkurunungiderrick7@gmail.com",
     phone: { label: "+256 704 175 005", href: "tel:+256704175005" },
     portrait: { src: "/images/Team/derrick-ivory-toned.png", position: "50% 50%" },
   },

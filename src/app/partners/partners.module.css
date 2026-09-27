@@ -1,0 +1,317 @@
+.page {
+  min-height: 70vh;
+  background: var(--paper);
+  color: #111;
+}
+
+.container {
+  width: 86%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 145px 0 100px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 42px 0 58px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero .heroMotif {
+  left: auto;
+  right: -5%;
+  width: 52%;
+  opacity: 0.045;
+  filter: invert(1);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  max-width: 790px;
+}
+
+.eyebrow {
+  display: block;
+  color: var(--red);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.hero h1 {
+  margin: 24px 0 18px;
+  font-size: clamp(50px, 7vw, 88px);
+  font-weight: 450;
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+
+.hero p {
+  max-width: 660px;
+  color: #62615e;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px;
+  margin-top: 48px;
+}
+
+.category {
+  min-width: 0;
+}
+
+.categoryHeading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.categoryHeading > svg {
+  flex: 0 0 auto;
+  color: var(--red);
+}
+
+.categoryHeading h2 {
+  font-size: clamp(25px, 2.8vw, 36px);
+  font-weight: 450;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+.emptyState {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 245px;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: 28px;
+  background: #e8e8e5;
+}
+
+.emptyState .emptyMotif {
+  opacity: 0.04;
+  filter: invert(1);
+}
+
+.emptyContent {
+  position: relative;
+  z-index: 1;
+  max-width: 370px;
+}
+
+.emptyContent h3 {
+  max-width: 330px;
+  margin: 22px 0 12px;
+  font-size: clamp(24px, 2.35vw, 31px);
+  font-weight: 450;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+
+.emptyContent p {
+  max-width: 340px;
+  color: #62615e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.emptyMark {
+  position: absolute;
+  top: 25px;
+  right: 24px;
+  z-index: 1;
+  width: 68px;
+  color: var(--red);
+  opacity: 0.12;
+}
+
+.partnerGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.partnerCard {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.partnerLogo {
+  display: flex;
+  min-height: 110px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.partnerLogo img {
+  width: auto;
+  max-width: min(220px, 100%);
+  max-height: 100px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.partnerCard h3 {
+  margin-top: 17px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.partnerCard h3 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.partnerCard h3 a:hover {
+  color: var(--red);
+}
+
+.partnerCard > p {
+  margin-top: 10px;
+  color: #62615e;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.cta {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 45px;
+  overflow: hidden;
+  margin-top: 82px;
+  padding: 42px;
+  background: #090909;
+  color: white;
+}
+
+.ctaContent,
+.ctaActions {
+  position: relative;
+  z-index: 1;
+}
+
+.ctaEyebrow {
+  color: #d58e93;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.cta h2 {
+  max-width: 620px;
+  margin: 20px 0 13px;
+  font-size: clamp(32px, 4vw, 49px);
+  font-weight: 450;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+
+.cta p {
+  max-width: 530px;
+  color: #bdbdbd;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.ctaActions {
+  display: grid;
+  justify-items: start;
+  gap: 15px;
+  color: #ddd;
+  font-size: 11px;
+}
+
+.ctaActions > a {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctaActions > a:hover {
+  color: white;
+}
+
+.ctaActions .ctaPrimary {
+  min-height: 46px;
+  margin-bottom: 5px;
+  padding: 0 17px;
+  background: var(--red);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ctaActions .ctaPrimary:hover {
+  background: #b72a35;
+}
+
+@media (max-width: 760px) {
+  .container {
+    padding: 115px 0 65px;
+  }
+
+  .hero {
+    padding: 28px 0 38px;
+  }
+
+  .hero .heroMotif {
+    right: -18%;
+    width: 72%;
+  }
+
+  .hero h1 {
+    margin: 20px 0 14px;
+    font-size: clamp(45px, 12vw, 66px);
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .groups {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 35px;
+    margin-top: 35px;
+  }
+
+  .categoryHeading {
+    margin-bottom: 16px;
+  }
+
+  .emptyState {
+    min-height: 220px;
+    padding: 23px;
+  }
+
+  .emptyContent h3 {
+    font-size: 27px;
+  }
+
+  .cta {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 27px;
+    margin-top: 54px;
+    padding: 29px 24px;
+  }
+
+  .ctaActions {
+    gap: 11px;
+  }
+}

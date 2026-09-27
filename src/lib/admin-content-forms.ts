@@ -4,7 +4,7 @@ export type ContentRecord = Record<string, ContentValue>;
 export type ContentField = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "list" | "number" | "date" | "url" | "select" | "checkbox" | "portrait";
+  type?: "text" | "textarea" | "list" | "number" | "date" | "url" | "select" | "checkbox" | "portrait" | "media";
   required?: boolean;
   help?: string;
   placeholder?: string;
@@ -54,6 +54,18 @@ export const contentForms: Record<string, ContentForm> = {
     defaults: { division: null, quote: "", name: "", role: "", is_published: true },
     fields: [{ key: "quote", label: "Client’s testimonial", type: "textarea", required: true }, { key: "name", label: "Client name", required: true }, { key: "role", label: "Role or organisation" }, division, published],
   },
+  partners: {
+    title: "Partners", singular: "partner", description: "Add a confirmed service provider or contractor. Only publish details that Dreniak has approved.",
+    defaults: { name: "", logo_media_id: null, description: "", category: "Service Providers", link: "", is_published: false, sort_order: 0 },
+    fields: [
+      { key: "name", label: "Partner name", required: true },
+      { key: "logo_media_id", label: "Logo", type: "media", help: "Optional. Choose an approved logo from the Media Library." },
+      { key: "description", label: "Short description", type: "textarea", help: "Keep this concise and based on confirmed information." },
+      { key: "category", label: "Category", required: true, placeholder: "Service Providers", help: "Use Service Providers or Contractors, or enter a new category name." },
+      { key: "link", label: "Website link", type: "url", placeholder: "https://", help: "Optional. Link to the partner’s official website." },
+      order, published,
+    ],
+  },
   social_links: {
     title: "Social Links", singular: "social link", description: "Help visitors find your social profiles.",
     defaults: { name: "", href: "", sort_order: 0 },
@@ -78,7 +90,7 @@ export function contentPayload(resource: string, record: ContentRecord): Content
   const result: ContentRecord = record.id ? { id: record.id } : {};
   for (const field of definition.fields) {
     const value = record[field.key] === undefined ? definition.defaults[field.key] : record[field.key];
-    if (field.key === "division" || field.type === "portrait") result[field.key] = value || null;
+    if (field.key === "division" || field.type === "portrait" || field.type === "media") result[field.key] = value || null;
     else if (field.type === "number") result[field.key] = Number(value);
     else if (field.type === "checkbox") result[field.key] = value === true;
     else if (field.type === "list") result[field.key] = Array.isArray(value) ? value.filter((item) => item.trim().length > 0) : [];

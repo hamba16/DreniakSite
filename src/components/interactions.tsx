@@ -204,6 +204,13 @@ export function Header({ division }: { division?: Division }) {
           <Mark />
         </Link>
         <span className="eyebrow">ONE ORIGIN. TWO DISCIPLINES.</span>
+        <Link
+          href="/partners"
+          className="parent-header-partners"
+          aria-current={path === "/partners" ? "page" : undefined}
+        >
+          Partners <ArrowUpRight size={14} />
+        </Link>
       </header>
     );
   const other: Division =
@@ -277,6 +284,13 @@ export function Header({ division }: { division?: Division }) {
                         .replace(" we serve", "")}
           </Link>
         ))}
+        <Link
+          href="/partners"
+          aria-current={path === "/partners" ? "page" : undefined}
+          onClick={() => setOpen(false)}
+        >
+          Partners
+        </Link>
         {division === "engineering" && (
           <Link
             className="mobile-consultation"

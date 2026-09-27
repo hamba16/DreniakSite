@@ -53,6 +53,9 @@ export function Footer() {
           <Link href="/story">
             Our story <ArrowUpRight size={16} />
           </Link>
+          <Link href="/partners">
+            Partners <ArrowUpRight size={16} />
+          </Link>
           <Link href="/portal">
             Client portal <ArrowUpRight size={16} />
           </Link>
@@ -166,9 +169,9 @@ export function Standards({
             ? "PROFESSIONAL REGISTRATION"
             : "ASSET MANAGEMENT FRAMEWORK"}
         </span>
-        <strong>
-          {engineering ? "ERB" : "ISO"}
-          <b>{engineering ? "UGANDA" : "55000"}</b>
+        <strong className={engineering ? "standard-registration" : undefined}>
+          {engineering ? "URSB" : "ISO"}
+          {!engineering && <b>55000</b>}
         </strong>
         <div className="emblem-bottom">
           <ShieldCheck size={18} />

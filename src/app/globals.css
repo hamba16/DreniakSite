@@ -319,9 +319,15 @@ em {
   padding: 0 5%;
   color: #969696;
 }
-.parent-header > a > svg {
+.parent-header > a:first-child > svg {
   width: 34px;
   color: var(--red);
+}
+.parent-header > .parent-header-partners {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
 }
 .parent-header.on-light {
   color: #666;
@@ -1276,6 +1282,11 @@ em {
   margin-top: 16px;
   line-height: 1;
   min-width: 0;
+}
+.standard-emblem > strong.standard-registration {
+  font-size: clamp(40px, 14vw, 68px);
+  letter-spacing: -0.06em;
+  font-weight: 550;
 }
 .standard-emblem b {
   font-size: clamp(40px, 14vw, 68px);
@@ -3003,8 +3014,11 @@ em {
     font-size: 7px;
     letter-spacing: 0.12em;
   }
-  .parent-header > a > svg {
+  .parent-header > a:first-child > svg {
     width: 28px;
+  }
+  .parent-header > .parent-header-partners {
+    font-size: 9px;
   }
   .parent-hero {
     height: 100svh;
