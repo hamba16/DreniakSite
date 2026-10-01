@@ -59,7 +59,8 @@ export default async function ProjectCaseStudyPage({
   return (
     <main id="main" className="page-container">
       <Breadcrumb division={allowedDivision} label="Projects" />
-      <article className="case-study-article">
+      <article className="case-study-article final-case-study">
+        <header className="case-study-sidebar">
         <div className="case-study-meta-top">
           <ProjectLabel kind="category" href={study.sectorLink}>{study.sector}</ProjectLabel>
           <ProjectLabel kind="location">{study.location}</ProjectLabel>
@@ -84,6 +85,8 @@ export default async function ProjectCaseStudyPage({
           </div>
         )}
 
+        </header>
+        <div className="case-study-narrative">
         {study.sections.map((section) => (
           <section key={section.id} className="case-study-section">
             <h2>{section.heading}</h2>
@@ -104,6 +107,7 @@ export default async function ProjectCaseStudyPage({
             )}
           </section>
         ))}
+        </div>
       </article>
       <div className="case-study-backlink">
         <Link href="/asset-management/projects" className="text-link">

@@ -1,6 +1,7 @@
 "use client";
 import { ServicePillarIcon } from "./category-icons";
 import { ConstructionPhotograph } from "./construction-photograph";
+import { ContentMotion } from "./content-motion";
 import {
   createContext,
   useContext,
@@ -12,7 +13,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LazyMotion, useReducedMotion } from "motion/react";
+import { AnimatePresence, LazyMotion, useReducedMotion } from "motion/react";
 import * as motion from "motion/react-m";
 import {
   ArrowUpRight,
@@ -69,6 +70,7 @@ export function Experience({ children }: { children: ReactNode }) {
     <LazyMotion features={loadMotionFeatures} strict>
     <TransitionContext.Provider value={navigate}>
       <div key={pathname} className="page-enter">
+        <ContentMotion />
         {children}
       </div>
       {transition && (
@@ -176,7 +178,7 @@ export function Reveal({
       initial={false}
       whileInView={reduced ? {} : { opacity: [0.6, 1], y: [20, 0] }}
       viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.7, delay }}
+      transition={{ duration: 0.55, delay, ease: "easeOut" }}
     >
       {children}
     </motion.div>
@@ -340,10 +342,67 @@ const explanations = [
   "Connect infrastructure decisions to lasting economic growth.",
 ];
 export function CapabilityJourney() {
+  const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const root = useRef<HTMLDivElement>(null);
+  const progress = useRef<HTMLSpanElement>(null);
+  const manual = useRef(false);
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let top = 0;
+    const update = () => {
+      frame = 0;
+      if (manual.current || element.dataset.pinned !== "true") return;
+      const pin = element.firstElementChild as HTMLElement;
+      const distance = element.offsetHeight - pin.offsetHeight;
+      const fraction = Math.max(0, Math.min(1, (top - element.getBoundingClientRect().top) / Math.max(1, distance)));
+      setActive(Math.min(5, Math.floor(fraction * 6)));
+      if (progress.current) progress.current.style.transform = `scaleX(${fraction})`;
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const measure = () => {
+      top = (document.querySelector(".site-header")?.getBoundingClientRect().height ?? 120) + 12;
+      element.style.setProperty("--journey-top", `${top}px`);
+      element.dataset.pinned = String(!preference.matches && innerHeight >= 680);
+      schedule();
+    };
+    const resume = () => { manual.current = false; schedule(); };
+    const key = (event: KeyboardEvent) => {
+      if (["PageDown", "PageUp", "ArrowDown", "ArrowUp", " "].includes(event.key)) resume();
+    };
+    const observer = new ResizeObserver(measure);
+    const header = document.querySelector(".site-header");
+    if (header) observer.observe(header);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("wheel", resume, { passive: true });
+    window.addEventListener("touchmove", resume, { passive: true });
+    window.addEventListener("keydown", key);
+    preference.addEventListener("change", measure);
+    measure();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("wheel", resume);
+      window.removeEventListener("touchmove", resume);
+      window.removeEventListener("keydown", key);
+      preference.removeEventListener("change", measure);
+    };
+  }, []);
+  const select = (index: number) => {
+    manual.current = true;
+    setActive(index);
+    if (progress.current) progress.current.style.transform = `scaleX(${index / 5})`;
+  };
   return (
-    <div className="journey">
+    <div className="journey final-journey" ref={root}>
+      <div className="journey-pin">
       <div
         className="journey-tabs"
         role="tablist"
@@ -362,7 +421,7 @@ export function CapabilityJourney() {
               ref={(el) => {
                 refs.current[i] = el;
               }}
-              onClick={() => setActive(i)}
+              onClick={() => select(i)}
               onKeyDown={(e) => {
                 let next = i;
                 if (e.key === "ArrowRight") next = (i + 1) % 6;
@@ -371,7 +430,7 @@ export function CapabilityJourney() {
                 else if (e.key === "End") next = 5;
                 else return;
                 e.preventDefault();
-                setActive(next);
+                select(next);
                 refs.current[next]?.focus();
               }}
             >
@@ -382,6 +441,7 @@ export function CapabilityJourney() {
           );
         })}
       </div>
+      <div className="journey-progress" aria-hidden="true"><span ref={progress} /></div>
       <div
         className="journey-explanation"
         id="stage-panel"
@@ -390,13 +450,20 @@ export function CapabilityJourney() {
         tabIndex={0}
       >
         <span>{stages[active]}</span>
-        <p>{explanations[active]}</p>
+        <div className="journey-thoughts">
+          <AnimatePresence initial={false}>
+            <motion.p key={active} initial={{ opacity: reduced ? 1 : 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .28 }}>
+              {explanations[active]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
         <Link
           href="/asset-management/services"
           aria-label={`Explore ${stages[active]} services`}
         >
           <ArrowUpRight />
         </Link>
+      </div>
       </div>
     </div>
   );

@@ -1,0 +1,49 @@
+/* Additions to the verified production layout, without changing its content. */
+.final-journey { --journey-top: 150px; position: relative; }
+.final-journey[data-pinned="true"] { height: calc(100svh + 900px); }
+.final-journey[data-pinned="true"] .journey-pin {
+  position: sticky;
+  top: var(--journey-top);
+  min-height: calc(100svh - var(--journey-top) - 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 32px;
+}
+.final-journey .journey-tabs { border-bottom: 0; }
+.final-journey .journey-tabs > button { opacity: .82; padding-block: 32px; gap: 24px; font-size: 12px; letter-spacing: .09em; font-weight: 550; border-bottom: 0; }
+.final-journey .journey-tabs > button > svg:first-child { width: 32px; height: 32px; }
+.final-journey .journey-tabs > button[aria-selected="true"] { opacity: 1; font-weight: 600; background: transparent; }
+.journey-progress { height: 2px; background: #ffffff30; }
+.journey-progress > span { display: block; height: 100%; background: #fff; transform: scaleX(0); transform-origin: left; }
+.final-journey .journey-explanation { display: grid; grid-template-columns: minmax(0, 1fr) 32px; gap: 22px; padding-block: 32px; }
+.final-journey .journey-explanation > span { grid-column: 1 / -1; }
+.journey-thoughts { display: grid; min-width: 0; }
+.journey-thoughts p { grid-area: 1 / 1; font-size: clamp(30px, 4vw, 56px); font-weight: 450; line-height: 1.2; max-width: 24ch; color: #eef1f4; }
+.final-case-study { max-width: none; }
+.case-study-sidebar { display: grid; gap: 1.5rem; min-width: 0; }
+.case-study-narrative { display: grid; gap: 1.5rem; min-width: 0; }
+/* Production's four-card and five-card sets must not leave a stranded item. */
+@media (min-width: 761px) {
+  .division-site.engineering .service-preview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .division-site .engineering-sector-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .division-site .service-content ul > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (min-width: 1024px) {
+  .final-case-study { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 90px); align-items: start; }
+  .final-case-study h1 { font-size: clamp(34px, 3.2vw, 46px); }
+  .case-study-sidebar { position: sticky; top: 156px; max-height: calc(100svh - 180px); overflow-y: auto; scrollbar-width: thin; padding-right: 10px; }
+  .case-study-narrative .case-study-section:first-child { padding-top: 0; border-top: 0; }
+}
+@media (max-width: 760px) {
+  .division-site .engineering-value-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .final-journey[data-pinned="true"] { height: calc(100svh + 700px); }
+  .final-journey .journey-explanation { gap: 16px; padding-block: 24px; }
+  .final-journey .journey-tabs > button { padding: 22px 8px; gap: 18px; }
+  .final-journey .journey-tabs > button .stage-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .final-journey[data-pinned="true"] { height: auto; }
+  .final-journey[data-pinned="true"] .journey-pin { position: static; min-height: 0; padding-block: 0; }
+  .journey-thoughts p { animation: none; transition: none; }
+}

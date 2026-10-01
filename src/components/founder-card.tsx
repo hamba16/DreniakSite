@@ -12,7 +12,7 @@ export function FounderCard() {
         <ChevronDown size={17} aria-hidden="true" />
       </summary>
       <div className="founder-card-body">
-        <div className="founder-portrait">
+        <div className="founder-portrait photo-duotone">
           {founder.portrait ? (
             <Image src={founder.portrait} alt={founder.name} fill sizes="(max-width: 760px) 80vw, 28vw" />
           ) : (

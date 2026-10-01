@@ -4,7 +4,7 @@ import construction from "../../public/images/projects/building-a-plastering-fro
 export function ConstructionPhotograph() {
   return (
     <figure className="conceptual-figure construction-photograph">
-      <div className="conceptual-image">
+      <div className="conceptual-image photo-duotone">
         <Image
           src={construction}
           alt="Unfinished apartment building with open balconies, timber scaffolding and construction materials in front"

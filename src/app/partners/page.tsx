@@ -1,3 +1,4 @@
+import { ImageCollection } from "@/components/image-collection";
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
@@ -39,11 +40,10 @@ function categoryId(value: string) {
     .replace(/^-|-$/g, "");
 }
 
-function categoryIcon(value: string) {
-  if (categoryKey(value) === "service providers") return Wrench;
-  if (categoryKey(value) === "contractors") return Building2;
-  return Network;
-}
+const categoryIcons: Record<string, typeof Wrench> = {
+  "service providers": Wrench,
+  contractors: Building2,
+};
 
 function safeWebsite(value: string) {
   try {
@@ -58,7 +58,7 @@ function safeWebsite(value: string) {
 
 function PartnerCard({ partner }: { partner: PublishedPartner }) {
   const website = safeWebsite(partner.link);
-  const Icon = categoryIcon(partner.category);
+  const Icon = categoryIcons[categoryKey(partner.category)] ?? Network;
 
   return (
     <article className={styles.partnerCard}>
@@ -129,7 +129,7 @@ export default async function PartnersPage() {
 
           <div className={styles.groups}>
             {categories.map((category) => {
-              const Icon = categoryIcon(category);
+              const Icon = categoryIcons[categoryKey(category)] ?? Network;
               const items = partners.filter(
                 (partner) => categoryKey(partner.category) === categoryKey(category),
               );
@@ -145,11 +145,18 @@ export default async function PartnersPage() {
                     <h2 id={`partners-${categoryId(category)}`}>{category}</h2>
                   </div>
                   {items.length ? (
-                    <div className={styles.partnerGrid}>
+                    <ImageCollection label={category} className={styles.partnerGrid} items={items.map(partner => ({
+                      label: partner.name,
+                      image: partner.logo?.src,
+                      imageAlt: partner.logo?.alt || `${partner.name} logo`,
+                      summary: partner.description || partner.category,
+                      href: safeWebsite(partner.link),
+                      hrefLabel: "Visit partner website",
+                    }))}>
                       {items.map((partner) => (
                         <PartnerCard key={partner.id} partner={partner} />
                       ))}
-                    </div>
+                    </ImageCollection>
                   ) : (
                     <div className={styles.emptyState}>
                       <Motif density={160} className={styles.emptyMotif} />

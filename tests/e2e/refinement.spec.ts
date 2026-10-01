@@ -80,15 +80,15 @@ test("service icons and full titles work at desktop, mobile and narrow widths", 
   }
 });
 
-test("all eight sectors share icons without category numerals", async ({
+test("all eight sectors use the signature gallery", async ({
   page,
 }) => {
   await page.goto("/asset-management/sectors");
-  await expect(page.locator(".sector-top > svg")).toHaveCount(4);
-  await expect(page.locator(".sector-secondary article > svg")).toHaveCount(4);
-  await expect(page.locator(".sector-top > span")).toHaveCount(0);
-  await expectUnclipped(
-    page.locator(".sector-featured h3, .sector-secondary h3"),
+  const gallery = page.locator('section[aria-label="Gallery selection"]').first();
+  await expect(gallery.getByRole("tab")).toHaveCount(8);
+  await expect(gallery.getByRole("tab").first()).toHaveAttribute(
+    "aria-selected",
+    "true",
   );
   expect(
     await page.evaluate(
@@ -137,12 +137,11 @@ test("Engineering content, registrations and About order match the agreed brief"
   await expect(page.locator(".leadership")).toContainText("Derrick Nkurunungi");
   await expect(page.locator(".footprint-graphic")).toBeVisible();
   await page.goto("/engineering/sectors");
-  await expect(page.locator(".engineering-sector-lead h2")).toHaveText(
-    engineering.featuredSector,
-  );
-  await expect(page.locator(".engineering-sector-grid h3")).toHaveText(
-    engineering.sectors,
-  );
+  const gallery = page.locator('section[aria-label="Gallery selection"]').first();
+  await expect(gallery.getByRole("tab")).toHaveCount(engineering.sectors.length);
+  for (const sector of engineering.sectors) {
+    await expect(gallery).toContainText(sector);
+  }
   await page.goto("/engineering/insights");
   await expect(page.locator(".insight-categories span")).toHaveText(
     engineering.insightCategories,

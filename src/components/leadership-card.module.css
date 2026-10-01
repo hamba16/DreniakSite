@@ -7,6 +7,7 @@
 .initials { position: relative; color: var(--portrait-accent); font-size: clamp(64px, 7vw, 108px); font-weight: 350; letter-spacing: -.08em; }
 .caption { padding: 20px 0 8px; }
 .scope { color: var(--portrait-accent); text-transform: uppercase; font-size: 9px; letter-spacing: .13em; margin-bottom: 9px; }
+:global(.division-site) .scope { color: var(--label-color); font-size: 12px; font-weight: 550; line-height: 1.6; letter-spacing: .09em; }
 .caption h3 { font-size: clamp(22px, 2vw, 28px); line-height: 1.15; letter-spacing: -.04em; }
 .title { font-size: 13px; color: #555; margin-top: 8px; }
 .contacts { display: grid; justify-items: start; margin-top: 12px; }

@@ -11,7 +11,7 @@ import {
 } from "./engineering-pages";
 import { ServicePillarIcon } from "./category-icons";
 import Image from "next/image";
-import { divisionPhotographs } from "@/content/photography";
+import { CinematicImage } from "./cinematic-image";
 import { Suspense } from "react";
 import Link from "next/link";
 import {
@@ -63,7 +63,7 @@ export async function DivisionHome({ division }: { division: Division }) {
   return (
     <>
       <section className="division-hero">
-        <Image
+        <CinematicImage division={division}><Image
           src={`/images/${division}.webp`}
           alt={
             engineering
@@ -73,7 +73,7 @@ export async function DivisionHome({ division }: { division: Division }) {
           fill
           priority
           sizes="100vw"
-        />
+        /></CinematicImage>
         <div className="division-hero-overlay" />
         <div className="division-hero-content">
           <span className="eyebrow">{profile?.landing_kicker || `DRENIAK ${names[division].toUpperCase()}`}</span>
@@ -803,15 +803,10 @@ export async function DivisionPage({
               </Link>
             </div>
             <figure className="approach-photo">
-            <div className="approach-image">
-              <Image
-                src={divisionPhotographs[division].image}
-                alt={divisionPhotographs[division].alt}
-                style={{ objectPosition: divisionPhotographs[division].position }}
-                fill
-                sizes="(max-width: 760px) 100vw, 45vw"
-              />
-            </div>
+              <div className="approach-image generated-study" aria-label="Abstract infrastructure systems study">
+                <Mark stroke />
+                <span className="eyebrow">DRENIAK / FIELD STUDY</span>
+              </div>
             </figure>
           </div>
           <Standards division={division} />

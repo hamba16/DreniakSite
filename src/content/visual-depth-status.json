@@ -1,24 +1,23 @@
 {
   "available": [
+    "engineering-geotechnical",
     "engineering-highway",
+    "engineering-management",
     "engineering-structural",
     "engineering-water",
+    "engineering-intervention",
+    "engineering-insights",
+    "asset-government",
     "asset-energy",
     "asset-transport",
     "asset-cities",
     "asset-real-estate",
-    "asset-logistics"
-  ],
-  "pending": [],
-  "omitted": [
-    "engineering-geotechnical",
-    "engineering-management",
-    "asset-government",
+    "asset-logistics",
     "asset-healthcare",
     "asset-education",
-    "engineering-intervention",
-    "engineering-insights",
     "asset-insights"
   ],
-  "note": "Only reviewed photographs render. Omitted slots use text and icons until suitable photographs are approved."
+  "pending": [],
+  "omitted": [],
+  "note": "All image slots have subject-matched visuals. AI-generated conceptual illustrations are identified as such; licensed photographs retain creator, source and licence credits."
 }

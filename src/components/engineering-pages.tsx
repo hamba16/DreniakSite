@@ -1,3 +1,5 @@
+import { ImageCollection } from "./image-collection";
+import { SignatureGallery } from "./signature-gallery";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -14,13 +16,26 @@ import { LeadershipSection } from "./leadership-section";
 import { ConvergenceDiagram } from "./convergence-diagram";
 import { Reveal } from "./interactions";
 import { PageIntro, Standards } from "./shared";
-import { ConceptualImage } from "./conceptual-image";
+import { ConceptualImage, sectorImageStyle } from "./conceptual-image";
 import { engineeringSectorImages } from "@/content/visual-assets";
 import { ConstructionPhotograph } from "./construction-photograph";
 
 const sectorIcons = [Route, DraftingCompass, Waves, ClipboardList, Mountain];
 
 export function EngineeringSectors({ imagery = false }: { imagery?: boolean }) {
+  if (imagery) {
+    return <div className="engineering-sectors"><SignatureGallery accentColor="var(--engineering-tag, #3e5c73)" items={engineering.sectors.map((sector, index) => ({
+      id: engineeringSectorImages[index].id,
+      label: sector,
+      visual: engineeringSectorImages[index].id,
+      imageSrc: engineeringSectorImages[index].imageSrc,
+      imageAlt: engineeringSectorImages[index].alt,
+      imageCredit: engineeringSectorImages[index].imageCredit,
+      imageNote: engineeringSectorImages[index].imageNote,
+      rightsPending: engineeringSectorImages[index].rightsPending,
+      icon: (() => { const Icon = sectorIcons[index]; return <Icon size={20} strokeWidth={1.5} aria-hidden="true" />; })(),
+    }))} /></div>;
+  }
   return (
     <div className="engineering-sectors">
       <div className="sector-featured engineering-sector-lead">
@@ -43,13 +58,13 @@ export function EngineeringSectors({ imagery = false }: { imagery?: boolean }) {
           {imagery && <ConstructionPhotograph />}
         </article>
       </div>
-      <div
+      <ImageCollection label="Engineering expertise" items={engineering.sectors.map((label) => ({ label }))}
         className={`sector-secondary engineering-sector-grid ${imagery ? "sector-photo-grid" : ""}`}
       >
         {engineering.sectors.map((sector, index) => {
           const Icon = sectorIcons[index];
           return (
-            <article key={sector}>
+            <article key={sector} style={sectorImageStyle(engineeringSectorImages[index])}>
               {imagery && (
                 <ConceptualImage asset={engineeringSectorImages[index]} />
               )}
@@ -66,7 +81,7 @@ export function EngineeringSectors({ imagery = false }: { imagery?: boolean }) {
             </article>
           );
         })}
-      </div>
+      </ImageCollection>
     </div>
   );
 }

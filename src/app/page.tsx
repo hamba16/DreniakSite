@@ -10,6 +10,7 @@ import {
 import { Logo, Mark, Motif } from "@/components/brand";
 import { Footer } from "@/components/shared";
 import { FounderCard } from "@/components/founder-card";
+import { CinematicImage } from "@/components/cinematic-image";
 import { homepageContent } from "@/lib/public-content";
 export default async function Home() {
   let content = null;
@@ -64,7 +65,7 @@ export default async function Home() {
             <span className="eyebrow">
             <i className="red-dot" /> {content?.premise_label || "THE DRENIAK PERSPECTIVE"}
             </span>
-            <span className="eyebrow">01 / THE STARTING POINT</span>
+            <span className="eyebrow">THE STARTING POINT</span>
           </div>
           <div className="premise-grid">
           <Reveal>
@@ -81,7 +82,7 @@ export default async function Home() {
         </section>
         <section className="division-section" id="divisions">
           <div className="split-heading">
-            <span className="eyebrow">02 / TWO DISCIPLINES</span>
+              <span className="eyebrow">TWO DISCIPLINES</span>
             <h2>One vision. Two ways forward.</h2>
             <span className="eyebrow">
               CHOOSE YOUR PERSPECTIVE <ArrowRight size={16} />
@@ -92,20 +93,18 @@ export default async function Home() {
               division="engineering"
               className="division-panel engineering"
             >
-              <Image
+              <CinematicImage division="engineering"><Image
                 src="/images/engineering.webp"
                 alt="Conceptual architectural image of monumental concrete infrastructure"
                 fill
                 priority
                 sizes="(max-width: 760px) 100vw, 60vw"
-              />
+              /></CinematicImage>
               <div className="panel-shade" />
               <div className="panel-top">
-                <span className="eyebrow">01 / THE FOUNDING PRACTICE</span>
                 <Mark />
               </div>
               <div className="panel-content">
-                <span className="eyebrow">BUILD THE FOUNDATION.</span>
                 <h3>
                   Dreniak
                   <br />
@@ -131,20 +130,18 @@ export default async function Home() {
               division="asset-management"
               className="division-panel asset-management"
             >
-              <Image
+              <CinematicImage division="asset-management"><Image
                 src="/images/asset-management.webp"
                 alt="Conceptual image of a transport viaduct and a distant African skyline"
                 fill
                 fetchPriority="low"
                 sizes="(max-width: 760px) 100vw, 60vw"
-              />
+              /></CinematicImage>
               <div className="panel-shade" />
               <div className="panel-top">
-                <span className="eyebrow">02 / THE LONGER VIEW</span>
                 <Mark />
               </div>
               <div className="panel-content">
-                <span className="eyebrow">MULTIPLY THE VALUE.</span>
                 <h3>
                   Dreniak
                   <br />

@@ -1,0 +1,180 @@
+/* A single label and card-interaction treatment over the production baseline. */
+.division-site.engineering {
+  --label-color: #8f4148;
+  --label-color-on-dark: #e9d1d3;
+}
+
+.division-site.asset-management {
+  --label-color: #3e5c73;
+  --label-color-on-dark: #a0afba;
+}
+
+.division-site #main :is(
+  .eyebrow,
+  .service-index,
+  .service-title small,
+  .insight-categories > span,
+  .secondary-standards > span,
+  .standard-emblem > span,
+  .asset-project-subtitle,
+  .value-number,
+  .division-hero-foot > span
+) {
+  color: var(--label-color);
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.6;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.division-site #main .emblem-bottom {
+  color: var(--label-color);
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.6;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+/* Dark photographic fields use the matching pale ramp step for contrast. */
+.division-site main :is(.division-hero, .cta) {
+  --label-color: var(--label-color-on-dark);
+}
+
+.division-site main :is(
+  .asset-project-topline,
+  .asset-project-tags,
+  .case-study-meta-top,
+  .case-study-tags,
+  .case-study-links
+) {
+  justify-content: flex-start;
+  gap: 8px 19px;
+}
+
+.division-site main .insight-categories,
+.division-site main .secondary-standards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 19px;
+}
+
+.division-site main .insight-categories > span,
+.division-site main .secondary-standards > span {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 0;
+  padding: 0;
+}
+
+.division-site main .insight-categories > span + span::before,
+.division-site main .secondary-standards > span + span::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -10px;
+  width: 1px;
+  height: 1em;
+  background: currentColor;
+  opacity: .35;
+}
+
+.division-site :is(
+  .service-list > .service,
+  .service-preview-grid > a,
+  .sector-featured > article,
+  .sector-secondary > article
+) {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Every card draws the same quiet line along its bottom edge. */
+.division-site :is(
+  .service-list > .service,
+  .service-preview-grid > a,
+  .sector-featured > article,
+  .sector-secondary > article
+)::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--label-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease-out;
+  pointer-events: none;
+}
+
+.division-site :is(
+  .sector-featured > article,
+  .sector-secondary > article
+)[style*="--sector-image"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--sector-image);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 250ms ease-out;
+  pointer-events: none;
+}
+
+.division-site :is(
+  .service-list > .service,
+  .service-preview-grid > a,
+  .sector-featured > article,
+  .sector-secondary > article
+):focus-within::after {
+  transform: scaleX(1);
+}
+
+.division-site :is(
+  .sector-featured > article,
+  .sector-secondary > article
+)[style*="--sector-image"]:focus-within::before {
+  opacity: .06;
+}
+
+@media (hover: hover) {
+  .division-site :is(
+    .service-list > .service,
+    .service-preview-grid > a,
+    .sector-featured > article,
+    .sector-secondary > article
+  ):hover::after {
+    transform: scaleX(1);
+  }
+
+  .division-site :is(
+    .sector-featured > article,
+    .sector-secondary > article
+  )[style*="--sector-image"]:hover::before {
+    opacity: .06;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .division-site :is(
+    .service-list > .service,
+    .service-preview-grid > a,
+    .sector-featured > article,
+    .sector-secondary > article
+  )::after,
+  .division-site :is(
+    .sector-featured > article,
+    .sector-secondary > article
+  )::before {
+    transition: none;
+  }
+}

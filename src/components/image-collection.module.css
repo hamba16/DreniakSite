@@ -1,0 +1,53 @@
+/* The existing photographs are the navigation. No second set of images or gallery toolbar. */
+.collection { container-type: inline-size; min-width: 0; margin-block: 32px 52px; --deck-ink: var(--accent, #0d3251); --deck-height: clamp(220px, 23vw, 300px); }
+.collection .rail { display: flex; align-items: stretch; gap: 14px; margin: 0; padding: 0 0 8px; border: 0; background: transparent; }
+.leaf { flex: 1 1 0%; min-width: 0; position: relative; padding-top: 42px; border-top: 1px solid #cfcac2; transition: flex-grow 650ms cubic-bezier(.22,1,.36,1); }
+.leaf[data-active="true"] { flex-grow: 3.1; }
+.leaf::after { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 2px; background: var(--deck-ink); transform: scaleX(0); transform-origin: left; transition: transform 600ms cubic-bezier(.22,1,.36,1); }
+.leaf[data-active="true"]::after { transform: scaleX(1); }
+.select { position: absolute; inset: 0 0 auto; height: calc(var(--deck-height) + 42px); z-index: 3; width: 100%; border: 0; padding: 0; cursor: pointer; color: var(--deck-ink); background: transparent; text-align: left; }
+.open { position: absolute; top: 5px; right: 0; width: 30px; height: 30px; display: grid; place-items: center; transition: transform .35s ease; }
+.leaf[data-active="true"] .open { transform: rotate(45deg); }
+.select::after { content: ""; position: absolute; inset: 50px 8px 8px; border: 1px solid #ffffff00; transition: border-color .3s, inset .4s; pointer-events: none; }
+.select:hover::after { border-color: #ffffffb0; inset: 54px 12px 12px; }
+.select:focus-visible { outline: 2px solid var(--deck-ink); outline-offset: 4px; }
+.rail:not([data-ready]) .select { visibility: hidden; }
+.content { min-width: 0; }
+.collection .content > article, .collection .content > figure { display: block; position: relative; margin: 0; padding: 0; border: 0; width: 100%; min-width: 0; background: transparent; }
+.collection .content > article > figure { margin: 0 0 20px; }
+.collection .content :global(.conceptual-image),
+.collection .content :global(.project-gallery-image) {
+  height: var(--deck-height); min-height: 0; max-height: 300px; aspect-ratio: auto; width: 100%; background: #ebe9e4; overflow: hidden;
+}
+.collection .content :global(.conceptual-image img), .collection .content :global(.project-gallery-image img) { width: 100%; height: 100%; object-fit: contain; transition: opacity .4s; }
+.collection .leaf[data-active="true"] :global(.conceptual-image img), .collection .leaf[data-active="true"] :global(.project-gallery-image img) { object-fit: contain; }
+.collection .content h3 { font-size: clamp(16px, 1.35vw, 20px); line-height: 1.25; letter-spacing: -.035em; overflow-wrap: normal; hyphens: auto; margin: 12px 0; }
+.collection .leaf[data-active="true"] h3 { font-size: clamp(23px, 2vw, 30px); }
+.collection .content p { font-size: 13px; line-height: 1.65; }
+.collection .content > article > svg, .collection .content :global(.sector-top) { margin: 16px 0; color: var(--deck-ink); }
+.collection .content > figure > figcaption { padding: 20px 0 0; border: 0; }
+.collection .content :global(.conceptual-figure) figcaption { padding: 0; font-size: 9px; line-height: 1.6; }
+.collection .content :global(.eyebrow) { font-size: 10px !important; letter-spacing: .06em !important; }
+/* Inactive cards retain their title. Selecting the actual image reveals its existing detail. */
+@container (min-width: 761px) {
+  .leaf:not([data-active="true"]) .content p,
+  .leaf:not([data-active="true"]) .content a,
+  .leaf:not([data-active="true"]) .content :global(.conceptual-figure) figcaption,
+  .leaf:not([data-active="true"]) .content :global(.eyebrow) { display: none; }
+  .leaf:not([data-active="true"]) .content > article > svg,
+  .leaf:not([data-active="true"]) .content :global(.sector-top) { opacity: .45; }
+  .collection[data-image-deck="people"] .leaf { flex-grow: 1; }
+  .collection[data-image-deck="people"] .leaf[data-active="true"] { flex-grow: 1.8; }
+}
+@container (max-width: 760px) {
+  .collection .rail { --deck-height: 240px; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 0 18px; scroll-padding-inline: 0; }
+  .rail::-webkit-scrollbar { display: none; }
+  .leaf, .leaf[data-active="true"] { flex: 0 0 82%; scroll-snap-align: start; padding-top: 42px; }
+  .leaf:last-child { margin-right: 18%; }
+  .collection .content h3, .collection .leaf[data-active="true"] h3 { font-size: 24px; }
+  .collection .content :global(.conceptual-image img), .collection .content :global(.project-gallery-image img) { object-fit: contain; }
+}
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.collection .rail:not([data-ready]) .content :is(p, a, figcaption) { display: revert; }
+@media (prefers-reduced-motion: reduce) { .leaf, .leaf::after, .open, .select::after, .collection .content img { transition: none; } }
+@media print { .collection .rail { display: grid; grid-template-columns: 1fr 1fr; } .leaf { break-inside: avoid; } .select { display: none; } }

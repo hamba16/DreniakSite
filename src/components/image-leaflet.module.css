@@ -1,0 +1,24 @@
+.leaflet { position: fixed; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: end; width: min(1120px, calc(100vw - 32px)); height: min(760px, calc(100dvh - 32px)); max-width: none; max-height: none; margin: auto; padding: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 34%); background: #111719; color: #fff; }
+.leaflet:not([open]) { display: none; }
+.leaflet::backdrop { background: rgb(5 9 10 / 76%); backdrop-filter: blur(5px); }
+.image { position: absolute; inset: 0; overflow: hidden; background: #e8e6df; }
+.image :global(img) { object-fit: cover; }
+.leaflet[data-image-fit="contain"] .image { background: transparent; }
+.leaflet[data-image-fit="contain"] .image :global(img) { object-fit: contain; }
+.leaflet[data-image-fit="contain"] .mark, .leaflet[data-image-fit="contain"] .shade { display: none; }
+.mark { position: absolute; z-index: 1; top: 8%; right: 7%; width: clamp(90px, 16vw, 190px); height: auto; color: rgb(255 255 255 / 32%); }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(6 10 11 / 8%) 18%, rgb(6 10 11 / 78%) 100%), linear-gradient(90deg, rgb(6 10 11 / 34%), transparent 82%); }
+.close { position: absolute; z-index: 2; top: 16px; right: 16px; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgb(255 255 255 / 58%); background: rgb(12 17 19 / 56%); color: #fff; cursor: pointer; }
+.close:focus-visible, .action:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.details { position: relative; z-index: 1; width: min(590px, 100%); max-height: 90%; margin: 0 0 0 clamp(22px, 5vw, 62px); padding: 30px clamp(22px, 4vw, 46px) 34px 0; overflow-y: auto; }
+.eyebrow { display: block; margin-bottom: 10px; color: #f2b9b4; font-size: 10px; font-weight: 600; letter-spacing: .16em; }
+.details h2 { max-width: 15ch; margin: 0 0 14px; font-size: clamp(26px, 4vw, 44px); font-weight: 500; line-height: 1.08; }
+.summary { max-width: 54ch; font-size: 15px; line-height: 1.6; }
+.note { max-width: 56ch; margin: 10px 0 0; color: rgb(255 255 255 / 82%); font-size: 12px; line-height: 1.5; }
+.credit { margin-top: 18px; color: rgb(255 255 255 / 82%); font-size: 11px; line-height: 1.45; }
+.credit summary { width: fit-content; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.creditDetails { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 13px; padding-top: 10px; }
+.creditDetails a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.action { display: inline-flex; align-items: center; margin-top: 20px; padding: 11px 15px; border: 1px solid rgb(255 255 255 / 68%); color: #fff; font-size: 12px; text-decoration: none; }
+@media (max-width: 600px) { .leaflet { width: calc(100vw - 20px); height: calc(100dvh - 20px); } .details { margin-left: 20px; padding-bottom: 22px; } .summary { font-size: 14px; } }
+@media (prefers-reduced-motion: reduce) { .leaflet::backdrop { backdrop-filter: none; } }

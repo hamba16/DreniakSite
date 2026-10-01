@@ -3,6 +3,7 @@ const config: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 90],
     minimumCacheTTL: 31536000,
     remotePatterns: process.env.NEXT_PUBLIC_SUPABASE_URL
       ? [{ protocol: "https", hostname: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname, pathname: "/storage/v1/object/public/**" }]

@@ -21,7 +21,7 @@ export function LeadershipCard({
 }) {
   return (
     <article id={id} className={styles.card} data-context={context ?? (leader.scope === "Dreniak Engineering" ? "engineering" : "company")}>
-      <div className={styles.portrait} data-backdrop={backdrop}>
+      <div className={`${styles.portrait} photo-duotone`} data-backdrop={backdrop} data-photo-context={context ?? (leader.scope === "Dreniak Engineering" ? "engineering" : "company")}>
         <span className={styles.pattern} aria-hidden="true" />
         {leader.portrait ? (
           <Image
@@ -29,6 +29,7 @@ export function LeadershipCard({
             alt={leader.name}
             fill
             sizes="(max-width: 700px) 90vw, (max-width: 1000px) 45vw, 33vw"
+            quality={90}
             style={{ objectFit: "cover", objectPosition: leader.portrait.position ?? "center bottom" }}
           />
         ) : (

@@ -25,7 +25,7 @@ export default function DesignReview() {
       </header>
 
       <section id="portraits" className={styles.section}>
-        <p className={styles.eyebrow}>01 / PORTRAIT BACKDROPS</p>
+        <p className={styles.eyebrow}>PORTRAIT BACKDROPS</p>
         <h2>Texture, quietly in the background.</h2>
         <div className={styles.comparison}>
           {(["flat", "vignette"] as const).map((backdrop, i) => (
@@ -42,7 +42,7 @@ export default function DesignReview() {
       </section>
 
       <section id="team" className={styles.section}>
-        <p className={styles.eyebrow}>02 / SHARED LEADERSHIP</p>
+        <p className={styles.eyebrow}>SHARED LEADERSHIP</p>
         <h2>Four people. One shared story.</h2>
         <p className={styles.intro}>The shared /story team uses Sample B. Division pages show the relevant members listed below.</p>
         <div className={styles.team}>
@@ -57,7 +57,7 @@ export default function DesignReview() {
       </section>
 
       <section id="tags" className={styles.section}>
-        <p className={styles.eyebrow}>03 / PROJECT LABELS</p>
+        <p className={styles.eyebrow}>PROJECT LABELS</p>
         <h2>Categories in color. Metadata with restraint.</h2>
         <p className={styles.intro}>Compare the same card with quiet and tinted status. Engineering examples below are color proofs using the existing case study, not new Engineering project claims.</p>
         {(["asset-management", "engineering"] as const).map((division) => (

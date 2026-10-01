@@ -1,3 +1,5 @@
+import { ImageCollection } from "./image-collection";
+import { SignatureGallery } from "./signature-gallery";
 import { engineering as engineeringContent } from "@/content/engineering";
 import Link from "next/link";
 import {
@@ -24,7 +26,7 @@ import { Newsletter } from "./forms";
 import { names, socialLinks, type Division } from "@/lib/site";
 import { DivisionLink } from "./interactions";
 import data from "@/content/brief.json";
-import { ConceptualImage } from "./conceptual-image";
+import { ConceptualImage, sectorImageStyle } from "./conceptual-image";
 import { assetSectorImages, interventionImage } from "@/content/visual-assets";
 export function Footer() {
   return (
@@ -233,15 +235,28 @@ export async function Sectors({
   imagery?: boolean;
 }) {
   // Sector placement is explicit: upload order cannot establish subject or reuse rights.
+  if (imagery) {
+    return <SignatureGallery accentColor="var(--am-tag, #3e5c73)" items={data.sectors.map((sector, index) => ({
+      id: assetSectorImages[index].id,
+      label: sector.name,
+      visual: assetSectorImages[index].id,
+      imageSrc: assetSectorImages[index].imageSrc,
+      imageAlt: assetSectorImages[index].alt,
+      imageCredit: assetSectorImages[index].imageCredit,
+      imageNote: assetSectorImages[index].imageNote,
+      rightsPending: assetSectorImages[index].rightsPending,
+      icon: (() => { const Icon = sectorIcons[index]; return <Icon size={20} strokeWidth={1.5} aria-hidden="true" />; })(),
+    }))} />;
+  }
   return (
     <>
-      <div
+      <ImageCollection label="Infrastructure sectors" items={data.sectors.slice(0, 4).map((s) => ({ label: s.name }))}
         className={`sector-featured ${imagery ? "sector-photo-featured" : ""}`}
       >
         {data.sectors.slice(0, 4).map((s, i) => {
           const Icon = sectorIcons[i];
           return (
-            <article key={s.name}>
+            <article key={s.name} style={sectorImageStyle(assetSectorImages[i])}>
               {imagery && <ConceptualImage asset={assetSectorImages[i]} />}
               <div className="sector-top">
                 <Icon size={32} strokeWidth={1.5} aria-hidden="true" />
@@ -257,20 +272,20 @@ export async function Sectors({
             </article>
           );
         })}
-      </div>
+      </ImageCollection>
       {!preview && (
         <>
           <div className="section-heading compact">
             <span className="eyebrow">ORGANISATIONS & ESTATES</span>
             <h2>Value across every portfolio.</h2>
           </div>
-          <div
+          <ImageCollection label="Organisations and estates" items={data.sectors.slice(4).map((s) => ({ label: s.name }))}
             className={`sector-secondary ${imagery ? "sector-photo-grid" : ""}`}
           >
             {data.sectors.slice(4).map((s, i) => {
               const Icon = sectorIcons[i + 4];
               return (
-                <article key={s.name}>
+                <article key={s.name} style={sectorImageStyle(assetSectorImages[i + 4])}>
                   {imagery && <ConceptualImage asset={assetSectorImages[i + 4]} />}
                   <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
                   <div>
@@ -280,7 +295,7 @@ export async function Sectors({
                 </article>
               );
             })}
-          </div>
+          </ImageCollection>
         </>
       )}
     </>

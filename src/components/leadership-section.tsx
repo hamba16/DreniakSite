@@ -1,3 +1,4 @@
+import { ImageCollection } from "./image-collection";
 import { leaders } from "@/content/leadership";
 import { LeadershipCard } from "./leadership-card";
 import styles from "./leadership-section.module.css";
@@ -19,7 +20,14 @@ export function LeadershipSection({ context }: {
         <span className="eyebrow">{context === "engineering" ? "THE PEOPLE BEHIND THE WORK" : "LEADERSHIP"}</span>
         <h2 id={headingId}>{context === "engineering" ? "Leadership & team" : <>A personal ambition.<br />A shared future.</>}</h2>
       </div>
-      <div className={styles.grid} data-count={members.length}>
+      <ImageCollection label="Meet the team" kind="people" className={styles.grid} items={members.map(leader => ({
+        label: leader.name,
+        image: leader.portrait?.src,
+        imageAlt: leader.name,
+        summary: `${leader.title} · ${leader.scope}`,
+        href: leader.email ? `mailto:${leader.email}` : undefined,
+        hrefLabel: leader.email ? `Email ${leader.name}` : undefined,
+      }))}>
         {members.map((leader) => (
           <LeadershipCard
             key={leader.id}
@@ -31,7 +39,7 @@ export function LeadershipSection({ context }: {
             compact={!shared && leader.id === "darren-kamunuga"}
           />
         ))}
-      </div>
+      </ImageCollection>
     </section>
   );
 }
