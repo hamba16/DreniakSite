@@ -28,7 +28,7 @@ export function LeadershipCard({
             src={leader.portrait.src}
             alt={leader.name}
             fill
-            sizes="(max-width: 700px) 90vw, (max-width: 1000px) 45vw, 33vw"
+            sizes="(max-width: 700px) 82vw, (max-width: 1000px) 82vw, (max-width: 1450px) 48vw, 620px"
             quality={90}
             style={{ objectFit: "cover", objectPosition: leader.portrait.position ?? "center bottom" }}
           />

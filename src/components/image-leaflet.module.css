@@ -20,5 +20,15 @@
 .creditDetails { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 13px; padding-top: 10px; }
 .creditDetails a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 .action { display: inline-flex; align-items: center; margin-top: 20px; padding: 11px 15px; border: 1px solid rgb(255 255 255 / 68%); color: #fff; font-size: 12px; text-decoration: none; }
+.leaflet[data-portrait] { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-content: stretch; }
+.leaflet[data-portrait] .image { position: relative; inset: auto; min-height: 0; background: #f1efe9; }
+.leaflet[data-portrait] .image :global(img) { object-fit: contain; }
+.leaflet[data-portrait] .mark, .leaflet[data-portrait] .shade { display: none; }
+.leaflet[data-portrait] .details { align-self: center; width: auto; margin: 0; padding: 60px 32px 32px; }
+@media (max-width: 700px) {
+  .leaflet[data-portrait] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .leaflet[data-portrait] .details { max-height: 40dvh; padding: 20px; }
+  .leaflet[data-portrait] .details h2 { font-size: 26px; }
+}
 @media (max-width: 600px) { .leaflet { width: calc(100vw - 20px); height: calc(100dvh - 20px); } .details { margin-left: 20px; padding-bottom: 22px; } .summary { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) { .leaflet::backdrop { backdrop-filter: none; } }

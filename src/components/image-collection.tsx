@@ -113,6 +113,7 @@ export function ImageCollection({ items, children, className, label, kind = "sec
         title={items[leafletIndex].label}
         image={items[leafletIndex].image}
         imageAlt={items[leafletIndex].imageAlt}
+        portrait={kind === "people"}
         credit={items[leafletIndex].credit}
         note={items[leafletIndex].note}
         href={items[leafletIndex].href}

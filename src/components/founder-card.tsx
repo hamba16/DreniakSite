@@ -14,7 +14,7 @@ export function FounderCard() {
       <div className="founder-card-body">
         <div className="founder-portrait photo-duotone">
           {founder.portrait ? (
-            <Image src={founder.portrait} alt={founder.name} fill sizes="(max-width: 760px) 80vw, 28vw" />
+            <Image src={founder.portrait} alt={founder.name} fill sizes="(max-width: 760px) 336px, (max-width: 1450px) 28vw, 400px" quality={90} />
           ) : (
             <TeamPortraitFallback name={founder.name} />
           )}

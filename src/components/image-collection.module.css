@@ -37,7 +37,7 @@
   .leaf:not([data-active="true"]) .content > article > svg,
   .leaf:not([data-active="true"]) .content :global(.sector-top) { opacity: .45; }
   .collection[data-image-deck="people"] .leaf { flex-grow: 1; }
-  .collection[data-image-deck="people"] .leaf[data-active="true"] { flex-grow: 1.8; }
+  .collection[data-image-deck="people"] .leaf[data-active="true"] { flex-grow: 1; }
 }
 @container (max-width: 760px) {
   .collection .rail { --deck-height: 240px; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 0 18px; scroll-padding-inline: 0; }

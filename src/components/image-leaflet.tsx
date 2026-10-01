@@ -31,6 +31,7 @@ export function ImageLeaflet({
   note,
   rightsPending = false,
   imageFit = "cover",
+  portrait = false,
   href,
   hrefLabel,
 }: {
@@ -45,6 +46,7 @@ export function ImageLeaflet({
   note?: string;
   rightsPending?: boolean;
   imageFit?: "cover" | "contain";
+  portrait?: boolean;
   href?: string;
   hrefLabel?: string;
 }) {
@@ -66,6 +68,7 @@ export function ImageLeaflet({
       className={styles.leaflet}
       aria-labelledby={titleId}
       data-image-fit={imageFit}
+      data-portrait={portrait || undefined}
       onClose={onClose}
       onClick={event => {
         if (event.target === event.currentTarget) dialogRef.current?.close();
@@ -73,7 +76,7 @@ export function ImageLeaflet({
     >
       <div className={styles.image}>
         <Mark className={styles.mark} stroke />
-        {image ? <Image src={image} alt={imageAlt || title} fill sizes="100vw" priority /> : fallback}
+        {image ? <Image src={image} alt={imageAlt || title} fill sizes={portrait ? "(max-width: 700px) 100vw, (max-width: 1152px) 55vw, 616px" : "100vw"} quality={portrait ? 90 : 75} loading="eager" /> : fallback}
         <div className={styles.shade} />
       </div>
       <button className={styles.close} type="button" aria-label="Close image details" onClick={() => dialogRef.current?.close()}>
