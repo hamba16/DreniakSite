@@ -1,6 +1,7 @@
 import { ConceptualImage, hasConceptualImage } from "./conceptual-image";
 import { insightImages } from "@/content/visual-assets";
 import { ProjectGallery } from "./project-gallery";
+import { EngineeringServicePlates } from "./engineering-service-plates";
 import { LeadershipSection } from "./leadership-section";
 import { ProjectLabel } from "./project-label";
 import { engineering as engineeringContent } from "@/content/engineering";
@@ -436,7 +437,8 @@ export async function DivisionPage({
                 : "Our approach combines engineering, intelligence, finance and economics to address the lifetime value of infrastructure."
             }
           />
-          <ServiceAccordion
+          {engineering && <p className="engineering-page-note">Infrastructure goes wrong at the joins: between the brief and the design, between the design and the site, between handover and the first year of use. Considering those connections gives each stage a clearer purpose.</p>}
+          {engineering ? <EngineeringServicePlates services={databaseServices.length ? databaseServices : engineeringServices} /> : <ServiceAccordion
             services={
               databaseServices.length
                 ? databaseServices
@@ -445,7 +447,7 @@ export async function DivisionPage({
                   : data.services
             }
             engineering={engineering}
-          />
+          />}
         </>
       );
     case "sectors":
@@ -474,6 +476,7 @@ export async function DivisionPage({
                 : "We serve organisations, institutions and economies that own complex, long-life infrastructure."
             }
           />
+          {engineering && <p className="engineering-page-note">Each sector asks something different of a structure. A bridge carries load and water, a building carries people and heat, a drainage channel carries a wet season. The common question is how well each will serve the people who depend on it.</p>}
           {engineering ? <EngineeringSectors imagery /> : <Sectors imagery />}
         </>
       );
@@ -665,6 +668,7 @@ export async function DivisionPage({
             }
           />
           <Standards division={division} full />
+          {engineering && <section className="engineering-page-note"><h2>Quality starts with the detail.</h2><p>Safety on site begins with questions asked during design. Temporary works, access, construction sequence and wet weather all deserve attention before work starts. A drawing is an opportunity to resolve a difficulty while it is still straightforward to change.</p></section>}
         </>
       );
     case "consultation":

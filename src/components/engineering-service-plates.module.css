@@ -1,0 +1,13 @@
+.plates { margin: 25px 0 90px; }
+.plate { display: grid; gap: clamp(28px,5vw,75px); align-items: center; padding: 55px 0; border-top: 1px solid var(--line); scroll-margin-top: 165px; }
+.plate[data-illustrated="true"] { grid-template-columns: 1fr 1fr; }
+.copy { max-width: 720px; }
+.copy h2 { margin: 24px 0; font-size: clamp(28px,3.2vw,46px); font-weight: 450; line-height: 1.15; letter-spacing: -.035em; }
+.copy p,.copy li { font-size: 15px; line-height: 1.85; color: #565655; }
+.copy ul { padding-left: 20px; margin: 24px 0; }
+.copy .value { color: #252525; border-left: 2px solid var(--accent); padding-left: 16px; margin-bottom: 28px; }
+.plate figure { margin: 0; }
+.plate figure img { width: 100%; height: auto; max-height: 520px; object-fit: contain; background: #e8e6e1; }
+.plate figcaption { margin-top: 14px; font-size: 11px; line-height: 1.7; color: #646464; }
+@media(min-width:761px) { .plate[data-illustrated="true"]:nth-child(even) figure { grid-column: 1; grid-row: 1; } .plate[data-illustrated="true"]:nth-child(even) .copy { grid-column: 2; } }
+@media(max-width:760px) { .plate[data-illustrated="true"] { grid-template-columns: 1fr; } .plate { padding: 35px 0; } }

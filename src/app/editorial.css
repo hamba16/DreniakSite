@@ -1,4 +1,6 @@
 /* A photographic exhibition within the engineering page. */
+.engineering-page-note { max-width: 760px; margin: 0 0 50px; color: #575755; font-size: 16px; line-height: 1.9; }
+.engineering-page-note h2 { color: #222; margin: 28px 0 18px; font-size: 32px; font-weight: 450; }
 .project-gallery { --label-color: #bbb7ae; --project-red: #df414d; --gallery-inset: clamp(24px, 4vw, 60px); margin: 30px 0 85px; padding: var(--gallery-inset); background: #080808; color: #f3f0e9; }
 .project-gallery .section-heading { align-items: flex-end; margin: 0 0 28px; gap: 28px; }
 .project-gallery .section-heading .eyebrow { font-size: 10px; letter-spacing: .14em; }
