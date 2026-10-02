@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    return [
+      { source: "/engineering/careers", destination: "/careers", permanent: true },
+      { source: "/asset-management/careers", destination: "/careers", permanent: true },
+    ];
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75, 90],

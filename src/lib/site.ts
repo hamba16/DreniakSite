@@ -16,7 +16,7 @@ export type PageName =
   (typeof pages)[number] | (typeof engineeringPages)[number];
 export function getPages(division: Division): PageName[] {
   return division === "engineering"
-    ? [...pages, ...engineeringPages]
+    ? [...pages, "consultation"]
     : [...pages];
 }
 export const names = {

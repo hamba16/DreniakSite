@@ -1,0 +1,14 @@
+.roles { margin: 70px 0; }
+.roles h2 { font-size: clamp(32px,4vw,52px); font-weight: 450; margin: 20px 0; letter-spacing: -.04em; }
+.note { max-width: 740px; color: #5d5b5b; line-height: 1.85; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 35px 0 18px; }
+.tabs button { padding: 14px 20px; background: #eee9e7; color: #3a292e; border: 1px solid #d6cbcc; }
+.tabs button[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.roles :is(button,article):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.card { min-height: 465px; padding: clamp(25px,4vw,52px); border-top: 2px solid var(--accent); background: #fff; }
+.card h3 { font-size: 32px; font-weight: 450; margin-bottom: 28px; }
+.card dl { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 35px; }
+.card dt { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 16px; }
+.card dd { font-size: 15px; line-height: 1.85; color: #555; margin: 0; }
+.closing { border-top: 1px solid var(--line); padding-top: 24px; margin-top: 35px; line-height: 1.8; max-width: 750px; }
+@media(max-width:760px) { .card dl { grid-template-columns: 1fr; gap: 25px; } .card { min-height: 700px; } .tabs button { font-size: 12px; padding: 12px; } }

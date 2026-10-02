@@ -27,9 +27,11 @@ test("Engineering supplied description, mission, vision and named content remain
   assert.equal(engineeringOpenings.length, 0);
 });
 
-test("new routes belong to Engineering only", () => {
-  for (const page of ["careers", "consultation"] as const) {
+test("consultation belongs to Engineering; Careers has one shared route", () => {
+  for (const page of ["consultation"] as const) {
     assert.ok(getPages("engineering").includes(page));
     assert.ok(!getPages("asset-management").includes(page));
   }
+  assert.ok(!getPages("engineering").includes("careers"));
+  assert.ok(!getPages("asset-management").includes("careers"));
 });

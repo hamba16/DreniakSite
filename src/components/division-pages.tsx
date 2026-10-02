@@ -8,7 +8,6 @@ import { engineering as engineeringContent } from "@/content/engineering";
 import {
   EngineeringAbout,
   EngineeringSectors,
-  EngineeringCareers,
 } from "./engineering-pages";
 import { ServicePillarIcon } from "./category-icons";
 import Image from "next/image";
@@ -16,6 +15,7 @@ import { CinematicImage } from "./cinematic-image";
 import { homepageImagery } from "@/content/homepage-imagery";
 import { Suspense } from "react";
 import Link from "next/link";
+import { permanentRedirect } from "next/navigation";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -412,7 +412,7 @@ export async function DivisionPage({
   }
   switch (page) {
     case "careers":
-      return <EngineeringCareers />;
+      permanentRedirect("/careers");
     case "about":
       return <AboutContent division={division} />;
     case "services":

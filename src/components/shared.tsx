@@ -58,6 +58,7 @@ export function Footer() {
           <Link href="/partners">
             Partners <ArrowUpRight size={16} />
           </Link>
+          <Link href="/careers">Careers <ArrowUpRight size={16} /></Link>
           <Link href="/portal">
             Client portal <ArrowUpRight size={16} />
           </Link>

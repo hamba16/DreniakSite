@@ -146,9 +146,9 @@ test("Engineering content, registrations and About order match the agreed brief"
   await expect(page.locator(".insight-categories span")).toHaveText(
     engineering.insightCategories,
   );
-  await page.goto("/engineering/careers");
+  await page.goto("/careers");
   await expect(
-    page.getByRole("heading", { name: "No current openings." }),
+    page.getByRole("heading", { name: "Open Applications" }),
   ).toBeVisible();
 });
 

@@ -207,6 +207,11 @@ export function Header({ division }: { division?: Division }) {
         </Link>
         <span className="eyebrow">ONE ORIGIN. TWO DISCIPLINES.</span>
         <Link
+          href="/careers"
+          className="parent-header-partners"
+          aria-current={path === "/careers" ? "page" : undefined}
+        >Careers <ArrowUpRight size={14} /></Link>
+        <Link
           href="/partners"
           className="parent-header-partners"
           aria-current={path === "/partners" ? "page" : undefined}
@@ -224,7 +229,7 @@ export function Header({ division }: { division?: Division }) {
     "sectors",
     "projects",
     "insights",
-    ...(division === "engineering" ? ["careers" as const] : []),
+    "careers",
     "contact",
   ];
   return (
@@ -269,7 +274,7 @@ export function Header({ division }: { division?: Division }) {
         {nav.map((page) => (
           <Link
             key={page}
-            href={`/${division}/${page}`}
+            href={page === "careers" ? "/careers" : `/${division}/${page}`}
             aria-current={path === `/${division}/${page}` ? "page" : undefined}
             onClick={() => setOpen(false)}
           >

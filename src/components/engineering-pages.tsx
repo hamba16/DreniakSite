@@ -10,7 +10,7 @@ import {
   ClipboardList,
   Mountain,
 } from "lucide-react";
-import { engineering, engineeringOpenings } from "@/content/engineering";
+import { engineering } from "@/content/engineering";
 import { Mark } from "./brand";
 import { LeadershipSection } from "./leadership-section";
 import { ConvergenceDiagram } from "./convergence-diagram";
@@ -192,44 +192,3 @@ export function EngineeringAbout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function EngineeringCareers() {
-  return (
-    <>
-      <PageIntro
-        eyebrow="CAREERS / DRENIAK ENGINEERING"
-        title={
-          <>
-            Careers in <br /> <em>engineering.</em>
-          </>
-        }
-        description="Opportunities to contribute to engineering in Uganda and beyond."
-      />
-      {engineeringOpenings.length ? (
-        <div className="engineering-openings">
-          {engineeringOpenings.map((opening) => (
-            <article className="insight-card" key={opening.id}>
-              <span className="eyebrow">{opening.location}</span>
-              <h2>{opening.title}</h2>
-              <p>{opening.description}</p>
-              <a className="text-link" href={opening.applicationUrl}>
-                Apply for this role <ArrowUpRight size={17} />
-              </a>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <section className="insights-empty">
-          <div>
-            <span className="eyebrow">CURRENT OPPORTUNITIES</span>
-            <h2>No current openings.</h2>
-            <p>
-              There are no vacancies listed at the moment. Please check back for
-              future opportunities.
-            </p>
-          </div>
-          <Mark stroke />
-        </section>
-      )}
-    </>
-  );
-}

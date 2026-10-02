@@ -151,7 +151,7 @@ test("key pages satisfy automated WCAG A/AA checks", async ({ page }) => {
     "/engineering/about",
     "/engineering/services",
     "/engineering/sectors",
-    "/engineering/careers",
+    "/careers",
     "/engineering/consultation",
   ]) {
     await page.goto(route);
@@ -189,7 +189,6 @@ test("metadata, robots, sitemap, social cards and not-found responses are valid"
   }
   for (const route of [
     "/engineering/assessment",
-    "/asset-management/careers",
     "/not-a-division/about",
   ]) {
     expect((await request.get(route)).status(), route).toBe(404);
