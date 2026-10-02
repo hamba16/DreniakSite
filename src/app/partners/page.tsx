@@ -16,6 +16,7 @@ import { ProjectLabel } from "@/components/project-label";
 import {
   partnerCategoryDefaults,
   partnerIntroduction,
+  withApprovedPartners,
 } from "@/content/partners";
 import { publishedPartners, type PublishedPartner } from "@/lib/public-content";
 import styles from "./partners.module.css";
@@ -73,10 +74,10 @@ function PartnerCard({ partner }: { partner: PublishedPartner }) {
           />
         </div>
       )}
-      <ProjectLabel kind="category">
+      {partner.category && <ProjectLabel kind="category">
         <Icon size={13} aria-hidden="true" />
         {partner.category}
-      </ProjectLabel>
+      </ProjectLabel>}
       <h3>
         {website ? (
           <a href={website} target="_blank" rel="noopener noreferrer">
@@ -99,10 +100,11 @@ export default async function PartnersPage() {
   } catch {
     unavailable = true;
   }
+  partners = withApprovedPartners(partners);
 
   const categories: string[] = [...partnerCategoryDefaults];
   for (const partner of partners) {
-    const category = partner.category.trim();
+    const category = partner.category.trim() || "Partners";
     if (
       category &&
       !categories.some((existing) => categoryKey(existing) === categoryKey(category))
@@ -131,7 +133,7 @@ export default async function PartnersPage() {
             {categories.map((category) => {
               const Icon = categoryIcons[categoryKey(category)] ?? Network;
               const items = partners.filter(
-                (partner) => categoryKey(partner.category) === categoryKey(category),
+                (partner) => categoryKey(partner.category || "Partners") === categoryKey(category),
               );
 
               return (
