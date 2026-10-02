@@ -123,23 +123,6 @@ export const projectGalleryImages: ProjectGalleryImage[] = [
     provenanceNote
   },
   {
-    "id": "columned-facade",
-    "src": "/images/projects/proposed/building-e-ornate-apartment-complete-angle-01.jpeg",
-    "alt": "Red and cream apartment facade with tall white columns, arched balconies and a triangular pediment",
-    "caption": "Columns, arches and balcony rhythm",
-    "width": 1022,
-    "height": 1080,
-    "span": "2x2",
-    "orientation": "portrait",
-    "qualityRating": "B",
-    "heroEligible": true,
-    "focalPoint": {
-      "x": 50,
-      "y": 0
-    },
-    provenanceNote
-  },
-  {
     "id": "apartment-towers",
     "src": "/images/projects/proposed/building-e-ornate-apartment-complete-straight-01.jpeg",
     "alt": "Brown, cream and maroon apartment towers with stacked balconies beneath a cloudy sky",

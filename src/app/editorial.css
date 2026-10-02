@@ -39,6 +39,7 @@
 .project-bento-tile { position: relative; display: block; grid-column: span 4; min-width: 0; padding: 0; border: 0; background: transparent; color: #f3f0e9; text-align: left; cursor: pointer; }
 .project-bento-tile[data-index="0"] { grid-column: span 8; }
 .project-bento-tile[data-index="5"], .project-bento-tile[data-index="6"], .project-bento-tile[data-index="7"], .project-bento-tile[data-index="8"] { grid-column: span 6; }
+.project-bento-tile:last-child:nth-child(8) { grid-column: 1 / -1; }
 .project-bento-media { position: relative; display: block; overflow: hidden; width: 100%; aspect-ratio: var(--tile-aspect); background: #191919; }
 .project-bento-image { object-fit: cover; transform-origin: var(--focal-x) var(--focal-y); transition: transform 400ms ease; }
 .project-bento-meta { display: flex; align-items: flex-start; gap: 14px; padding-top: 16px; border-top: 1px solid #ffffff40; margin-top: 16px; }
