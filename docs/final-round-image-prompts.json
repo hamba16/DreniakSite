@@ -1,0 +1,37 @@
+[
+  {
+    "id": "crossing",
+    "prompt": "Use case: photorealistic-natural. Generate one landscape 3:2 conceptual website hero for Dreniak Engineering titled The Crossing, no text in image. Newly completed elegant long-span concrete bridge across a wide calm river at first light in East Africa. Red murram embankment and papyrus, low escarpment, faint distant African city profile, warm raking natural sunlight. International quality civil engineering with physically credible piers, deck and connections. Critical crop composition: show the entire primary bridge structure SMALL and contained within central 40 percent of image width and middle 40 percent height. Outer thirds should be mainly calm water, ground and sky, safe to crop to a tall portrait; bottom third calm low-detail water/ground under white website text. Wide environmental view with lots of negative space. Natural colours, no red/indigo colour wash. No humans, no vehicles, no signs, lettering, brands, logos or watermarks. Realistic photography aesthetic but clearly a generated concept, not a named real site. Output a single image, no collage.",
+    "date": "2026-10-03",
+    "model": "not exposed by tool",
+    "seed": "not exposed by tool"
+  },
+  {
+    "id": "crossingAlt",
+    "prompt": "Use case photorealistic-natural. Single 3:2 landscape natural-colour generated conceptual photograph for African engineering website. The Crossing alternate: a long-span elegant concrete river bridge seen from a high riverbank at sunrise, aligned mostly AWAY from camera in depth, from lower-centre toward upper-centre, not stretching horizontally across the picture. The ENTIRE bridge including both ends MUST fit within x=32%..68%, y=32%..59% of the image. Remote aerial-scale composition so the bridge occupies a small central area surrounded by broad river and red murram riverbanks with papyrus, low African escarpment and faint distant African skyline. Outer thirds only sky, ground and water. Lower third peaceful dark water and earth, minimal visual detail to allow overlay text. Warm raking first light; real materials and accurate regular pier construction, consistent shadows. No people, vehicles, text, signage, watermarks or logos. Quiet international-scale engineering, grounded East African environment. No red or indigo tint. No collage.",
+    "date": "2026-10-03",
+    "model": "not exposed by tool",
+    "seed": "not exposed by tool"
+  },
+  {
+    "id": "corridor",
+    "prompt": "Use case photorealistic-natural. Single landscape 3:2 AI conceptual hero for Dreniak Asset Management, The Corridor. Mature connected infrastructure corridor in an East African capital at blue hour, raised oblique view: concrete viaduct curves away towards a modest mid-rise African skyline, parallel railway, correctly formed electricity transmission pylons across farmland, one compact realistic substation mid-distance. Lights just coming on, deep cobalt sky with natural warm residual horizon. Natural balanced colour, no monochrome tint. Crucial composition: ENTIRE core corridor system compact inside CENTRAL 40% of frame width, between 30% and 60% image height; distant skyline similarly central. Outer thirds quiet open sky, farmland, ground only, safe to crop to very tall portrait. Bottom third calm low-detail dark land for white text overlays. Realistic sound engineering geometry, regular road/rail connections, realistic shadows and regional vegetation. No people, no vehicles, no signs, text, logos or watermarks, no collage.",
+    "date": "2026-10-03",
+    "model": "not exposed by tool",
+    "seed": "not exposed by tool"
+  },
+  {
+    "id": "corridorAlt",
+    "prompt": "Use case photorealistic-natural. One landscape 3:2 conceptual African infrastructure photograph at blue hour from very high raised oblique viewpoint. Wide open agricultural landscape surrounding a SMALL CENTRAL distant connected infrastructure corridor: viaduct and PARALLEL separate ground-level railway both run AWAY into the distance, entirely between x=38% and x=60%, from y=55% back to y=37%, curving gently to a compact mid-rise East African city. A small substation at x=62%, y=49%; two correctly structured modest transmission pylons inside x=30%..68%, y=38%..58%, with credible suspended wires. Compact core subject only inside central 40 percent width and middle 40 percent height, lots of empty breathing space all sides. The lower 40 percent is almost featureless unlit fields, far outer thirds only farmland and sky. Road does NOT run to image edge or foreground. Deep blue sky, dusk lights, natural warm/cool balance, no overall tint. All transport lines continuous and structurally plausible. No humans, no vehicles, no text or signage, watermarks or brands. No collage, single quiet very wide environmental composition.",
+    "date": "2026-10-03",
+    "model": "not exposed by tool",
+    "seed": "not exposed by tool"
+  },
+  {
+    "id": "corridorFinal",
+    "prompt": "Edit this generated conceptual infrastructure image. Preserve all existing realistic structure and natural twilight colours, but zoom the camera OUT significantly so the central transport corridor, both pylons and entire substation ALL occupy only the central 35 percent of image width, within x=35%..70%, and between y=32%..55%. Expand plain quiet fields at both sides and bottom, and atmospheric deep cobalt sky above. All core structures MUST be contained inside central 40% horizontally so portrait cropping cannot cut off the substation or viaduct. Reduce skyline size proportionally; skyline can remain distant. Keep low-detail dark farmland in entire bottom third for text. Landscape 3:2 aspect ratio. No people, vehicles, text or watermarks. Keep the road and rail geometry continuous.",
+    "date": "2026-10-03",
+    "model": "not exposed by tool",
+    "seed": "not exposed by tool"
+  }
+]

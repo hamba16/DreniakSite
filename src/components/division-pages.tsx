@@ -12,6 +12,7 @@ import {
 import { ServicePillarIcon } from "./category-icons";
 import Image from "next/image";
 import { CinematicImage } from "./cinematic-image";
+import { homepageImagery } from "@/content/homepage-imagery";
 import { Suspense } from "react";
 import Link from "next/link";
 import {
@@ -64,14 +65,10 @@ export async function DivisionHome({ division }: { division: Division }) {
     <>
       <section className="division-hero">
         <CinematicImage division={division}><Image
-          src={`/images/${division}.webp`}
-          alt={
-            engineering
-              ? "Conceptual concrete civic infrastructure"
-              : "Conceptual elevated infrastructure and a distant city skyline"
-          }
+          src={homepageImagery[division].src}
+          alt={homepageImagery[division].alt}
           fill
-          priority
+          preload
           sizes="100vw"
         /></CinematicImage>
         <div className="division-hero-overlay" />

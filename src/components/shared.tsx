@@ -85,6 +85,7 @@ export function Footer() {
           © {new Date().getFullYear()} Dreniak Limited. Live the Future.
         </span>
         <Link href="/privacy">Privacy</Link>
+        <Link href="/credits">Image credits</Link>
         <a href="#top">Back to top ↑</a>
       </div>
     </footer>

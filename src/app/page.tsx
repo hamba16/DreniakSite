@@ -12,6 +12,7 @@ import { Footer } from "@/components/shared";
 import { FounderCard } from "@/components/founder-card";
 import { CinematicImage } from "@/components/cinematic-image";
 import { homepageContent } from "@/lib/public-content";
+import { homepageImagery } from "@/content/homepage-imagery";
 export default async function Home() {
   let content = null;
   try {
@@ -94,10 +95,10 @@ export default async function Home() {
               className="division-panel engineering"
             >
               <CinematicImage division="engineering"><Image
-                src="/images/engineering.webp"
-                alt="Conceptual architectural image of monumental concrete infrastructure"
+                src={homepageImagery.engineering.src}
+                alt={homepageImagery.engineering.alt}
                 fill
-                priority
+                preload
                 sizes="(max-width: 760px) 100vw, 60vw"
               /></CinematicImage>
               <div className="panel-shade" />
@@ -131,8 +132,8 @@ export default async function Home() {
               className="division-panel asset-management"
             >
               <CinematicImage division="asset-management"><Image
-                src="/images/asset-management.webp"
-                alt="Conceptual image of a transport viaduct and a distant African skyline"
+                src={homepageImagery["asset-management"].src}
+                alt={homepageImagery["asset-management"].alt}
                 fill
                 fetchPriority="low"
                 sizes="(max-width: 760px) 100vw, 60vw"

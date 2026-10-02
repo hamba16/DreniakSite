@@ -21,7 +21,11 @@
 .cinematic-image img {
   object-fit: cover;
 }
-.division-hero .cinematic-image img { object-position: center 47%; }
+.division-hero .cinematic-image img { object-position: 55% 45%; }
+.division-panel.engineering, .division-panel.asset-management, .division-hero { background: #111315; }
+.division-panel .cinematic-image img { opacity: .9; object-position: 55% center; }
+.division-panel:hover .cinematic-image img, .division-panel:focus-visible .cinematic-image img { opacity: 1; }
+.division-panel.asset-management .cinematic-image img { object-position: 60% center; }
 .division-panel .cinematic-image img { transform: none; }
 .division-panel .cinematic-image img { transition: opacity .8s; }
 
@@ -55,7 +59,8 @@
   to { transform: translate3d(-.35%, -.25%, 0) scale(1.018); }
 }
 @media (max-width: 760px) {
-  .division-hero .cinematic-image img { object-position: 62% center; }
+  .division-hero .cinematic-image img { object-position: 55% center; }
+  .division-hero .cinematic-image[data-division="asset-management"] img { object-position: 60% center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .cinematic-image__scroll,

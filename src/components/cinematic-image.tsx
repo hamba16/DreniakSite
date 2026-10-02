@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-/** Motion is confined to the generated hero artwork, never supplied photography. */
+/** Restrained motion for the natural-colour conceptual homepage artwork. */
 export function CinematicImage({
   children,
   division,
