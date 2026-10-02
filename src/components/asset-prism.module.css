@@ -1,0 +1,47 @@
+.root { --prism-red: #e86a76; padding-block: 32px 48px; overflow: clip; }
+.tabs { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 6px; }
+.tabs :is(button,a) { display: grid; justify-items: center; gap: 12px; background: transparent; color: #c6d0db; padding: 18px 4px; font-size: 11px; }
+.tabs button[aria-selected="true"] { color: #fff; }
+.root :is(button,a,section):focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.progress { display: flex; gap: 4px; margin: 12px 0 28px; }
+.progress span { flex: 1; height: 2px; background: #ffffff25; }
+.progress span[data-active="true"] { background: var(--prism-red); }
+.stage { --width: min(54vw, 580px); --depth: calc(var(--width) * .8660254); position: relative; height: 350px; perspective: 1500px; touch-action: pan-y; }
+.rotor { position: relative; width: var(--width); height: 100%; margin-inline: auto; transform-style: preserve-3d; transform: translateZ(calc(var(--depth) * -1)) rotateY(calc(var(--turn) + var(--drag,0deg) + var(--tilt,0deg))); transition: transform .65s cubic-bezier(.2,.75,.2,1); }
+.stage[data-dragging="true"] .rotor { transition: none; }
+.face { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 16px; padding: 30px; border: 1px solid #ffffff25; background: #102d45; backface-visibility: hidden; transform: rotateY(var(--face)) translateZ(var(--depth)); opacity: .4; transition: opacity .4s; }
+.face[data-active="true"] { opacity: 1; background: #153952; }
+.face p { font-size: clamp(24px,2.3vw,35px); line-height: 1.2; letter-spacing: -.025em; max-width: 24ch; margin: 0; }
+.label { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #d7e1ea; }
+.face a { display: flex; justify-content: space-between; gap: 12px; color: #fff; font-size: 12px; margin-top: auto; }
+.artifact { position: absolute; right: 28px; top: 20px; color: #b7c7d6; opacity: .8; }
+.artifact span { position: absolute; width: 22px; height: 2px; background: var(--prism-red); right: 0; bottom: 8px; }
+.face .label { margin-top: 72px; }
+.root[data-mode="prism"] .face[data-active="true"] .artifact svg { animation: artifact-in 1s ease both; }
+.artifact[data-artifact="0"] { --artifact-start: scale(1.16); }
+.artifact[data-artifact="1"] { --artifact-start: skewY(-12deg) translateY(7px); }
+.artifact[data-artifact="2"] { --artifact-start: scaleY(.6); }
+.artifact[data-artifact="3"] { --artifact-start: rotate(-12deg) scale(.8); }
+.artifact[data-artifact="4"] { --artifact-start: rotateY(35deg); }
+.artifact[data-artifact="5"] { --artifact-start: translateY(12px); }
+@keyframes artifact-in { from { transform: var(--artifact-start); } to { transform: none; } }
+.neighbour { position: absolute; top: 0; bottom: 0; width: calc((100% - var(--width))/2); color: #d5dde5; font-size: 28px; background: transparent; }
+.previous { left: 0; }.next { right: 0; }
+.root[data-mode="server"] .rotor { display: flex; gap: 18px; width: 100%; transform: none; overflow-x: auto; scroll-snap-type: x mandatory; }
+.root[data-mode="server"] .face { position: relative; min-width: 100%; flex-shrink: 0; transform: none; opacity: 1; scroll-snap-align: start; }
+.root[data-mode="flat"] .rotor { width: 100%; transform: none; }
+.root[data-mode="flat"] .face { transform: none; }
+.root[data-mode="flat"] .face:not([data-active="true"]) { visibility: hidden; }
+@media(max-width:759px) {
+ .root { padding: 24px 7% 36px; }
+ .tabs { gap: 2px; }.tabs :is(button,a) { font-size: 9px; padding: 12px 0; gap: 10px; }.tabs svg { width: 18px; }
+ .stage { --width: calc(100% - 32px); height: 330px; perspective: none; }
+ .rotor { transform: none; }
+ .face { transform: translateX(0) translateY(0); opacity: 0; padding: 22px; visibility: hidden; }
+ .face[data-offset="-1"], .face[data-offset="1"] { visibility: visible; opacity: .4; transform: translateX(-12px) translateY(10px) scale(.96); }
+ .face[data-offset="1"] { transform: translateX(12px) translateY(10px) scale(.96); }
+ .face[data-active="true"] { z-index: 2; visibility: visible; transform: none; }
+ .face p { font-size: 25px; }.artifact { top: 18px; right: 22px; }.artifact svg { width: 60px; height: 60px; }
+ .root[data-mode="server"] .face { visibility: visible; }
+}
+@media(prefers-reduced-motion:reduce) { .root *, .root *::before { animation: none !important; transition: none !important; } }
