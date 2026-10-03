@@ -12,9 +12,9 @@ export function CareerRoles() {
       const next=event.key==='ArrowRight'?(index+1)%5:event.key==='ArrowLeft'?(index+4)%5:event.key==='Home'?0:event.key==='End'?4:null;
       if(next===null)return;event.preventDefault();setActive(next);refs.current[next]?.focus();
     }}>{item.name}</button>)}</div>
-    <article className={styles.card} role="tabpanel" id={`${id}-panel`} aria-labelledby={`${id}-${active}`} tabIndex={0}>
+    <div className={styles.card} role="tabpanel" id={`${id}-panel`} aria-labelledby={`${id}-${active}`} tabIndex={0}>
       <h3>{role.name}</h3><dl><div><dt>A typical week</dt><dd>{role.week}</dd></div><div><dt>What you pick up</dt><dd>{role.learning}</dd></div><div><dt>Who you work alongside</dt><dd>{role.alongside}</dd></div></dl>
       <p className={styles.closing}>You will be asked what you think. We would rather hear a question early than a problem late.</p>
-    </article>
+    </div>
   </section>;
 }

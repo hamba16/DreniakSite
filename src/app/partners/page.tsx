@@ -118,7 +118,7 @@ export default async function PartnersPage() {
       <Header />
       <main id="main" className={styles.page}>
         <div className={styles.container}>
-          <section className={styles.hero} aria-labelledby="partners-title">
+          <div className={styles.hero}>
             <Motif flow density={180} className={styles.heroMotif} />
             <div className={styles.heroContent}>
               <span className={styles.eyebrow}>ONE COMPANY · SHARED WORK</span>
@@ -127,7 +127,7 @@ export default async function PartnersPage() {
                 {partnerIntroduction.text}
               </p>
             </div>
-          </section>
+          </div>
 
           <div className={styles.groups}>
             {categories.map((category) => {
