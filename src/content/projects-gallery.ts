@@ -138,23 +138,6 @@ export const projectGalleryImages: ProjectGalleryImage[] = [
       "y": 0
     },
     provenanceNote
-  },
-  {
-    "id": "apartment-skyline",
-    "src": "/images/projects/proposed/building-d-apartment-block-complete-straight-01.jpeg",
-    "alt": "Wide view of brown, cream and maroon apartment elevations with rooftop structures and overhead utility wires",
-    "caption": "Apartment elevations beneath a cloudy sky",
-    "width": 1080,
-    "height": 470,
-    "span": "2x1",
-    "orientation": "landscape",
-    "qualityRating": "B",
-    "heroEligible": false,
-    "focalPoint": {
-      "x": 50,
-      "y": 0
-    },
-    provenanceNote
   }
 ];
 

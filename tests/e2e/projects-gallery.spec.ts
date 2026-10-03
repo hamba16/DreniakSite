@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { projectGalleryImages } from "../../src/content/projects-gallery";
+const total = projectGalleryImages.length;
+const counter = (index: number) => `${String(index).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
 
 for (const width of [360, 390, 768, 1024, 1440, 1920]) {
   test(`gallery composition and viewer fit at ${width}px`, async ({ page }) => {
@@ -19,7 +22,9 @@ for (const width of [360, 390, 768, 1024, 1440, 1920]) {
     expect(proportions.every(difference => difference < .01)).toBe(true);
     await page.locator(".project-bento-tile").first().click();
     const dialog = page.getByRole("dialog");
-    for (let index = 0; index < 8; index++) {
+    await expect(page.locator(".project-bento-tile")).toHaveCount(7);
+    for (let index = 0; index < total; index++) {
+      await expect(dialog.locator(".project-lightbox-index")).toHaveText(counter(index + 1));
       const image = await dialog.locator("img").boundingBox();
       const caption = await dialog.locator(".project-lightbox-caption").boundingBox();
       expect(image!.width).toBeLessThanOrEqual(width * .9 + 1);
@@ -28,6 +33,9 @@ for (const width of [360, 390, 768, 1024, 1440, 1920]) {
       expect(caption!.y + caption!.height).toBeLessThanOrEqual(width === 390 ? 844 : 1000);
       await page.keyboard.press("ArrowRight");
     }
+    await expect(dialog.locator(".project-lightbox-index")).toHaveText(counter(1));
+    await page.keyboard.press("ArrowLeft");
+    await expect(dialog.locator(".project-lightbox-index")).toHaveText(counter(total));
     await page.keyboard.press("Escape");
     await expect(page.locator('.switch-link[href="/asset-management"]').first()).toBeAttached();
   });
@@ -50,10 +58,10 @@ test("gallery keyboard navigation traps focus and restores it without moving the
   await page.keyboard.press("Tab");
   await expect(close).toBeFocused();
   await page.keyboard.press("ArrowRight");
-  await expect(dialog.locator(".project-lightbox-index")).toHaveText("05 / 08");
-  await expect(dialog.getByRole("status")).toContainText("5 of 8");
+  await expect(dialog.locator(".project-lightbox-index")).toHaveText(counter(5));
+  await expect(dialog.getByRole("status")).toContainText(`5 of ${total}`);
   await page.keyboard.press("ArrowLeft");
-  await expect(dialog.locator(".project-lightbox-index")).toHaveText("04 / 08");
+  await expect(dialog.locator(".project-lightbox-index")).toHaveText(counter(4));
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
   await expect(tile).toBeFocused();
@@ -75,10 +83,10 @@ test("touch swipes navigate, vertical drags stay put, and reduced motion stops m
   // Dispatch to exercise the handler even in the desktop browser project.
   await stage.dispatchEvent("pointerdown", { pointerType: "touch", pointerId: 1, clientX: 200, clientY: 200 });
   await stage.dispatchEvent("pointerup", { pointerType: "touch", pointerId: 1, clientX: 110, clientY: 205 });
-  await expect(page.locator(".project-lightbox-index")).toHaveText("02 / 08");
+  await expect(page.locator(".project-lightbox-index")).toHaveText(counter(2));
   await stage.dispatchEvent("pointerdown", { pointerType: "touch", pointerId: 1, clientX: 200, clientY: 200 });
   await stage.dispatchEvent("pointerup", { pointerType: "touch", pointerId: 1, clientX: 110, clientY: 310 });
-  await expect(page.locator(".project-lightbox-index")).toHaveText("02 / 08");
+  await expect(page.locator(".project-lightbox-index")).toHaveText(counter(2));
   await page.keyboard.press("Escape");
   await expect(page.locator(".project-hero")).toHaveAttribute("data-paused", "true");
   const next = page.getByRole("button", { name: "Next featured image" });
@@ -120,16 +128,16 @@ test("Tab reaches every photograph and Enter opens each viewer without pointer i
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/engineering/projects");
   const reached: number[] = [];
-  for (let step = 0; step < 70 && reached.length < 8; step++) {
+  for (let step = 0; step < 70 && reached.length < total; step++) {
     await page.keyboard.press("Tab");
     const index = await page.evaluate(() => document.activeElement?.classList.contains("project-bento-tile") ? Number((document.activeElement as HTMLElement).dataset.index) : null);
     if (index === null) continue;
     reached.push(index);
     await page.keyboard.press("Enter");
     await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.locator(".project-lightbox-index")).toHaveText(`${String(index + 1).padStart(2, "0")} / 08`);
+    await expect(page.locator(".project-lightbox-index")).toHaveText(counter(index + 1));
     await page.keyboard.press("Escape");
     await expect(page.locator(".project-bento-tile").nth(index)).toBeFocused();
   }
-  expect(reached).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+  expect(reached).toEqual(projectGalleryImages.map((_, index) => index));
 });
