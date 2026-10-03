@@ -2034,6 +2034,22 @@ em {
   min-height: 100%;
   background: linear-gradient(180deg, #fff, #f3f1ee);
 }
+.asset-project-image {
+  margin: 0;
+}
+.asset-project-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+}
+.asset-project-image figcaption {
+  margin-top: 6px;
+  color: #666;
+  font-size: 10px;
+  line-height: 1.5;
+}
 .asset-project-card-secondary {
   padding-bottom: 18px;
 }

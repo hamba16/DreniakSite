@@ -508,6 +508,19 @@ export async function DivisionPage({
             <div className="asset-projects-grid">
               {featuredStudies.map((study) => (
                 <article key={study.slug} className="asset-project-card asset-project-card-featured">
+                  {study.image && (
+                    <figure className="asset-project-image">
+                      <Image
+                        src={study.image.src}
+                        alt={study.image.alt}
+                        width={study.image.width}
+                        height={study.image.height}
+                        sizes="(max-width: 900px) 85vw, 30vw"
+                        style={{ objectPosition: study.image.position }}
+                      />
+                      <figcaption>Illustrative photo</figcaption>
+                    </figure>
+                  )}
                   <div className="asset-project-topline">
                     <ProjectLabel kind="location">{study.location}</ProjectLabel>
                     {study.status && <ProjectLabel kind="status">{study.status}</ProjectLabel>}

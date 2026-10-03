@@ -26,6 +26,13 @@ export interface ProjectCaseStudy {
   subtitle: string;
   opening: string;
   summary: string;
+  image?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    position?: string;
+  };
   sections: CaseStudySection[];
   serviceLinks?: Array<{ label: string; href: string }>;
 }
@@ -52,6 +59,12 @@ export const assetManagementFeaturedProjects: ProjectCaseStudy[] = [
     status: "90% Complete",
     role: "Engineering | Development Oversight | Asset Management | Lifecycle Planning",
     title: "From Construction Project to Performing Asset",
+    image: {
+      src: "/images/projects/asset-residential-nigeria.webp",
+      alt: "Apartment facade with balconies in Abuja, Nigeria",
+      width: 1200,
+      height: 900,
+    },
     subtitle: "End-to-End Development & Lifecycle Management of a Residential Apartment Complex",
     opening:
       "The project was never simply to complete an apartment complex. It was to create an asset capable of performing long after construction ends.",
@@ -122,6 +135,13 @@ export const assetManagementFeaturedProjects: ProjectCaseStudy[] = [
     role: "Consultative Input — Phase II",
     capability: "Infrastructure Intelligence | Asset Data | Transport Infrastructure Strategy",
     title: "Building the Information Architecture Behind a National Transport System",
+    image: {
+      src: "/images/projects/asset-transport-uganda.webp",
+      alt: "Paved road curving through green hills in Uganda",
+      width: 1200,
+      height: 801,
+      position: "50% 75%",
+    },
     subtitle: "National Multimodal Transport Modelling & Integrated Infrastructure Database",
     opening:
       "Before a country can optimise infrastructure investment, it must first understand how its infrastructure works as a system.",
@@ -199,6 +219,12 @@ export const assetManagementFeaturedProjects: ProjectCaseStudy[] = [
     status: "3 Years",
     role: "Asset Management | Operational Systems | Finance | Workforce | Investment & Growth Advisory",
     title: "When Asset Management Became Business Transformation",
+    image: {
+      src: "/images/projects/asset-business-finance.webp",
+      alt: "Calculator, financial paperwork and a pen on an office desk",
+      width: 1200,
+      height: 800,
+    },
     subtitle: "Three-Year Enterprise Asset, Operational & Financial Transformation Programme",
     opening:
       "The most valuable assets inside an organisation do not appear in one asset register. Property, vehicles, equipment, people, information and capital must ultimately work as one system.",
