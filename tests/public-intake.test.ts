@@ -11,7 +11,7 @@ test("shared limiter migration enforces five attempts, expiry, isolated keys and
   try {
     await db.exec("create role anon; create role authenticated; create role service_role bypassrls; grant usage on schema public to service_role;");
     await db.exec("create table public.newsletter_subscribers(email text primary key, consent_version text default 'old');");
-    await db.exec(await readFile("supabase/migrations/20260920173005_public_intake_limits.sql", "utf8"));
+    await db.exec(await readFile("src/supabase/migrations/20260920173005_public_intake_limits.sql", "utf8"));
     await db.exec("set role service_role");
     const take = async (key: string) => (await db.query<{allowed:boolean}>("select public.consume_public_limit($1) as allowed", [key.repeat(64)])).rows[0].allowed;
     const results = await Promise.all(Array.from({length:12}, () => take("a")));
