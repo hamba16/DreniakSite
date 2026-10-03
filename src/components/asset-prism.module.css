@@ -16,6 +16,7 @@
 .label { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #d7e1ea; }
 .face a { display: flex; justify-content: space-between; gap: 12px; color: #fff; font-size: 12px; margin-top: auto; }
 .artifact { position: absolute; right: 28px; top: 20px; color: #b7c7d6; opacity: .8; }
+.face:not([data-active="true"]) .artifact { visibility: hidden; }
 .artifact svg > :last-child { stroke: var(--prism-red); }
 .face .label { margin-top: 72px; }
 .root[data-mode="prism"] .face[data-active="true"] .artifact svg { animation: artifact-in 1s ease both; }
