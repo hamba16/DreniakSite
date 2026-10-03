@@ -121,7 +121,7 @@ export function CapabilityJourney() {
             inert={mode!=="server" && active!==index ? true : undefined} tabIndex={mode!=="server" && active===index?0:undefined}
             className={styles.face} data-active={active===index} data-offset={offset}
             style={{"--face":`${index*60}deg`} as CSSProperties}>
-            <div className={styles.artifact} data-artifact={index} aria-hidden="true"><Icon size={80} strokeWidth={.8}/><span/></div>
+            <div className={styles.artifact} data-artifact={index} aria-hidden="true"><Icon size={80} strokeWidth={.8}/></div>
             <span className={styles.label}>{stage}</span><p>{explanations[index]}</p>
             <Link href="/asset-management/services" aria-label={`Explore ${stage} services`}>Explore services <ArrowUpRight size={18} aria-hidden="true"/></Link>
           </section>;

@@ -55,9 +55,13 @@ for (const hint of ['reduced','save-data','memory','cores','unsupported']) {
   });
 }
 test('all stage content and links work without JavaScript', async({browser})=>{
-  const context=await browser.newContext({javaScriptEnabled:false}); const page=await context.newPage();
+  const context=await browser.newContext({javaScriptEnabled:false,reducedMotion:'reduce'}); const page=await context.newPage();
   await page.goto((process.env.TEST_BASE_URL||'http://localhost:3000')+'/asset-management/approach');
-  for(const stage of stages){await page.getByRole('link',{name:stage,exact:true}).click(); await expect(page.getByRole('link',{name:`Explore ${stage} services`})).toBeVisible();}
+  for(const stage of stages){
+    const anchor=page.getByRole('link',{name:stage,exact:true});
+    await anchor.focus(); await page.keyboard.press('Enter');
+    await expect(page.getByRole('link',{name:`Explore ${stage} services`})).toBeInViewport();
+  }
   await context.close();
 });
 test('horizontal swipe selects, vertical gesture preserves selection',async({page})=>{
@@ -69,4 +73,32 @@ test('horizontal swipe selects, vertical gesture preserves selection',async({pag
   const selected=await root.getAttribute('data-active-stage');
   await page.mouse.move(box.x+100,box.y+80); await page.mouse.down(); await page.mouse.move(box.x+110,box.y+200,{steps:8}); await page.mouse.up();
   await expect(root).toHaveAttribute('data-active-stage',selected!);
+});
+
+test('touch input swipes cards and allows native vertical page scrolling',async({browser})=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+  const page=await context.newPage();
+  await page.goto((process.env.TEST_BASE_URL||'http://localhost:3000')+'/asset-management/approach');
+  await page.addStyleTag({content:'html{scroll-behavior:auto!important}'});
+  await page.getByRole('tab',{name:'Understand',exact:true}).click();
+  const root=page.locator('.journey:visible');await root.scrollIntoViewIfNeeded();
+  const cdp=await context.newCDPSession(page);
+  const swipe=async(x:number,y:number,dx:number,dy:number)=>{
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+    for(let step=1;step<=10;step++){
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*step/10,y:y+dy*step/10}]});
+      await page.waitForTimeout(20);
+    }
+    await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  };
+  let box=(await page.getByRole('tabpanel').boundingBox())!;
+  await swipe(box.x+box.width*.8,box.y+150,-150,0);
+  await expect(root).not.toHaveAttribute('data-active-stage','Understand');
+  const selected=await root.getAttribute('data-active-stage');
+  box=(await page.getByRole('tabpanel').boundingBox())!;
+  const startScroll=await page.evaluate(()=>scrollY);
+  await swipe(box.x+box.width/2,box.y+210,0,-130);
+  await expect.poll(()=>page.evaluate(()=>scrollY)).toBeGreaterThan(startScroll+20);
+  await expect(root).toHaveAttribute('data-active-stage',selected!);
+  await context.close();
 });
