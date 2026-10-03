@@ -116,7 +116,7 @@ export function CTA({
   );
   return (
     <section className={`cta ${division}`}>
-      <Motif />
+      <Motif flow />
       <div>
         <span className="eyebrow">
           SPEAK WITH DRENIAK
@@ -360,7 +360,7 @@ export function ProjectApproach({
             caption="Conceptual infrastructure intervention"
           />
         )}
-        <Mark stroke />
+        <Mark stroke flow />
         <span className="eyebrow">OUR PROJECT APPROACH</span>
         <h2>
           The thinking <br /> behind the work <br /> and its lifetime impact.

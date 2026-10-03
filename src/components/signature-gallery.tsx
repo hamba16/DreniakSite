@@ -79,7 +79,7 @@ export function SignatureGallery({ items, accentColor, autoAdvanceMs = 7000 }: {
   return (
     <section className={styles.gallery} aria-label="Gallery selection" style={{ "--gallery-accent": accentColor } as CSSProperties}>
       <div className={styles.stage} id={`signature-stage-${item.id}`}>
-        {!item.imageSrc && <div className={styles.stageBrand} aria-hidden="true"><Mark stroke /></div>}
+        {!item.imageSrc && <div className={styles.stageBrand} aria-hidden="true"><Mark stroke flow /></div>}
         <AnimatePresence mode="sync" initial={false}>
           <m.div key={item.id} className={styles.stageImage} initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.025 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={transition}>
             {item.imageSrc ? <Image src={item.imageSrc} alt={item.imageAlt || item.label} fill sizes="(max-width: 760px) 100vw, 70vw" style={{ objectPosition: item.objectPosition }} /> : <SectorArtwork visual={item.visual} label={item.label} accentColor={accentColor} />}

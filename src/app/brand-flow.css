@@ -1,0 +1,33 @@
+.brand-flow { pointer-events: none; overflow: visible; mask-image: radial-gradient(ellipse at 45% 45%,#000 35%,#000b 62%,transparent 92%); }
+.brand-flow-parallax { transform: translateY(var(--flow-parallax,0px)); }
+.brand-flow-contour { transform-box: view-box; transform-origin: 48% 52%; animation: brand-contour 22s ease-in-out infinite alternate; animation-play-state: paused; opacity: .45; }
+.brand-flow-contour path { stroke-dasharray: .76 .24; animation: brand-stroke 34s linear infinite; animation-play-state: paused; }
+.brand-flow .contour-1 { animation-delay: -6s; animation-duration: 27s; opacity: .3; }
+.brand-flow .contour-2 { animation-delay: -12s; animation-duration: 32s; opacity: .18; }
+.brand-flow .contour-3 { animation-delay: -18s; animation-duration: 38s; opacity: .09; }
+.brand-flow[data-flow-running="true"] .brand-flow-contour,
+.brand-flow[data-flow-running="true"] .brand-flow-contour path { animation-play-state: running; }
+.motif.motif-flow { background-image: none; filter: none; color: var(--accent); opacity: .09; }
+.motif-flow > .brand-flow { position: absolute; width: min(85%,750px); height: 100%; top: 0; right: -5%; }
+@keyframes brand-contour { from { transform: translate(-4px,3px) scale(1.03); } to { transform: translate(12px,-7px) scale(1.22); } }
+@keyframes brand-stroke { to { stroke-dashoffset: -1; } }
+.shared-theme { --accent: #991923; --shared-ink: #252334; --line: #ded6d8; --paper: #f8f5f3; }
+.shared-theme .parent-header { border-top-color: var(--accent); }
+.shared-theme .parent-header.on-light { background: #f8f5f3; color: var(--shared-ink); }
+.shared-theme .parent-header a:hover { color: var(--accent); }
+.shared-theme .parent-header a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 6px; }
+.shared-theme :is(.parent-story,.shared-careers,.privacy) { background: var(--paper); }
+.shared-theme :is(.cta,.portal-layout,.standards-section) { --accent: #991923; }
+.shared-theme .cta { background: linear-gradient(125deg,#711b2b,#702039 65%,#302b47); }
+.shared-theme .hero-arc { color: #b44d60; }
+.shared-theme .brand-flow .contour-1,.shared-theme .brand-flow .contour-3 { color: #394a70; }
+.shared-theme :is(a,button,input,textarea,select):focus-visible { outline: 2px solid #b74655; outline-offset: 4px; }
+.shared-theme .parent-closing .brand-flow { flex-shrink: 0; }
+@media(prefers-reduced-motion:reduce) {
+ .brand-flow-contour,.brand-flow-contour path { animation: none !important; }
+ .brand-flow-parallax { transform: none; }
+ .brand-flow .contour-0 { transform: scale(1.04); }
+ .brand-flow .contour-1 { transform: scale(1.09); }
+ .brand-flow .contour-2 { transform: scale(1.14); }
+ .brand-flow .contour-3 { transform: scale(1.19); }
+}

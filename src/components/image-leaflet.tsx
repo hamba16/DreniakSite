@@ -75,7 +75,7 @@ export function ImageLeaflet({
       }}
     >
       <div className={styles.image}>
-        <Mark className={styles.mark} stroke />
+        <Mark className={styles.mark} stroke flow />
         {image ? <Image src={image} alt={imageAlt || title} fill sizes={portrait ? "(max-width: 700px) 100vw, (max-width: 1152px) 55vw, 616px" : "100vw"} quality={portrait ? 90 : 75} loading="eager" /> : fallback}
         <div className={styles.shade} />
       </div>

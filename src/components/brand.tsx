@@ -1,12 +1,16 @@
 import Image from "next/image";
 import markPath from "../../public/brand/mark-path.json";
+import { FlowMark } from "./flow-mark";
 export function Mark({
   className = "",
   stroke = false,
+  flow = false,
 }: {
   className?: string;
   stroke?: boolean;
+  flow?: boolean;
 }) {
+  if (flow) return <FlowMark className={className} stroke={stroke} />;
   return (
     <svg viewBox="0 0 122 105" aria-hidden="true" className={className}>
       <path
@@ -43,15 +47,17 @@ export function Logo({
 export function Motif({
   className = "",
   density = 250,
+  flow = false,
 }: {
   className?: string;
   density?: number;
+  flow?: boolean;
 }) {
   return (
     <div
       aria-hidden="true"
-      className={`motif ${className}`}
+      className={`motif ${flow ? "motif-flow" : ""} ${className}`}
       style={{ backgroundSize: `${density}px auto` }}
-    />
+    >{flow && <FlowMark stroke />}</div>
   );
 }

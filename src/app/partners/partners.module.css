@@ -1,4 +1,5 @@
 .page {
+  --accent: #991923;
   min-height: 70vh;
   background: var(--paper);
   color: #111;
@@ -196,7 +197,7 @@
   overflow: hidden;
   margin-top: 82px;
   padding: 42px;
-  background: #090909;
+  background: linear-gradient(125deg,#711b2b,#702039 65%,#302b47);
   color: white;
 }
 

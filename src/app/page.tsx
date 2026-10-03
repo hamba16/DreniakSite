@@ -29,7 +29,7 @@ export default async function Home() {
         <section className="parent-hero">
           <div className="hero-grid" aria-hidden="true" />
           <div className="hero-arc" aria-hidden="true">
-            <Mark stroke />
+            <Mark stroke flow />
           </div>
           <div className="hero-center">
             <div className="hero-logo">
@@ -61,7 +61,7 @@ export default async function Home() {
           </div>
         </section>
         <section id="premise" className="premise">
-          <Motif density={190} />
+          <Motif density={190} flow />
           <div className="section-heading">
             <span className="eyebrow">
             <i className="red-dot" /> {content?.premise_label || "THE DRENIAK PERSPECTIVE"}
@@ -166,7 +166,7 @@ export default async function Home() {
           </div>
         </section>
         <div className="parent-closing">
-          <Mark />
+          <Mark flow />
           <p>
             {content?.closing_text || "The things we build should outlast us. The value they create should go further."}
           </p>

@@ -178,7 +178,7 @@ export async function DivisionHome({ division }: { division: Division }) {
             <div />
             <div />
             <div />
-            <Mark />
+            <Mark flow />
             <span>
               UNDERSTAND
               <br />
@@ -306,7 +306,7 @@ export function AboutContent({
             <br />
             beginning.
           </h2>
-          <Mark stroke />
+          <Mark stroke flow />
         </div>
         <div>
           <p className="story-lead">
@@ -648,7 +648,7 @@ export async function DivisionPage({
                   Our newsletter explores questions across engineering, asset management and economics, with perspectives on infrastructure and the value it creates over time.
                 </p>
               </div>
-              <Mark stroke />
+              <Mark stroke flow />
             </section>
           )}
           <div className="inline-newsletter">
@@ -745,7 +745,7 @@ export async function DivisionPage({
                   East Africa Time (UTC+3)
                 </p>
               </div>
-              <Mark stroke />
+              <Mark stroke flow />
             </aside>
             <Suspense fallback={<p>Loading your enquiry form…</p>}>
               <EnquiryForm division={division} />
@@ -805,7 +805,7 @@ export async function DivisionPage({
             </div>
             <figure className="approach-photo">
               <div className="approach-image generated-study" aria-label="Abstract infrastructure systems study">
-                <Mark stroke />
+                <Mark stroke flow />
                 <span className="eyebrow">DRENIAK / FIELD STUDY</span>
               </div>
             </figure>
@@ -848,7 +848,7 @@ export function PortalPage() {
           A future space for project updates, portfolio status and securely
           shared documents.
         </p>
-        <Motif />
+        <Motif flow />
       </div>
       <section className="portal-card">
         <LockKeyhole size={32} strokeWidth={1.2} />

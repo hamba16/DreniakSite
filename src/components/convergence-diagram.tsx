@@ -16,10 +16,10 @@ export function ConvergenceDiagram({
       <div className="convergence-stage" aria-hidden="true">
         {items.map((item, i) => (
           <div className={`convergence-layer layer-${i + 1}`} key={item}>
-            <Mark stroke />
+            <Mark stroke flow />
           </div>
         ))}
-        <Mark className="convergence-final-mark" />
+        <Mark className="convergence-final-mark" flow />
       </div>
       <div className="convergence-labels">
         {items.map((item, i) => (

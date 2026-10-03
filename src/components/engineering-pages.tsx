@@ -106,7 +106,7 @@ export function EngineeringAbout({ children }: { children: React.ReactNode }) {
         <div>
           <span className="eyebrow">FOUNDED 2024 · INCORPORATED 2025</span>
           <h2 id="engineering-overview">Company overview</h2>
-          <Mark stroke />
+          <Mark stroke flow />
         </div>
         <div>
           <p className="story-lead">{engineering.description}</p>

@@ -69,7 +69,7 @@ export function Experience({ children }: { children: ReactNode }) {
   return (
     <LazyMotion features={loadMotionFeatures} strict>
     <TransitionContext.Provider value={navigate}>
-      <div key={pathname} className="page-enter">
+      <div key={pathname} className={`page-enter ${["/", "/story", "/partners", "/careers", "/credits", "/privacy", "/portal"].includes(pathname) ? "shared-theme" : ""}`}>
         <ContentMotion />
         {children}
       </div>

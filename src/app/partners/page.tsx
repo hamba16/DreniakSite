@@ -119,7 +119,7 @@ export default async function PartnersPage() {
       <main id="main" className={styles.page}>
         <div className={styles.container}>
           <section className={styles.hero} aria-labelledby="partners-title">
-            <Motif density={180} className={styles.heroMotif} />
+            <Motif flow density={180} className={styles.heroMotif} />
             <div className={styles.heroContent}>
               <span className={styles.eyebrow}>ONE COMPANY · SHARED WORK</span>
               <h1 id="partners-title">Partners</h1>
@@ -161,7 +161,7 @@ export default async function PartnersPage() {
                     </ImageCollection>
                   ) : (
                     <div className={styles.emptyState}>
-                      <Motif density={160} className={styles.emptyMotif} />
+                      <Motif flow density={160} className={styles.emptyMotif} />
                       <div className={styles.emptyContent}>
                         <span className={styles.eyebrow}>
                           {unavailable
@@ -179,7 +179,7 @@ export default async function PartnersPage() {
                             : `Confirmed ${category.toLowerCase()} will appear here as details are ready.`}
                         </p>
                       </div>
-                      <Mark className={styles.emptyMark} />
+                      <Mark flow className={styles.emptyMark} />
                     </div>
                   )}
                 </section>
@@ -188,7 +188,7 @@ export default async function PartnersPage() {
           </div>
 
           <section className={styles.cta} aria-labelledby="partners-cta-title">
-            <Motif density={190} />
+            <Motif flow density={190} />
             <div className={styles.ctaContent}>
               <span className={styles.ctaEyebrow}>START A CONVERSATION</span>
               <h2 id="partners-cta-title">Work alongside Dreniak.</h2>
