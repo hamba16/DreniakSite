@@ -19,7 +19,7 @@ test('flowlines pause out of view and respect reduced motion',async({page})=>{
   await page.goto('/');await page.addStyleTag({content:'html{scroll-behavior:auto!important}'});
   const hero=page.locator('.hero-arc .brand-flow');
   await expect(hero).toHaveAttribute('data-flow-running','true');
-  await expect(page.locator('.parent-header .brand-flow,.panel-top .brand-flow,.footer .brand-flow')).toHaveCount(0);
+  await expect(page.locator('.parent-header .brand-flow,.panel-top .brand-flow,.footer a .brand-flow')).toHaveCount(0);
   await page.locator('.parent-closing').scrollIntoViewIfNeeded();
   await expect(hero).toHaveAttribute('data-flow-running','false');
   const closing=page.locator('.parent-closing .brand-flow');await expect(closing).toHaveAttribute('data-flow-running','true');

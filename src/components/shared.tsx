@@ -31,7 +31,7 @@ import { assetSectorImages, interventionImage } from "@/content/visual-assets";
 export function Footer() {
   return (
     <footer className="footer">
-      <Motif />
+      <Motif flow />
       <div className="footer-top">
         <div>
           <Link href="/" aria-label="Dreniak home">
