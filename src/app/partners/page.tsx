@@ -1,214 +1,104 @@
-import { ImageCollection } from "@/components/image-collection";
 import type { Metadata } from "next";
 import Image from "next/image";
-import {
-  ArrowUpRight,
-  Building2,
-  Mail,
-  Network,
-  Phone,
-  Wrench,
-} from "lucide-react";
+import { ArrowDown, ArrowUpRight, Mail, Phone } from "lucide-react";
 import { Header } from "@/components/interactions";
 import { Footer } from "@/components/shared";
-import { Mark, Motif } from "@/components/brand";
-import { ProjectLabel } from "@/components/project-label";
-import {
-  partnerCategoryDefaults,
-  partnerIntroduction,
-  withApprovedPartners,
-} from "@/content/partners";
+import { Mark } from "@/components/brand";
+import { partnerCategoryDefaults, partnerIntroduction, withApprovedPartners } from "@/content/partners";
 import { publishedPartners, type PublishedPartner } from "@/lib/public-content";
+import { PartnerEmblem } from "./partner-emblem";
 import styles from "./partners.module.css";
 
 export const metadata: Metadata = {
   title: "Partners",
-  description:
-    "Dreniak’s partner directory, structured for service providers and contractors across both company divisions.",
+  description: "Discover Dreniak’s collaborators, service providers and community partners across both company divisions.",
   alternates: { canonical: "/partners" },
-};
-
-function categoryKey(value: string) {
-  return value.trim().toLocaleLowerCase();
-}
-
-function categoryId(value: string) {
-  return value
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
-const categoryIcons: Record<string, typeof Wrench> = {
-  "service providers": Wrench,
-  contractors: Building2,
 };
 
 function safeWebsite(value: string) {
   try {
     const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:"
-      ? url.href
-      : undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function PartnerCard({ partner }: { partner: PublishedPartner }) {
-  const website = safeWebsite(partner.link);
-  const Icon = categoryIcons[categoryKey(partner.category)] ?? Network;
-
-  return (
-    <article className={styles.partnerCard}>
-      {partner.logo && (
-        <div className={styles.partnerLogo}>
-          <Image
-            src={partner.logo.src}
-            alt={partner.logo.alt}
-            width={180}
-            height={96}
-            sizes="(max-width: 760px) 80vw, 32vw"
-          />
-        </div>
-      )}
-      {partner.category && <ProjectLabel kind="category">
-        <Icon size={13} aria-hidden="true" />
-        {partner.category}
-      </ProjectLabel>}
-      <h3>
-        {website ? (
-          <a href={website} target="_blank" rel="noopener noreferrer">
-            {partner.name} <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
-        ) : (
-          partner.name
-        )}
-      </h3>
-      {partner.description && <p>{partner.description}</p>}
-    </article>
-  );
+    return url.protocol === "http:" || url.protocol === "https:" ? url.href : undefined;
+  } catch { return undefined; }
 }
 
 export default async function PartnersPage() {
   let partners: PublishedPartner[] = [];
   let unavailable = false;
-  try {
-    partners = await publishedPartners();
-  } catch {
-    unavailable = true;
-  }
+  try { partners = await publishedPartners(); } catch { unavailable = true; }
   partners = withApprovedPartners(partners);
-
-  const categories: string[] = [...partnerCategoryDefaults];
-  for (const partner of partners) {
-    const category = partner.category.trim() || "Partners";
-    if (
-      category &&
-      !categories.some((existing) => categoryKey(existing) === categoryKey(category))
-    ) {
-      categories.push(category);
-    }
-  }
+  const emptyCategories = partnerCategoryDefaults.filter(category =>
+    !partners.some(partner => partner.category.trim().toLowerCase() === category.toLowerCase()),
+  );
 
   return (
     <>
       <Header />
       <main id="main" className={styles.page}>
         <div className={styles.container}>
-          <div className={styles.hero}>
-            <Motif flow density={180} className={styles.heroMotif} />
+          <header className={styles.hero}>
             <div className={styles.heroContent}>
               <span className={styles.eyebrow}>ONE COMPANY · SHARED WORK</span>
-              <h1 id="partners-title">Partners</h1>
-              <p data-editorial-status={partnerIntroduction.editorialStatus}>
-                {partnerIntroduction.text}
-              </p>
+              <h1>Partners<span className={styles.titleDot}>.</span></h1>
+              <p data-editorial-status={partnerIntroduction.editorialStatus}>{partnerIntroduction.text}</p>
             </div>
-          </div>
-
-          <div className={styles.groups}>
-            {categories.map((category) => {
-              const Icon = categoryIcons[categoryKey(category)] ?? Network;
-              const items = partners.filter(
-                (partner) => categoryKey(partner.category || "Partners") === categoryKey(category),
-              );
-
-              return (
-                <section
-                  className={styles.category}
-                  key={category}
-                  aria-labelledby={`partners-${categoryId(category)}`}
-                >
-                  <div className={styles.categoryHeading}>
-                    <Icon size={20} aria-hidden="true" />
-                    <h2 id={`partners-${categoryId(category)}`}>{category}</h2>
-                  </div>
-                  {items.length ? (
-                    <ImageCollection label={category} className={styles.partnerGrid} items={items.map(partner => ({
-                      label: partner.name,
-                      image: partner.logo?.src,
-                      imageAlt: partner.logo?.alt || `${partner.name} logo`,
-                      summary: partner.description || partner.category,
-                      href: safeWebsite(partner.link),
-                      hrefLabel: "Visit partner website",
-                    }))}>
-                      {items.map((partner) => (
-                        <PartnerCard key={partner.id} partner={partner} />
-                      ))}
-                    </ImageCollection>
-                  ) : (
-                    <div className={styles.emptyState}>
-                      <Motif flow density={160} className={styles.emptyMotif} />
-                      <div className={styles.emptyContent}>
-                        <span className={styles.eyebrow}>
-                          {unavailable
-                            ? "CONTENT CURRENTLY UNAVAILABLE"
-                            : "PARTNER DIRECTORY IN PROGRESS"}
-                        </span>
-                        <h3>
-                          {unavailable
-                            ? "Partner information is temporarily unavailable."
-                            : "Partner details coming soon."}
-                        </h3>
-                        <p>
-                          {unavailable
-                            ? "Please check again later."
-                            : `Confirmed ${category.toLowerCase()} will appear here as details are ready.`}
-                        </p>
+            <a className={styles.heroLink} href="#partner-catalogue">
+              <span>Good company.<br />Shared possibilities.</span>
+              <span className={styles.downArrow}><ArrowDown size={22} aria-hidden="true" /></span>
+              <span className={styles.srOnly}>Explore the partner catalogue</span>
+            </a>
+          </header>
+          <section id="partner-catalogue" className={styles.catalogue} aria-label="Partner catalogue">
+            <div className={styles.catalogueIntro}>
+              <span className={styles.eyebrow}>THE DRENIAK COLLECTIVE</span>
+              <span>Individual expertise. A connected outlook.</span>
+            </div>
+            <ol className={styles.flow}>
+              {partners.map((partner, index) => {
+                const website = safeWebsite(partner.link);
+                const number = String(index + 1).padStart(2, "0");
+                return (
+                  <li key={partner.id} className={styles.flowItem}>
+                    <article className={styles.partner} aria-labelledby={`partner-${index}`}>
+                      <span className={styles.flowNumber} aria-hidden="true">{number}</span>
+                      <div className={styles.emblemStage}>
+                        <div className={styles.emblemArtwork}><PartnerEmblem name={partner.name} id={partner.id} /></div>
+                        <span className={styles.emblemCaption} aria-hidden="true">DRENIAK COLLECTION <span>/{number}</span></span>
                       </div>
-                      <Mark flow className={styles.emptyMark} />
-                    </div>
-                  )}
-                </section>
-              );
-            })}
-          </div>
-
+                      <div className={styles.partnerContent}>
+                        {partner.category && <span className={styles.category}>{partner.category}</span>}
+                        <h2 id={`partner-${index}`}>{website ? <a href={website} target="_blank" rel="noopener noreferrer">{partner.name}<ArrowUpRight aria-hidden="true" /></a> : partner.name}</h2>
+                        <span className={styles.nameRule} aria-hidden="true" />
+                        {partner.description && <p>{partner.description}</p>}
+                        {partner.logo && <Image className={styles.partnerLogo} src={partner.logo.src} alt={partner.logo.alt} width={140} height={70} sizes="140px" />}
+                        {website && <a className={styles.visitLink} href={website} target="_blank" rel="noopener noreferrer">Visit website <ArrowUpRight size={15} aria-hidden="true" /><span className={styles.srOnly}> for {partner.name} (opens in a new tab)</span></a>}
+                      </div>
+                    </article>
+                  </li>
+                );
+              })}
+            </ol>
+            {emptyCategories.length > 0 && <div className={styles.directoryNote}>
+              <span>{emptyCategories.join(" · ")}</span>
+              <p>{unavailable ? "Further partner information is temporarily unavailable. Please check again later." : "More collaborators will appear here as their details are ready."}</p>
+            </div>}
+          </section>
           <section className={styles.cta} aria-labelledby="partners-cta-title">
-            <Motif flow density={190} />
+            <div className={styles.ctaArtwork} aria-hidden="true">
+              <span className={styles.ctaOrbit} /><span className={styles.ctaOrbitInner} />
+              <div className={styles.ctaSculpture}><Mark /><Mark stroke /><Mark stroke /></div>
+              <span className={styles.ctaArtLabel}>A SHARED<br />POINT OF VIEW.</span><span className={styles.ctaPlus}>+</span>
+            </div>
             <div className={styles.ctaContent}>
-              <span className={styles.ctaEyebrow}>START A CONVERSATION</span>
-              <h2 id="partners-cta-title">Work alongside Dreniak.</h2>
-              <p>
-                If your organisation offers specialist services or delivery
-                expertise, contact our team to explore a conversation.
-              </p>
+              <span className={styles.ctaEyebrow}><span /> THE NEXT CONNECTION</span>
+              <h2 id="partners-cta-title">Work alongside<br /><span>Dreniak.</span></h2>
+              <p>If your organisation offers specialist services or delivery expertise, contact our team to explore a conversation.</p>
+              <div className={styles.ctaActions}>
+                <a className={styles.ctaPrimary} href="mailto:info@dreniak.com?subject=Partnership%20enquiry"><Mail size={17} aria-hidden="true" /><span>Let’s start a conversation</span><ArrowUpRight size={22} aria-hidden="true" /></a>
+                <a className={styles.ctaPhone} href="tel:+447789063938"><Phone size={14} aria-hidden="true" /> +44 7789 063938</a>
+              </div>
             </div>
-            <div className={styles.ctaActions}>
-              <a
-                className={styles.ctaPrimary}
-                href="mailto:info@dreniak.com?subject=Partnership%20enquiry"
-              >
-                <Mail size={15} aria-hidden="true" />
-                Email Dreniak <ArrowUpRight size={16} aria-hidden="true" />
-              </a>
-              <a href="tel:+447789063938">
-                <Phone size={14} aria-hidden="true" /> +44 7789 063938
-              </a>
-            </div>
+            <div className={styles.ctaFooter}><span>DRENIAK / BETTER, TOGETHER.</span><span>Engineering <span aria-hidden="true">↗</span> Asset Management</span></div>
           </section>
         </div>
       </main>
