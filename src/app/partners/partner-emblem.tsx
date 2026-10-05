@@ -26,14 +26,20 @@ export function PartnerEmblem({ name, id }: { name: string; id: string }) {
         <circle cx="180" cy="171" r="125" stroke="#c7adc0" strokeWidth="1" />
         <image href="/partners/nk-udada-foundation.png" x="35" y="26" width="290" height="290" clipPath={`url(#${clipId})`} />
         <path d={markPath} transform="translate(167 298) scale(.21)" fill="#c7adc0" />
+      </> : dbam ? <>
+        <circle cx="180" cy="180" r="137" fill="#fff" />
+        <circle cx="180" cy="180" r="145" stroke="currentColor" strokeOpacity=".15" />
+        {/* Enhanced from the official DBAM Social Care website logo. */}
+        <image href="/partners/dbam-social-care-enhanced.png" x="26" y="117" width="308" height="126" preserveAspectRatio="xMidYMid meet" />
+        <path d={markPath} transform="translate(169 306) scale(.18)" fill="#781e2c" />
       </> : <>
         <circle cx="180" cy="180" r="137" fill="#602130" />
         <circle cx="180" cy="180" r="126" stroke="#cfac98" strokeOpacity=".5" />
         <circle cx="180" cy="180" r="117" stroke="#cfac98" strokeOpacity=".25" strokeDasharray="2 7" />
         <path d={markPath} transform="translate(113 86) scale(1.17)" fill="#e4c7ab" />
         <path d="M109 230h142" stroke="#cfac98" strokeOpacity=".6" />
-        <text x="180" y="267" textAnchor="middle" fill="#f4e9dd" fontSize={dbam ? 30 : 25} letterSpacing="5">{dbam ? "DBAM" : initials}</text>
-        {!dbam && <text x="180" y="288" textAnchor="middle" fill="#f4e9dd" fontSize="10" textLength={name.length > 23 ? 170 : undefined} lengthAdjust="spacingAndGlyphs">{name}</text>}
+        <text x="180" y="267" textAnchor="middle" fill="#f4e9dd" fontSize="25" letterSpacing="5">{initials}</text>
+        <text x="180" y="288" textAnchor="middle" fill="#f4e9dd" fontSize="10" textLength={name.length > 23 ? 170 : undefined} lengthAdjust="spacingAndGlyphs">{name}</text>
       </>}
       <path d="m306 56 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="currentColor" />
     </svg>

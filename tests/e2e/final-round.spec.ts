@@ -4,9 +4,12 @@ test('partner additions preserve the approved content boundaries',async({page})=
   await page.goto('/partners');
   await expect(page.getByRole('heading',{name:'AG Rosa',exact:true})).toHaveCount(1);
   const foundation=page.locator('article').filter({has:page.getByRole('heading',{name:'NK Udada Foundation',exact:true})});
-  await expect(foundation).toContainText('Community partner'); await expect(foundation.getByRole('link')).toHaveAttribute('href','https://the-nkfoundation.org/');
+  await expect(foundation).toContainText('Community partner'); await expect(foundation.getByRole('link',{name:'NK Udada Foundation',exact:true})).toHaveAttribute('href','https://the-nkfoundation.org/');
   const dbam=page.locator('article').filter({has:page.getByRole('heading',{name:'DBAM',exact:true})});
-  await expect(dbam).toHaveText('DBAM'); await expect(dbam.locator('img,a,p')).toHaveCount(0);
+  await expect(dbam.locator('p')).toHaveCount(0);
+  await expect(dbam.getByRole('link',{name:'DBAM',exact:true})).toHaveAttribute('href','https://dbamsocialcare.co.uk/');
+  await expect(dbam.getByRole('link',{name:/Visit website/})).toHaveAttribute('href','https://dbamsocialcare.co.uk/');
+  await expect(dbam.locator('svg image')).toHaveAttribute('href','/partners/dbam-social-care-enhanced.png');
 });
 test('service plates retain deep links and distinct supplied photographs',async({page})=>{
   await page.goto('/engineering/services#service-1');

@@ -28,6 +28,9 @@
 .division-panel.asset-management .cinematic-image img { object-position: 60% center; }
 .division-panel .cinematic-image img { transform: none; }
 .division-panel .cinematic-image img { transition: opacity .8s; }
+/* Keep the homepage artwork sharp without cumulative scroll/drift enlargement. */
+.division-panel .cinematic-image__scroll,
+.division-panel .cinematic-image__drift { animation: none; transform: none; }
 
 /* Real imagery stays complete, with a neutral fill around its natural proportions. */
 .photo-duotone {

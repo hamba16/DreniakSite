@@ -12,7 +12,7 @@ import { Footer } from "@/components/shared";
 import { FounderCard } from "@/components/founder-card";
 import { CinematicImage } from "@/components/cinematic-image";
 import { homepageContent } from "@/lib/public-content";
-import { homepageImagery } from "@/content/homepage-imagery";
+import { homepageImagery, homepagePanelSizes } from "@/content/homepage-imagery";
 export default async function Home() {
   let content = null;
   try {
@@ -76,8 +76,8 @@ export default async function Home() {
           </div>
           <div className="premise-bottom">
             <span className="eyebrow">BUILD. CONNECT. DELIVER.</span>
-            <Link href="/story" className="text-link">
-              The story behind Dreniak <ArrowUpRight size={18} />
+            <Link href="/story#leadership" className="text-link">
+              Leadership <ArrowUpRight size={18} />
             </Link>
           </div>
         </section>
@@ -95,11 +95,12 @@ export default async function Home() {
               className="division-panel engineering"
             >
               <CinematicImage division="engineering"><Image
-                src={homepageImagery.engineering.src}
+                src={homepageImagery.engineering.panelSrc}
                 alt={homepageImagery.engineering.alt}
                 fill
                 preload
-                sizes="(max-width: 760px) 100vw, 60vw"
+                quality={90}
+                sizes={homepagePanelSizes}
               /></CinematicImage>
               <div className="panel-shade" />
               <div className="panel-top">
@@ -132,11 +133,12 @@ export default async function Home() {
               className="division-panel asset-management"
             >
               <CinematicImage division="asset-management"><Image
-                src={homepageImagery["asset-management"].src}
+                src={homepageImagery["asset-management"].panelSrc}
                 alt={homepageImagery["asset-management"].alt}
                 fill
                 fetchPriority="low"
-                sizes="(max-width: 760px) 100vw, 60vw"
+                quality={90}
+                sizes={homepagePanelSizes}
               /></CinematicImage>
               <div className="panel-shade" />
               <div className="panel-top">

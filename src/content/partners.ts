@@ -4,7 +4,7 @@ import type { PublishedPartner } from "@/lib/public-content";
 export const approvedPartners: PublishedPartner[] = [
   { id: "ag-rosa", name: "AG Rosa", description: "Architectural rendering", category: "Service Providers", link: "https://agluxurydev.com/", sortOrder: 100, logo: null },
   { id: "nk-udada-foundation", name: "NK Udada Foundation", description: "A youth-led Ugandan foundation supporting young people through education, health outreach, life skills and mentorship.", category: "Community partner", link: "https://the-nkfoundation.org/", sortOrder: 110, logo: null },
-  { id: "dbam", name: "DBAM", description: "", category: "", link: "", sortOrder: 120, logo: null },
+  { id: "dbam", name: "DBAM", description: "", category: "", link: "https://dbamsocialcare.co.uk/", sortOrder: 120, logo: null },
 ];
 
 export function withApprovedPartners(published: PublishedPartner[]) {
