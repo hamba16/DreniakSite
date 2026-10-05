@@ -16,12 +16,12 @@
 .flow::before { content: ""; position: absolute; top: 64px; bottom: 62px; left: 23px; width: 1px; background: linear-gradient(#c3a8aa, #8d4355 40%, #aaa0b8 75%, #d9cccc); }
 .flowItem { position: relative; }
 .flowItem + .flowItem::before { content: ""; position: absolute; top: 0; left: 85px; right: 0; height: 1px; background: var(--line); }
-.partner { position: relative; display: grid; grid-template-columns: 48px minmax(230px, 360px) minmax(0, 1fr); align-items: center; column-gap: clamp(28px, 5vw, 80px); padding: 48px 0 52px; }
+.partner { position: relative; display: grid; grid-template-columns: 48px minmax(160px, 220px) minmax(0, 1fr); align-items: center; column-gap: clamp(28px, 4vw, 60px); padding: 32px 0 36px; }
 .flowNumber { z-index: 1; align-self: start; display: grid; place-items: center; width: 47px; height: 47px; margin-top: 12px; border: 1px solid #c3a8aa; border-radius: 50%; background: var(--paper); color: var(--accent); font-size: 11px; font-variant-numeric: tabular-nums; }
 .emblemStage { min-width: 0; position: relative; }
 .emblemArtwork { color: var(--accent); transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .emblemArtwork svg { display: block; width: 100%; height: auto; overflow: visible; }
-.partner:hover .emblemArtwork { transform: translateY(-6px) rotate(-2deg); }
+.partner:hover .emblemArtwork { transform: translateY(-3px); }
 .emblemCaption { display: flex; justify-content: center; gap: 30px; margin-top: 14px; color: #78656a; font-size: 8px; letter-spacing: .2em; }
 .emblemCaption span { color: var(--accent); }
 .partnerContent { min-width: 0; max-width: 500px; padding: 20px 0; }
@@ -69,7 +69,7 @@
 @media (max-width: 1000px) {
   .hero { gap: 25px; }
   .heroLink > span:first-child { display: none; }
-  .partner { grid-template-columns: 48px minmax(200px, 280px) minmax(0, 1fr); column-gap: 30px; }
+  .partner { grid-template-columns: 48px minmax(150px, 190px) minmax(0, 1fr); column-gap: 30px; }
   .cta { grid-template-columns: .8fr 1.2fr; }
   .ctaArtwork { min-height: 440px; }
   .ctaSculpture { transform: translate(-50%, -50%) rotate(-12deg) scale(.85); }
@@ -87,7 +87,7 @@
   .flow::before { left: 15px; top: 40px; bottom: 40px; }
   .partner { grid-template-columns: 32px minmax(0, 1fr); column-gap: 20px; row-gap: 8px; padding: 30px 0 35px; }
   .flowNumber { width: 32px; height: 32px; font-size: 9px; }
-  .emblemStage { max-width: 290px; width: 100%; justify-self: center; }
+  .emblemStage { max-width: 180px; width: 100%; justify-self: start; }
   .emblemCaption { font-size: 7px; gap: 22px; }
   .partnerContent { grid-column: 2; padding: 24px 0 0; width: 100%; }
   .partnerContent h2 { font-size: clamp(30px, 8vw, 44px); margin-top: 14px; }

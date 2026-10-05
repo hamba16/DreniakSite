@@ -207,16 +207,16 @@ export function Header({ division }: { division?: Division }) {
         </Link>
         <span className="eyebrow">ONE ORIGIN. TWO DISCIPLINES.</span>
         <Link
-          href="/careers"
+          href={path === "/" ? "/story" : "/careers"}
           className="parent-header-partners"
           aria-current={path === "/careers" ? "page" : undefined}
-        >Careers <ArrowUpRight size={14} /></Link>
+        >{path === "/" ? "Our story" : "Careers"} <ArrowUpRight size={14} /></Link>
         <Link
-          href="/partners"
+          href={path === "/" ? "/careers" : "/partners"}
           className="parent-header-partners"
           aria-current={path === "/partners" ? "page" : undefined}
         >
-          Partners <ArrowUpRight size={14} />
+          {path === "/" ? "Careers" : "Partners"} <ArrowUpRight size={14} />
         </Link>
       </header>
     );
