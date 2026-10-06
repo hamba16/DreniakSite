@@ -240,6 +240,7 @@ export async function Sectors({
   if (imagery) {
     return <SignatureGallery accentColor="var(--am-tag, #3e5c73)" items={data.sectors.map((sector, index) => ({
       id: assetSectorImages[index].id,
+      anchorId: sector.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
       label: sector.name,
       visual: assetSectorImages[index].id,
       imageSrc: assetSectorImages[index].imageSrc,

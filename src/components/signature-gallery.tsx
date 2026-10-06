@@ -3,12 +3,14 @@
 import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { ImageLeaflet, type ImageCredit } from "./image-leaflet";
 import { Mark } from "./brand";
 import styles from "./signature-gallery.module.css";
 
 export type SignatureGalleryItem = {
   id: string;
+  anchorId?: string;
   label: string;
   icon: ReactNode;
   visual: string;
@@ -54,6 +56,7 @@ export function SignatureGallery({ items, accentColor, autoAdvanceMs = 7000 }: {
   const [leafletIndex, setLeafletIndex] = useState<number | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const railRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -66,6 +69,20 @@ export function SignatureGallery({ items, accentColor, autoAdvanceMs = 7000 }: {
     const button = railRef.current?.querySelector<HTMLButtonElement>(`[data-index="${active}"]`);
     button?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest", inline: "nearest" });
   }, [active, reduceMotion]);
+
+  useEffect(() => {
+    const selectHashTarget = () => {
+      let anchor = location.hash.slice(1);
+      try { anchor = decodeURIComponent(anchor); } catch { return; }
+      const index = items.findIndex(entry => entry.anchorId === anchor || entry.id === anchor);
+      if (index < 0) return;
+      setHasInteracted(true);
+      setActive(index);
+    };
+    selectHashTarget();
+    window.addEventListener("hashchange", selectHashTarget);
+    return () => window.removeEventListener("hashchange", selectHashTarget);
+  }, [items, pathname]);
 
   const select = (index: number) => {
     setHasInteracted(true);
@@ -89,7 +106,7 @@ export function SignatureGallery({ items, accentColor, autoAdvanceMs = 7000 }: {
       <div ref={railRef} className={styles.rail} role="tablist" aria-label="Gallery selection" onMouseEnter={() => setHasInteracted(true)}>
         {items.map((entry, index) => {
           const selected = index === active;
-          return <button key={entry.id} type="button" role="tab" data-index={index} aria-selected={selected} aria-controls={`signature-stage-${entry.id}`} className={styles.tab} style={{ borderColor: selected ? accentColor : "transparent" }} onPointerEnter={() => select(index)} onClick={() => { select(index); setLeafletIndex(index); }} onFocus={() => { setHasInteracted(true); setActive(index); }}>
+          return <button key={entry.id} id={entry.anchorId || entry.id} type="button" role="tab" data-index={index} aria-selected={selected} aria-controls={`signature-stage-${entry.id}`} className={styles.tab} style={{ borderColor: selected ? accentColor : "transparent" }} onPointerEnter={() => select(index)} onClick={() => { select(index); setLeafletIndex(index); }} onFocus={() => { setHasInteracted(true); setActive(index); }}>
             <span className={styles.tabLabel} style={{ opacity: selected ? 1 : .6 }}>{entry.label}</span>
             <span className={styles.tabIcon} style={{ color: accentColor, opacity: selected ? 1 : .5 }}>{entry.icon}</span>
           </button>;
