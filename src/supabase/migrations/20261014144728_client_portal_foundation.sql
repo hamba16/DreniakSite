@@ -105,14 +105,14 @@ create table public.notification_outbox (
   event_type text not null,
   payload jsonb not null default '{}'::jsonb,
   channel text not null check (channel in ('email', 'whatsapp')),
-  status text not null default 'pending' check (status in ('pending', 'sent', 'failed', 'not_configured')),
+  status text not null default 'pending' check (status in ('pending', 'processing', 'sent', 'failed', 'not_configured')),
   attempt_count smallint not null default 0 check (attempt_count between 0 and 10),
   available_at timestamptz not null default now(),
   sent_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
-create index notification_outbox_queue_idx on public.notification_outbox(status, available_at) where status in ('pending', 'failed');
+create index notification_outbox_queue_idx on public.notification_outbox(status, available_at, updated_at) where status in ('pending', 'failed', 'processing');
 
 create table public.engagements (
   id uuid primary key default gen_random_uuid(),
@@ -838,3 +838,116 @@ end;
 $$;
 revoke all on function public.portal_accept_invitation(uuid, uuid, text) from public, anon, authenticated;
 grant execute on function public.portal_accept_invitation(uuid, uuid, text) to service_role;
+
+-- Transactional, tenant-aware notification outbox. Messages and record content
+-- are never copied to email or WhatsApp payloads.
+create function public.portal_notify_engagement(p_engagement_id uuid, p_event_type text, p_actor_id uuid)
+returns void language plpgsql security definer set search_path = '' as $$
+declare target_org_id uuid;
+begin
+  if p_event_type not in ('new_document','message','milestone_change','invoice_issued','invoice_overdue','supervision_issue') then return; end if;
+  select e.organisation_id into target_org_id from public.engagements e
+    where e.id = p_engagement_id and e.deleted_at is null;
+  if target_org_id is null then return; end if;
+  insert into public.notification_outbox(user_id,event_type,payload,channel)
+  select recipients.user_id,p_event_type,jsonb_build_object('engagement_id',p_engagement_id),channels.channel
+  from (
+    select m.user_id from public.organisation_members m where m.organisation_id = target_org_id
+    union
+    select es.user_id from public.engagement_staff es join public.portal_staff ps on ps.user_id = es.user_id and ps.active where es.engagement_id = p_engagement_id
+  ) recipients
+  join public.notification_preferences np on np.user_id = recipients.user_id
+  cross join lateral (
+    select 'email'::text as channel where np.email_enabled
+    union all
+    select 'whatsapp'::text where np.whatsapp_enabled and np.whatsapp_consented_at is not null
+  ) channels
+  where recipients.user_id is distinct from p_actor_id
+    and np.event_types @> array[p_event_type]::text[];
+end;
+$$;
+revoke all on function public.portal_notify_engagement(uuid,text,uuid) from public, anon, authenticated;
+grant execute on function public.portal_notify_engagement(uuid,text,uuid) to service_role;
+
+create function public.portal_notify_new_message() returns trigger
+language plpgsql security definer set search_path = '' as $$
+declare target_engagement_id uuid;
+begin
+  select t.engagement_id into target_engagement_id from public.threads t where t.id = new.thread_id and t.closed_at is null;
+  if target_engagement_id is not null then perform public.portal_notify_engagement(target_engagement_id,'message',new.sender_id); end if;
+  return new;
+end;
+$$;
+create trigger messages_notify_after_insert after insert on public.messages for each row when (new.deleted_at is null) execute function public.portal_notify_new_message();
+
+create function public.portal_notify_new_document() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if new.visibility = 'client' and new.deleted_at is null and (tg_op = 'INSERT' or old.visibility <> 'client') then
+    perform public.portal_notify_engagement(new.engagement_id,'new_document',new.created_by);
+  end if;
+  return new;
+end;
+$$;
+create trigger documents_notify_after_write after insert or update of visibility on public.documents for each row execute function public.portal_notify_new_document();
+
+create function public.portal_notify_milestone_change() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  perform public.portal_notify_engagement(new.engagement_id,'milestone_change',null);
+  return new;
+end;
+$$;
+create trigger milestones_notify_after_write after insert or update on public.milestones for each row execute function public.portal_notify_milestone_change();
+
+create function public.portal_notify_invoice_change() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if new.status in ('issued','overdue') and (tg_op = 'INSERT' or old.status is distinct from new.status) then
+    perform public.portal_notify_engagement(new.engagement_id,case when new.status = 'overdue' then 'invoice_overdue' else 'invoice_issued' end,new.created_by);
+  end if;
+  return new;
+end;
+$$;
+create trigger invoices_notify_after_write after insert or update of status on public.invoices for each row execute function public.portal_notify_invoice_change();
+
+create function public.portal_notify_supervision_issue() returns trigger
+language plpgsql security definer set search_path = '' as $$
+declare target_engagement_id uuid;
+begin
+  select l.engagement_id into target_engagement_id from public.supervision_logs l where l.id = new.supervision_log_id and l.visibility = 'client' and l.deleted_at is null;
+  if target_engagement_id is not null then perform public.portal_notify_engagement(target_engagement_id,'supervision_issue',null); end if;
+  return new;
+end;
+$$;
+create trigger supervision_issues_notify_after_write after insert or update on public.supervision_issues for each row execute function public.portal_notify_supervision_issue();
+
+create function public.portal_claim_notifications(p_limit integer default 25)
+returns table(id uuid,user_id uuid,event_type text,payload jsonb,channel text,attempt_count smallint)
+language sql security definer set search_path = '' as $$
+  with picked as (
+    select n.id from public.notification_outbox n
+    where (
+      (n.status in ('pending','failed') and n.available_at <= now())
+      or (n.status = 'processing' and n.updated_at < now() - interval '15 minutes')
+    ) and n.attempt_count < 5
+    order by n.created_at for update skip locked
+    limit least(greatest(coalesce(p_limit,25),1),100)
+  )
+  update public.notification_outbox n set status = 'processing',attempt_count = n.attempt_count + 1
+  from picked where n.id = picked.id
+  returning n.id,n.user_id,n.event_type,n.payload,n.channel,n.attempt_count
+$$;
+revoke all on function public.portal_claim_notifications(integer) from public, anon, authenticated;
+grant execute on function public.portal_claim_notifications(integer) to service_role;
+
+create function public.portal_finish_notification(p_id uuid,p_success boolean,p_not_configured boolean default false)
+returns void language sql security definer set search_path = '' as $$
+  update public.notification_outbox n set
+    status = case when p_success then 'sent' when p_not_configured then 'not_configured' else 'failed' end,
+    sent_at = case when p_success then now() else null end,
+    available_at = case when p_success or p_not_configured then n.available_at else now() + make_interval(secs => least(power(2,n.attempt_count)::integer,3600)) end
+  where n.id = p_id and n.status = 'processing'
+$$;
+revoke all on function public.portal_finish_notification(uuid,boolean,boolean) from public, anon, authenticated;
+grant execute on function public.portal_finish_notification(uuid,boolean,boolean) to service_role;

@@ -116,11 +116,12 @@ download/acknowledgement, conversations and requests, issued invoice details
 and staff-recorded payments, engineering supervision/contracts/quality, asset
 register/capital plan/maturity scoring, and account privacy export/deletion
 requests. Invoice PDF generation, client payment collection, editable asset
-imports/interventions, notification delivery workers, full staff document and
-invoice authoring, and an audit-log viewer are not implemented in this phase.
-The notification outbox records the delivery boundary; WhatsApp has no provider
-integration and no portal notification sender is enabled. No payment gateway is
-configured.
+imports/interventions, full staff document and invoice authoring, and an
+audit-log viewer are not implemented in this phase. The notification outbox
+queues tenant-scoped, content-free email notices for a scheduled dispatcher.
+Configure the server-only `PORTAL_NOTIFICATION_SECRET` and SMTP settings before
+scheduling `POST /api/portal/notifications/dispatch`; WhatsApp is recorded as
+`not_configured` until a provider is integrated. No payment gateway is configured.
 
 The portal privacy copy is a draft. Confirm controller/processor terms,
 cross-border processing, legal basis, retention periods, backups, incident

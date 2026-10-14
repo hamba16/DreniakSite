@@ -8,14 +8,15 @@
 4. Review the Auth MFA setting for TOTP and enforce the staff enrolment policy before adding real portal staff.
 5. Bootstrap the first admin using the restricted SQL example in `README.md`. Confirm identity and role out of band. The administrator must complete TOTP before staff operations are available.
 6. Create an organisation, confirm only the service divisions in scope, invite named client admins/members, and create engagements under a confirmed division. Engineers need an active `portal_staff` row and an `engagement_staff` assignment to see client data for that engagement. Administrators can see all portal workspaces.
-7. Confirm private bucket limits, backups, SMTP delivery, Auth redirects, rate-limit store configuration, privacy notice and retention schedule before inviting client users.
+7. Configure a high-entropy `PORTAL_NOTIFICATION_SECRET` on the server and invoke `/api/portal/notifications/dispatch` from an authenticated scheduler using `Authorization: Bearer <secret>`. Set SMTP values before enabling email preferences. The worker sends content-free notices, retries transient failures with backoff, and records WhatsApp as `not_configured` until a consent-aware provider is configured.
+8. Confirm private bucket limits, backups, SMTP delivery, Auth redirects, rate-limit store configuration, privacy notice and retention schedule before inviting client users.
 
 ## Current functional boundary
 
 - Working source flows: email-link request/callback, database-checked invitation acceptance/revocation/expiry, five resumable onboarding steps, staff TOTP gate, tenant and division RLS, client engagement/dashboard reads, private document downloads/acknowledgements, conversations/service requests, issued-invoice/payment history views and payment references, privacy export/deletion requests, engineering record reads, asset/capital/maturity views, and basic admin organisation/invite/division/engagement creation.
 - A small PGlite test executes the migration and checks confirmed-division isolation, the private bucket, document path tenant checks, invitation one-time acceptance/expiry/revocation and phone validation.
 - No live Supabase migration, Auth/SMTP delivery, Storage request, Vercel deployment, browser sign-in journey or client data proof has been performed.
-- Not implemented: notification delivery worker/provider, WhatsApp Business integration, invoice PDF or authoring workflow, online payments, editable asset lifecycle/intervention tools, CSV import/export, full staff document management, member removal, audit viewer, sample-data seeding, malware scanning, or legal-reviewed retention/deletion automation.
+- Not implemented: WhatsApp Business integration, invoice PDF or authoring workflow, online payments, editable asset lifecycle/intervention tools, CSV import/export, full staff document management, member removal, audit viewer, sample-data seeding, malware scanning, or legal-reviewed retention/deletion automation.
 
 ## Security and privacy operations
 
