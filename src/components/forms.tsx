@@ -249,6 +249,10 @@ export function AnalyticsConsent({
   vercelAnalyticsEnabled?: boolean;
 }) {
   const pathname = usePathname();
+  const analyticsBlocked =
+    pathname === "/portal" ||
+    pathname.startsWith("/portal/") ||
+    pathname.startsWith("/admin");
   const [show, setShow] = useState(false);
   const [allowed, setAllowed] = useState(false);
   const id = process.env.NEXT_PUBLIC_GA_ID;
@@ -257,7 +261,7 @@ export function AnalyticsConsent({
     setAllowed(value);
     setShow(false);
   }
-  return (id || vercelAnalyticsEnabled) && !pathname.startsWith("/admin") ? (
+  return (id || vercelAnalyticsEnabled) && !analyticsBlocked ? (
     <ConsentLoader
       id={id || ""}
       show={show}
@@ -289,14 +293,26 @@ function ConsentLoader({
   choose: (v: boolean) => void;
   vercelAnalyticsEnabled: boolean;
 }) {
+  const pathname = usePathname();
+  const analyticsBlocked =
+    pathname === "/portal" ||
+    pathname.startsWith("/portal/") ||
+    pathname.startsWith("/admin");
   useEffect(() => {
     const value = localStorage.getItem("dreniak-analytics");
     setShow(!value);
     setAllowed(value === "accepted");
   }, [setShow, setAllowed]);
+  useEffect(() => {
+    if (allowed && id && !analyticsBlocked && typeof window !== "undefined") {
+      const analyticsWindow = window as Window & { dataLayer?: unknown[][] };
+      analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+      analyticsWindow.dataLayer.push(["event", "page_view", { page_path: pathname }]);
+    }
+  }, [allowed, analyticsBlocked, id, pathname]);
   return (
     <>
-      {show && (
+      {!analyticsBlocked && show && (
         <aside className="cookie-notice" aria-label="Analytics preferences">
           <p>
             May we use analytics to understand how this site is used?{" "}
@@ -308,8 +324,8 @@ function ConsentLoader({
           </button>
         </aside>
       )}
-      {allowed && vercelAnalyticsEnabled && <Analytics />}
-      {allowed && id && (
+      {!analyticsBlocked && allowed && vercelAnalyticsEnabled && <Analytics />}
+      {!analyticsBlocked && allowed && id && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`}
@@ -318,7 +334,7 @@ function ConsentLoader({
           <Script
             id="dreniak-ga"
             strategy="afterInteractive"
-          >{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config',${JSON.stringify(id)},{anonymize_ip:true});`}</Script>
+          >{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config',${JSON.stringify(id)},{anonymize_ip:true,send_page_view:false});`}</Script>
         </>
       )}
     </>
