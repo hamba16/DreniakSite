@@ -1,0 +1,26 @@
+.page { min-height: 70vh; padding: 8rem 1.25rem 6rem; }
+.wrap { width: min(100%, 800px); margin: 0 auto; }
+.wrap h1 { margin: .75rem 0; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: -.06em; }
+.intro { color: #b5b5b5; }
+.progress { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; padding: 2rem 0 1rem; list-style: none; }
+.progress li { display: grid; justify-items: center; gap: .45rem; color: #999; font-size: .78rem; text-align: center; }
+.progress li span { display: grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid #555; border-radius: 50%; }
+.progress li[aria-current="step"], .progress li[data-done="true"] { color: #fff; }
+.progress li[aria-current="step"] span, .progress li[data-done="true"] span { border-color: #991923; background: #991923; }
+.card { display: grid; gap: 1.1rem; padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid #373737; background: #111; }
+.card h2 { margin: 0; font-size: 1.7rem; }
+.card p { margin: 0; color: #b5b5b5; line-height: 1.6; }
+.card > label:not(.consent) { display: grid; gap: .45rem; color: #eee; font-size: .9rem; }
+.card input:not([type="radio"]):not([type="checkbox"]), .card select { width: 100%; min-height: 2.8rem; padding: .7rem .8rem; border: 1px solid #555; border-radius: 2px; color: #fff; background: #080808; font: inherit; }
+.card fieldset { display: grid; gap: .7rem; margin: 0; padding: 1rem; border: 1px solid #393939; }
+.card legend { padding: 0 .35rem; color: #ddd; }
+.choices, .events { display: grid; gap: .65rem; }
+.choices > label { display: flex; gap: .8rem; align-items: flex-start; padding: 1rem; border: 1px solid #383838; cursor: pointer; }
+.choices span { display: grid; gap: .35rem; }
+.choices small, .hint { color: #aaa; line-height: 1.5; }
+.radio { display: flex; gap: .55rem; align-items: flex-start; }
+.consent { display: flex; gap: .7rem; align-items: flex-start; line-height: 1.6; }
+.notice { padding: .8rem 1rem; border-left: 2px solid #991923; background: #191415; }
+.error { color: #ffb4b4 !important; }
+.actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-top: .5rem; }
+@media (max-width: 600px) { .page { padding: 6rem 1rem 4rem; } .progress { gap: .1rem; } .progress li { font-size: .64rem; } .progress li span { width: 1.7rem; height: 1.7rem; } }

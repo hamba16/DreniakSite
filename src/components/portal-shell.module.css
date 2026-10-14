@@ -1,0 +1,13 @@
+.root { min-height: 100vh; color: #f4f4f4; background: #090909; }
+.header { min-height: 5.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .9rem clamp(1rem, 4vw, 4rem); border-bottom: 1px solid #292929; }
+.brand { display: grid; gap: .2rem; color: #fff; text-decoration: none; letter-spacing: .18em; font-weight: 700; }
+.brand small { color: #aaa; font-size: .58rem; letter-spacing: .22em; }
+.account { display: flex; align-items: center; gap: 1rem; color: #bbb; font-size: .85rem; }
+.account button { border: 1px solid #555; padding: .5rem .75rem; color: white; background: transparent; cursor: pointer; }
+.nav { display: flex; gap: .25rem; padding: .6rem clamp(1rem, 4vw, 4rem); overflow-x: auto; border-bottom: 1px solid #292929; scrollbar-width: thin; }
+.nav a { flex: 0 0 auto; padding: .7rem .8rem; color: #bbb; text-decoration: none; font-size: .82rem; }
+.nav a:hover, .nav a[aria-current="page"] { color: #fff; background: #1b1b1b; }
+.content { width: min(100% - 2rem, 1200px); margin: 0 auto; min-height: 68vh; padding: clamp(2.5rem, 6vw, 5rem) 0; }
+.footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.2rem clamp(1rem, 4vw, 4rem); border-top: 1px solid #292929; color: #999; font-size: .78rem; }
+.footer a { color: #ddd; }
+@media (max-width: 600px) { .header { align-items: flex-start; } .account { flex-direction: column; align-items: flex-end; gap: .5rem; } .nav a { padding: .65rem .6rem; } .footer { flex-direction: column; } }

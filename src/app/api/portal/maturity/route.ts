@@ -1,0 +1,6 @@
+﻿import { z } from "zod";
+import { privateJson, readPortalJson } from "@/lib/portal/http";
+import { portalClient } from "@/lib/portal/supabase";
+import { scoreAssessment } from "@/lib/assessment";
+const schema=z.object({organisationId:z.string().uuid(),answers:z.array(z.number().int().min(0).max(3)).length(6)});
+export async function POST(request:Request){const body=await readPortalJson(request);if("error" in body)return privateJson({error:body.error},body.status);const input=schema.safeParse(body.data);if(!input.success)return privateJson({error:"Complete all six questions."},400);const supabase=await portalClient();if(!supabase)return privateJson({error:"Portal is unavailable."},503);const {data:auth}=await supabase.auth.getUser();if(!auth.user)return privateJson({error:"Please sign in."},401);const result=scoreAssessment(input.data.answers);const {data,error}=await supabase.from("maturity_assessments").insert({organisation_id:input.data.organisationId,user_id:auth.user.id,answers:input.data.answers,score:result.score}).select("id,score,created_at").single();if(error)return privateJson({error:"Your assessment could not be saved. Confirm Asset Management access first."},403);return privateJson({assessment:data,result});}

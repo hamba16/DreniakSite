@@ -1,0 +1,12 @@
+﻿import { portalClient } from "@/lib/portal/supabase";
+import styles from "@/components/portal-page.module.css";
+import { PaymentReferenceForm } from "@/components/portal-actions";
+export const metadata = { robots: { index: false, follow: false } };
+export default async function InvoicesPage() {
+  const supabase = await portalClient();
+  if (!supabase) return <p className={styles.error}>Invoices are unavailable.</p>;
+  const { data, error } = await supabase.from("invoices").select("id, invoice_number, status, currency, total_minor, issued_at, due_date, engagement_id, engagements(name), invoice_items(description, quantity_milli, line_subtotal_minor, line_tax_minor), invoice_payments(amount_minor, currency, paid_at, reference), payment_reference_notes(id, reference, status, created_at)").neq("status", "draft").is("deleted_at", null).order("issued_at", { ascending: false });
+  if (error) return <p className={styles.error} role="status">Invoices are temporarily unavailable.</p>;
+  return <main className={styles.page}><header className={styles.heading}><div><span className="eyebrow">BILLING RECORDS</span><h1>Invoices.</h1><p className={styles.muted}>Review issued invoices and recorded payments. Payment is handled outside this portal.</p></div></header>{!data?.length ? <p className={styles.empty}>No invoices have been issued.</p> : <div className={styles.list}>{data.map((invoice) => <article className={styles.card} key={invoice.id}><div className={styles.row}><span><h2>{invoice.invoice_number}</h2><small>{invoice.engagements?.[0]?.name} · {invoice.issued_at ? new Date(invoice.issued_at).toLocaleDateString("en-GB") : ""}</small></span><span className={styles.badge}>{invoice.status}</span></div><p>{invoice.currency} {(invoice.total_minor / 100).toFixed(2)}{invoice.due_date ? ` · Due ${invoice.due_date}` : ""}</p><ul>{invoice.invoice_items?.map((item, i) => <li key={i}>{item.description} — {invoice.currency} {((item.line_subtotal_minor + item.line_tax_minor) / 100).toFixed(2)}</li>)}</ul>{invoice.invoice_payments?.map((payment, i) => <small key={i}>Payment recorded: {payment.currency} {(payment.amount_minor / 100).toFixed(2)} · {payment.paid_at.slice(0, 10)} {payment.reference}</small>)}{invoice.payment_reference_notes?.map((note)=><p key={note.id}>Your reference: {note.reference} · {note.status} · {new Date(note.created_at).toLocaleDateString("en-GB")}</p>)}{!['paid','void'].includes(invoice.status)&&<PaymentReferenceForm invoiceId={invoice.id}/>}</article>)}</div>}</main>;
+}
+

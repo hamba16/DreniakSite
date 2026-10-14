@@ -1,0 +1,5 @@
+﻿import { z } from "zod";
+import { privateJson, readPortalJson } from "@/lib/portal/http";
+import { portalClient } from "@/lib/portal/supabase";
+const schema=z.object({requestType:z.enum(["data_export","deletion"]),note:z.string().trim().max(2000).default(""),organisationId:z.string().uuid().optional()});
+export async function POST(request:Request){const body=await readPortalJson(request);if("error" in body)return privateJson({error:body.error},body.status);const input=schema.safeParse(body.data);if(!input.success)return privateJson({error:"Check your privacy request."},400);const supabase=await portalClient();if(!supabase)return privateJson({error:"Portal is unavailable."},503);const {data:auth}=await supabase.auth.getUser();if(!auth.user)return privateJson({error:"Please sign in."},401);const {data,error}=await supabase.from("privacy_requests").insert({user_id:auth.user.id,organisation_id:input.data.organisationId||null,request_type:input.data.requestType,note:input.data.note}).select("id,request_type,status,created_at").single();if(error)return privateJson({error:"Your request could not be recorded."},400);return privateJson({ok:true,request:data});}

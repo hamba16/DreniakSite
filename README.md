@@ -27,7 +27,7 @@ Node 20.9+ is required by Next.js; this build was developed with Node 24.13.0. T
 - Six-question maturity assessment with transparent indicative scoring, answer review, restart and context passed into an enquiry.
 - Contact: client and server validation, consent, honeypot, request size/origin checks, throttling, SMTP delivery adapter, explicit unavailable/error states and email fallback.
 - Newsletter: validated capture with Supabase as the subscriber system of record and Buttondown as the delivery provider. Legacy authenticated webhook and persistent filesystem adapters remain available explicitly for migration or local use.
-- Portal entry: honest Phase 2 surface with no fake credentials or document access.
+- Client portal: invitation-only Supabase Auth magic links, resumable five-step onboarding, staff TOTP gate, organisation and confirmed-division RLS, engagement dashboard, client vault with short-lived private downloads and acknowledgements, messages/requests, issued invoice views, privacy export/deletion requests, engineering records, asset/capital register views, and an administrator console for organisations, invitations, division approval and engagements.
 - SEO: route metadata, canonical URLs, social images for all three brands, sitemap, robots, favicon and Apple icon.
 - Optional GA4 behind visitor consent; privacy and preference reset surface.
 
@@ -79,6 +79,55 @@ npm run test:e2e
 
 The browser suite covers desktop and mobile routing, image errors, overflow, division navigation, keyboard tabs, services, assessment, contact failure feedback, automated accessibility checks, metadata endpoints and missing routes. It expects no live SMTP settings. Unit/integration tests exercise exact content, validation, intake limits and actual newsletter persistence. Test records are ignored under `.data/verification/`.
 
+## Client portal setup and current scope
+
+The portal migration is `src/supabase/migrations/20261014144728_client_portal_foundation.sql`.
+Apply it to a staging Supabase project before using `/portal`. Configure
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and the
+server-only `SUPABASE_SERVICE_ROLE_KEY`. Keep the service role key out of every
+browser bundle and public environment variable.
+
+In Supabase Auth, configure SMTP and add the exact site, preview and local
+`/auth/callback` URLs to the redirect allowlist. The checked-in local Auth
+configuration enables email sign-in, seven-day single-use links, and TOTP. The
+seven-day Auth link expiry matches the database invitation expiry; shorten the
+Auth OTP lifetime if operational policy requires a shorter link window, and
+keep the invitation database expiry consistent. Public signup is disabled by
+the portal sign-in API; staff invitations create the initial Auth identity.
+
+Bootstrap the first Dreniak administrator only through the trusted Supabase
+SQL editor after confirming that the Auth user belongs to Dreniak:
+
+```sql
+insert into public.portal_staff (user_id, role, active)
+select id, 'dreniak_admin', true
+from auth.users
+where lower(email) = lower('approved-admin@example.com')
+  and email_confirmed_at is not null;
+```
+
+The administrator must enrol and verify TOTP before using staff APIs. The
+staff console can create organisations, confirm service divisions, invite
+client admins/members, review requested categories, and create engagements.
+Client service access comes only from confirmed organisation divisions.
+
+Implemented client modules are read-first: engagement updates, vault listing,
+download/acknowledgement, conversations and requests, issued invoice details
+and staff-recorded payments, engineering supervision/contracts/quality, asset
+register/capital plan/maturity scoring, and account privacy export/deletion
+requests. Invoice PDF generation, client payment collection, editable asset
+imports/interventions, notification delivery workers, full staff document and
+invoice authoring, and an audit-log viewer are not implemented in this phase.
+The notification outbox records the delivery boundary; WhatsApp has no provider
+integration and no portal notification sender is enabled. No payment gateway is
+configured.
+
+The portal privacy copy is a draft. Confirm controller/processor terms,
+cross-border processing, legal basis, retention periods, backups, incident
+response, and UK/Uganda privacy requirements with legal and operations before
+inviting real client users. Malware scanning is not included. Do not upload
+sensitive personal data or unapproved records.
+
 ## Before public launch
 
 - Confirm red / indigo division assignment, Inter substitution, and preferred office-hours timezone (implemented as East Africa Time).
@@ -87,7 +136,7 @@ The browser suite covers desktop and mobile routing, image errors, overflow, div
 - Instagram and Facebook use the supplied `@dreniak_limited` handle, published at the user's direction. LinkedIn remains omitted because no account URL was supplied.
 - Confirm privacy/retention details against the final hosting and delivery services.
 - Configure `NEXT_PUBLIC_GA_ID` and/or `NEXT_PUBLIC_VERCEL_ANALYTICS=true` only for selected analytics services; both require visitor consent. Test acceptance, rejection and withdrawal in the deployed configuration.
-- Implement authenticated client portal access and document authorization in Phase 2. No auth provider has been chosen or connected.
+- Apply and verify the portal migration in staging, configure Auth SMTP/templates and allowed redirects, bootstrap staff, enrol staff MFA, and exercise invitation expiry/revocation, organisation isolation, confirmed-division access and private Storage with representative test users.
 - Deploy to an approved staging host for stakeholder review. Registrar/DNS changes and Microsoft 365 mail records remain a deployment handoff; preserve existing email configuration.
 
 See `doc/IMPLEMENTATION_HANDOFF.md` for the final verification evidence and launch status.
