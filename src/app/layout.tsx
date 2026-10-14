@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Experience } from "@/components/interactions";
 import { AnalyticsConsent } from "@/components/forms";
 import { siteUrl } from "@/lib/site";
@@ -56,8 +55,12 @@ export default function RootLayout({
           Skip to content
         </a>
         <Experience>{children}</Experience>
-        <AnalyticsConsent />
-        <SpeedInsights />
+        <AnalyticsConsent
+          vercelAnalyticsEnabled={
+            process.env.VERCEL_ENV === "production" ||
+            process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === "true"
+          }
+        />
       </body>
     </html>
   );

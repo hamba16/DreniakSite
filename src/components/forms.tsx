@@ -243,7 +243,11 @@ export function Newsletter() {
     </form>
   );
 }
-export function AnalyticsConsent() {
+export function AnalyticsConsent({
+  vercelAnalyticsEnabled = false,
+}: {
+  vercelAnalyticsEnabled?: boolean;
+}) {
   const pathname = usePathname();
   const [show, setShow] = useState(false);
   const [allowed, setAllowed] = useState(false);
@@ -253,7 +257,7 @@ export function AnalyticsConsent() {
     setAllowed(value);
     setShow(false);
   }
-  return (id || process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === "true") && !pathname.startsWith("/admin") ? (
+  return (id || vercelAnalyticsEnabled) && !pathname.startsWith("/admin") ? (
     <ConsentLoader
       id={id || ""}
       show={show}
@@ -261,6 +265,7 @@ export function AnalyticsConsent() {
       setShow={setShow}
       setAllowed={setAllowed}
       choose={choose}
+      vercelAnalyticsEnabled={vercelAnalyticsEnabled}
     />
   ) : null;
 }
@@ -274,6 +279,7 @@ function ConsentLoader({
   setShow,
   setAllowed,
   choose,
+  vercelAnalyticsEnabled,
 }: {
   id: string;
   show: boolean;
@@ -281,6 +287,7 @@ function ConsentLoader({
   setShow: (v: boolean) => void;
   setAllowed: (v: boolean) => void;
   choose: (v: boolean) => void;
+  vercelAnalyticsEnabled: boolean;
 }) {
   useEffect(() => {
     const value = localStorage.getItem("dreniak-analytics");
@@ -301,7 +308,7 @@ function ConsentLoader({
           </button>
         </aside>
       )}
-      {allowed && process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === "true" && <Analytics />}
+      {allowed && vercelAnalyticsEnabled && <Analytics />}
       {allowed && id && (
         <>
           <Script
