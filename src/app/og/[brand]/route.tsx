@@ -57,7 +57,7 @@ export async function GET(
       <img
         src={`data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`}
         width={290}
-        height={54}
+        height={70}
         alt="Dreniak — Live the Future"
       />
       <div style={{ display: "flex", flexDirection: "column" }}>

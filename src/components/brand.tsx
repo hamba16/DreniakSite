@@ -35,8 +35,8 @@ export function Logo({
   return (
     <Image
       src={`/brand/logo-${dark ? "dark" : "light"}.svg`}
-      width={614}
-      height={114}
+      width={660}
+      height={160}
       alt="Dreniak — Live the Future"
       className={`logo ${className}`}
       unoptimized
