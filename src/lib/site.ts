@@ -24,7 +24,7 @@ export const names = {
   "asset-management": "Asset Management",
 };
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://dreniak.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.dreniak.com";
 export const engineeringServices = engineering.services;
 export const pageTitles: Record<PageName, string> = {
   careers: "Careers",

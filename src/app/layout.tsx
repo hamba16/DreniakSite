@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title: { default: "Dreniak — Live the Future", template: "%s | Dreniak" },
   description:
     "Dreniak brings engineering and asset management together to engineer the longevity of civilisation.",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_GB",
@@ -35,10 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", images: ["/og/parent"] },
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/brand/mark-red.svg", type: "image/svg+xml" },
-    ],
+    icon: { url: "/favicon.ico", type: "image/x-icon", sizes: "32x32" },
     apple: "/apple-icon.png",
   },
 };
