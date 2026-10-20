@@ -20,7 +20,7 @@ Optional settings:
 
 The homepage route is configured for hourly ISR. `src/app/robots.ts` excludes APIs, admin, design review, portal, and auth routes from compliant crawlers, and disallows Bytespider and CCBot. Robots rules and `Crawl-delay` are voluntary crawler hints, not request throttles; the rate limiter is the enforcement layer.
 
-Rate limiting `/` does not reduce Vercel CDN/Edge Request counts: every request reaching Vercel's CDN is counted before middleware/cache handling, including a request answered with 429. Since the observed traffic was verified as Googlebot, the homepage has no request limiter that could throttle legitimate crawling. Existing abuse limits remain on enquiry, newsletter, and portal API routes.
+Rate limiting `/` does not reduce Vercel CDN/Edge Request counts: every request reaching Vercel's CDN is counted before middleware/cache handling, including a request answered with 429. Since the observed traffic was verified as Googlebot, the homepage has no request limiter that could throttle legitimate crawling. Existing abuse limits remain on enquiry and newsletter routes.
 
 The monitor endpoint logs configuration/backend failures and returns a `degraded` JSON status without failing the homepage or causing cron retries. A missing-secret warning is emitted once per warm instance. Unauthorized direct invocations still receive 401.
 
