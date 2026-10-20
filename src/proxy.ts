@@ -3,6 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { authRpc, sessionCookie } from "@/lib/admin-auth/server";
 import { hashToken } from "@/lib/admin-auth/crypto";
 import { portalCookieName } from "@/lib/portal/constants";
+import { recordHomepageRequest } from "@/lib/traffic-guard";
 
 const portalHeaders = {
   "Cache-Control": "no-store, private",
@@ -22,6 +23,11 @@ function withPortalHeaders(response: NextResponse) {
 
 export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  if (path === "/") {
+    // Count for monitoring only. API abuse limits remain on their respective routes.
+    // CDN request quotas count before this hook, so a homepage 429 cannot save quota.
+    await recordHomepageRequest();
+  }
   const secureHeaders = { "Cache-Control": "no-store, private", "Referrer-Policy": "no-referrer", "X-Robots-Tag": "noindex, nofollow" };
   if (path === "/admin" || path === "/admin/login" || path.startsWith("/api/admin/")) return NextResponse.next({ headers: secureHeaders });
   if (path === "/portal" || path.startsWith("/portal/") || path === "/auth/callback") {
@@ -55,6 +61,7 @@ export async function proxy(request: NextRequest) {
     }
     return withPortalHeaders(response);
   }
+  if (!path.startsWith("/admin/")) return NextResponse.next();
   const token = request.cookies.get(sessionCookie)?.value;
   try {
     const session = token && /^[A-Za-z0-9_-]{43}$/.test(token) ? await authRpc("session", { token: hashToken(token) }) : null;
@@ -64,4 +71,4 @@ export async function proxy(request: NextRequest) {
   }
   return NextResponse.redirect(new URL("/admin", request.url), { headers: secureHeaders });
 }
-export const config = { matcher: ["/admin/:path*", "/api/admin/:path*", "/portal/:path*", "/auth/callback"] };
+export const config = { matcher: ["/", "/admin/:path*", "/api/admin/:path*", "/portal/:path*", "/auth/callback"] };

@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/monitor/home-traffic",
+      "schedule": "15 0 * * *"
+    }
+  ]
+}
