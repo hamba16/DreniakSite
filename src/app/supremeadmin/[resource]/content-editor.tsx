@@ -107,7 +107,7 @@ export function ContentEditor({ resource }: { resource: string }) {
       input = <><select {...common} value={String(value ?? "")} onChange={(event) => update(field.key, event.target.value || null)}>
         {value && !choices.some((choice) => choice.value === value) && <option value={String(value)}>{field.type === "portrait" ? "Current portrait" : field.type === "media" ? "Current logo" : String(value)}</option>}
         {choices.map((choice) => <option key={choice.value} value={choice.value}>{choice.label}</option>)}
-      </select>{isMediaField && <small>{mediaError ? "Images couldn’t be loaded. " : "Need a different image? "}<Link href="/admin/media">Open Media Library</Link>{mediaError && <button type="button" className="content-text-button" onClick={() => setReload((value) => value + 1)}>Retry</button>}</small>}</>;
+      </select>{isMediaField && <small>{mediaError ? "Images couldn’t be loaded. " : "Need a different image? "}<Link href="/supremeadmin/media">Open Media Library</Link>{mediaError && <button type="button" className="content-text-button" onClick={() => setReload((value) => value + 1)}>Retry</button>}</small>}</>;
     } else if (field.type === "checkbox") {
       input = <label className="content-toggle"><input {...common} type="checkbox" checked={value === true} onChange={(event) => update(field.key, event.target.checked)} /><span>{field.label}</span></label>;
     } else if (field.type === "textarea") {

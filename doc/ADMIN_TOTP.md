@@ -1,6 +1,6 @@
 # Admin authenticator access
 
-Admin access at `/admin` now uses six-digit SHA-1 TOTP codes with a 30-second period and one interval of clock tolerance. Each of up to three authenticators has its own server-generated 160-bit secret and friendly label. Supabase remains the CMS database and media store; Supabase password users no longer authorize admin access or CMS writes.
+Admin access at `/supremeadmin` uses six-digit SHA-1 TOTP codes with a 30-second period and one interval of clock tolerance. Each of up to three authenticators has its own server-generated 160-bit secret and friendly label. Supabase remains the CMS database and media store; Supabase password users no longer authorize admin access or CMS writes.
 
 ## Environment and rollout
 
@@ -21,12 +21,12 @@ The new tables are `admin_authenticators`, `admin_enrollments`, `admin_sessions`
 
 ## Enrollment and lifecycle
 
-- While fewer than three authenticators exist, unauthenticated `/admin` visitors see **Register authenticator**. Public onboarding is intentional. Remote parties visit the site independently and register their own device. A signed-in administrator can direct a replacement holder to `/admin` in their own browser; no codes need to be shared.
+- While fewer than three authenticators exist, unauthenticated `/supremeadmin` visitors see **Register authenticator**. Public onboarding is intentional. Remote parties visit the site independently and register their own device. A signed-in administrator can direct a replacement holder to `/supremeadmin` in their own browser; no codes need to be shared.
 - Enter a label, scan the generated QR in Apple Passwords or another standard TOTP app, and verify a code. A pending setup expires after ten minutes, is bound to an HttpOnly browser cookie, and does not reserve a confirmed slot. Starting again in the same browser invalidates its prior pending setup. After confirmation, wait for a new code to sign in; the confirmation code has been consumed.
 - A QR necessarily conveys the new secret to the enrolling authenticator. This is the sole intended secret disclosure: a private, non-cacheable setup image, generated locally on the server. Neither plaintext secrets, provisioning URIs, nor encrypted secrets are returned in lists, login results, or subsequent retrieval endpoints. The master key never leaves the server. Analytics is suppressed on admin pages.
 - When the third confirmation wins, enrollment closes, all pending setups are discarded, and new setup requests are rejected. Open login pages refresh availability every 15 seconds; the database cap applies immediately to every request. Unique slots constrained to 1–3 enforce the hard limit independently of transaction locking.
 - An eight-hour opaque session token is stored in an HttpOnly, SameSite=Strict cookie, with Secure and the `__Host-` prefix in production. Only its SHA-256 digest is stored in the database. Plain HTTP development uses a separate cookie name. Layout, proxy, management page, and every CMS API check sessions server-side; missing/unavailable storage fails closed.
-- `/admin/authenticators` lists labels only (plus opaque IDs used for revocation). Revoking a device deletes it and all its sessions atomically. Self-revocation signs out the current browser. The server rechecks membership/session validity within the same transaction, protecting against concurrent revocations. An already-running CMS request authorized before revocation can finish; later requests fail.
+- `/supremeadmin/authenticators` lists labels only (plus opaque IDs used for revocation). Revoking a device deletes it and all its sessions atomically. Self-revocation signs out the current browser. The server rechecks membership/session validity within the same transaction, protecting against concurrent revocations. An already-running CMS request authorized before revocation can finish; later requests fail.
 - Revoking the final authenticator is blocked both by the RPC and a database trigger. There is no public recovery bypass. Enroll a replacement before removing the last existing device. If all devices are lost, a database operator must perform a deliberate, audited recovery; the application does not implement automatic reset.
 - Logout deletes the database session, so replaying a copied cookie fails. Login consumes the accepted TOTP time step atomically, preventing concurrent code reuse.
 
@@ -39,11 +39,10 @@ Secrets use versioned AES-256-GCM envelopes with random IVs and authenticator-ID
 - `src/lib/admin-auth/crypto.ts`: TOTP, random secret/token generation, AES-GCM encryption and token hashing.
 - `src/lib/admin-auth/server.ts`: server database client, RPC, cookies, session lookup, origin and rate-limit checks.
 - `src/app/api/admin/auth/[action]/route.ts`: begin, confirm, login, logout and revoke endpoints.
-- `src/app/admin/login-form.tsx`, `layout.tsx`, `actions.ts`, `authenticators/`: public entry, protected shell, logout and device management.
+- `src/app/supremeadmin/login-form.tsx`, `layout.tsx`, `actions.ts`, `authenticators/`: public entry, protected shell, logout and device management.
 - `src/lib/admin.ts`: existing CMS API guard now checks TOTP sessions before granting server data access.
 - `src/app/api/admin/[resource]/route.ts`: resource lookup now requires an own property of the existing allowlist.
 - `src/proxy.ts`: admin routing and non-cacheable/noindex responses. Relocated from the root to sit beside `src/app`, as required by Next.js discovery.
-- `src/app/(auth)/admin/login/page.tsx`: old login URL redirects to `/admin`.
 - `src/components/forms.tsx`: excludes admin screens from analytics.
 - `.env.example`, `package.json`, `package-lock.json`: configuration and pinned QR/test dependencies.
 

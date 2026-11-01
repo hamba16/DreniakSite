@@ -15,7 +15,7 @@ export function AuthenticatorList({ factors, currentId }: { factors: { id: strin
       const result = await authRequest("revoke", { id });
       // Clear previously authenticated UI from the router cache.
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      if (result.signedOut) window.location.assign("/admin");
+      if (result.signedOut) window.location.assign("/supremeadmin");
       else { setMessage("Authenticator revoked."); router.refresh(); }
     } catch (error) { setMessage(error instanceof Error ? error.message : "Revocation failed."); }
     finally { setBusy(false); }

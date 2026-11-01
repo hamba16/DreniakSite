@@ -42,7 +42,7 @@ export function AdminLogin({ enrollmentOpen }: { enrollmentOpen: boolean }) {
         await authRequest("login", { code: String(data.get("code")) });
         // Clear the entire router cache at this authentication boundary.
         // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-        window.location.assign("/admin");
+        window.location.assign("/supremeadmin");
       }
     } catch (error) { setMessage(error instanceof Error ? error.message : "Request failed."); router.refresh(); }
     finally { setBusy(false); }

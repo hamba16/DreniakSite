@@ -257,7 +257,7 @@ export function AnalyticsConsent({
     setAllowed(value);
     setShow(false);
   }
-  return (id || vercelAnalyticsEnabled) && !pathname.startsWith("/admin") ? (
+  return (id || vercelAnalyticsEnabled) && !pathname.startsWith("/supremeadmin") ? (
     <ConsentLoader
       id={id || ""}
       show={show}

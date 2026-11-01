@@ -12,7 +12,7 @@ export async function verifyContentForms(browser: Browser, signedIn: BrowserCont
   page.on("pageerror", (error) => errors.push(error.message));
   await mkdir("test-results", { recursive: true });
   for (const [resource, definition] of Object.entries(contentForms)) {
-    await page.goto(`${origin}/admin/${resource}`);
+    await page.goto(`${origin}/supremeadmin/${resource}`);
     await expect(page.getByRole("heading", { name: definition.title, exact: true })).toBeVisible();
     await expect(page.getByRole("status")).toHaveCount(0); // initial list finished loading
     await expect(page.getByLabel("Content JSON")).toHaveCount(0);
@@ -52,7 +52,7 @@ export async function verifyContentForms(browser: Browser, signedIn: BrowserCont
     }
     if (resource === "founder") assert.equal(item.portrait_media_id, null);
   }
-  await page.goto(`${origin}/admin/services`);
+  await page.goto(`${origin}/supremeadmin/services`);
   const record = page.locator(".content-record-list article").filter({ hasText: "Test service name" });
   await record.getByRole("button", { name: "Edit", exact: true }).click();
   await expect(page.getByLabel("Included item 1", { exact: true })).toHaveValue("A clear site report");
@@ -83,7 +83,7 @@ export async function verifyContentForms(browser: Browser, signedIn: BrowserCont
   await retry.getByRole("button", { name: "Delete", exact: true }).click();
   await expect(retry).toHaveCount(0);
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto(`${origin}/admin/sectors`);
+  await page.goto(`${origin}/supremeadmin/sectors`);
   await expect(page.getByRole("button", { name: "Create sector", exact: true })).toBeVisible();
   await page.screenshot({ path: "test-results/content-sectors-mobile.png", fullPage: true });
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
