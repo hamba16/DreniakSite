@@ -80,11 +80,11 @@ async function main() {
   try {
     let ready = false;
     for (let i = 0; i < 60; i++) {
-      try { if ((await fetch(`${origin}/admin`)).ok) { ready = true; break; } } catch { /* starting */ }
+      try { if ((await fetch(`${origin}/supremeadmin`)).ok) { ready = true; break; } } catch { /* starting */ }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     assert.ok(ready, `Next did not start: ${serverOutput}`);
-    console.log("Isolated Next.js admin server ready at http://localhost:3100/admin");
+    console.log("Isolated Next.js admin server ready at http://localhost:3100/supremeadmin");
     if (process.argv.includes("--serve")) {
       await new Promise<void>((resolve) => { process.once("SIGINT", resolve); process.once("SIGTERM", resolve); });
       return;
@@ -104,7 +104,7 @@ async function main() {
     }
     const enrollmentCodes = new Map<string, string>();
     async function enroll(page: Page, label: string) {
-      await page.goto(`${origin}/admin`);
+      await page.goto(`${origin}/supremeadmin`);
       await page.getByRole("button", { name: "Register authenticator", exact: true }).click();
       await page.getByLabel("Authenticator label").fill(label);
       await page.getByRole("button", { name: "Generate QR code" }).click();
@@ -118,8 +118,8 @@ async function main() {
       await expect(page.getByRole("status")).toContainText("Authenticator registered");
       return secret;
     }
-    await pages[0].goto(`${origin}/admin/services`);
-    await expect(pages[0]).toHaveURL(`${origin}/admin`);
+    await pages[0].goto(`${origin}/supremeadmin/services`);
+    await expect(pages[0]).toHaveURL(`${origin}/supremeadmin`);
     assert.equal((await visitors[0].request.get(`${origin}/api/admin/services`)).status(), 403);
     for (const [route, method] of [["/api/admin/services", "POST"], ["/api/admin/media/upload", "POST"], ["/api/admin/media/delete", "DELETE"]]) {
       assert.equal((await visitors[0].request.fetch(`${origin}${route}`, { method, headers: { origin }, data: {} })).status(), 403);
@@ -147,7 +147,7 @@ async function main() {
     const saved = await visitors[0].request.post(`${origin}/api/admin/services`, { headers: { origin }, data: { division: null, name: "Lifecycle test", description: "Preserved CMS contract", includes: [], value: "", editorial_status: "published", sort_order: 0 } });
     assert.equal(saved.status(), 201);
     assert.equal((await db.query("select name from public.services")).rows.length, 1);
-    await pages[0].goto(`${origin}/admin/authenticators`);
+    await pages[0].goto(`${origin}/supremeadmin/authenticators`);
     await expect(pages[0].getByRole("button", { name: "Revoke" })).toBeDisabled();
     const b = await enroll(pages[1], "Remote Mac");
     const setupC = await post(visitors[2], "begin", { label: "Third phone" });
@@ -159,7 +159,7 @@ async function main() {
     const race = await Promise.all([post(visitors[2], "confirm", { code: otp(c) }), post(visitors[3], "confirm", { code: otp(d) })]);
     assert.equal(race.filter((r) => r.status() === 200).length, 1);
     assert.deepEqual(await rpc(db, "status"), { count: 3 });
-    await pages[4].goto(`${origin}/admin`);
+    await pages[4].goto(`${origin}/supremeadmin`);
     await expect(pages[4].getByRole("button", { name: "Register authenticator" })).toHaveCount(0);
     assert.equal((await post(visitors[4], "begin", { label: "Fourth" })).status(), 400);
     assert.equal((await post(visitors[1], "login", { code: otp(b, 1) })).status(), 200);
@@ -183,8 +183,8 @@ async function main() {
     assert.notEqual(replacement, b);
     assert.deepEqual(await rpc(db, "status"), { count: 3 });
     await visitors[1].addCookies([stolenSession]);
-    await pages[1].goto(`${origin}/admin/authenticators`);
-    await expect(pages[1]).toHaveURL(`${origin}/admin`);
+    await pages[1].goto(`${origin}/supremeadmin/authenticators`);
+    await expect(pages[1]).toHaveURL(`${origin}/supremeadmin`);
     const replayContext = await context(20);
     assert.equal((await post(replayContext, "login", { code: loginCodeA })).status(), 401);
     const badContext = await context(21);
@@ -210,7 +210,7 @@ async function main() {
     assert.ok(await pages[0].evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
     assert.deepEqual(errors, []);
     storageAvailable = false;
-    assert.equal((await visitors[0].request.get(`${origin}/admin/services`)).status(), 503);
+    assert.equal((await visitors[0].request.get(`${origin}/supremeadmin/services`)).status(), 503);
     assert.equal((await visitors[0].request.get(`${origin}/api/admin/services`)).status(), 403);
     assert.equal((await post(visitors[4], "begin", { label: "Unavailable storage" })).status(), 503);
     console.log("PASS: browser enrollment + QR decoding, independent secrets, three-slot race, OTP replay, all-factor login, secure cookies, CMS write, origin checks, rate limiting, revocation + session invalidation, replacement, self-revocation, logout, desktop/mobile UI.");

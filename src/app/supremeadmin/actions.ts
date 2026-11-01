@@ -7,5 +7,5 @@ import { authRpc, cookieHash, cookieOptions, sessionCookie } from "@/lib/admin-a
 export async function logout() {
   await authRpc("logout", { token: await cookieHash(sessionCookie) });
   (await cookies()).set(sessionCookie, "", { ...cookieOptions, maxAge: 0 });
-  redirect("/admin");
+  redirect("/supremeadmin");
 }

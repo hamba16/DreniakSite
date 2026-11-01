@@ -7,10 +7,10 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Admin", robots: { index: false, follow: false } };
 
 const links = [
-  ["Dashboard", "/admin"], ["Homepage Content", "/admin/homepage_content"], ["Company & Founder", "/admin/company_profile"],
-  ["Services", "/admin/services"], ["Sectors", "/admin/sectors"], ["Values", "/admin/company_values"],
-  ["Job Openings", "/admin/job_openings"], ["Insights", "/admin/insights"], ["Testimonials", "/admin/testimonials"], ["Partners", "/admin/partners"],
-  ["Media Library", "/admin/media"], ["Social Links", "/admin/social_links"], ["Authenticators", "/admin/authenticators"],
+  ["Dashboard", "/supremeadmin"], ["Homepage Content", "/supremeadmin/homepage_content"], ["Company & Founder", "/supremeadmin/company_profile"],
+  ["Services", "/supremeadmin/services"], ["Sectors", "/supremeadmin/sectors"], ["Values", "/supremeadmin/company_values"],
+  ["Job Openings", "/supremeadmin/job_openings"], ["Insights", "/supremeadmin/insights"], ["Testimonials", "/supremeadmin/testimonials"], ["Partners", "/supremeadmin/partners"],
+  ["Media Library", "/supremeadmin/media"], ["Social Links", "/supremeadmin/social_links"], ["Authenticators", "/supremeadmin/authenticators"],
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

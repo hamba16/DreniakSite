@@ -17,11 +17,11 @@ export async function proxy(request: NextRequest) {
     "Referrer-Policy": "no-referrer",
     "X-Robots-Tag": "noindex, nofollow",
   };
-  if (path === "/admin" || path === "/admin/login" || path.startsWith("/api/admin/")) {
+  if (path === "/supremeadmin" || path.startsWith("/api/admin/")) {
     return NextResponse.next({ headers: secureHeaders });
   }
 
-  if (!path.startsWith("/admin/")) return NextResponse.next();
+  if (!path.startsWith("/supremeadmin/")) return NextResponse.next();
 
   const token = request.cookies.get(sessionCookie)?.value;
   try {
@@ -36,9 +36,9 @@ export async function proxy(request: NextRequest) {
       headers: secureHeaders,
     });
   }
-  return NextResponse.redirect(new URL("/admin", request.url), {
+  return NextResponse.redirect(new URL("/supremeadmin", request.url), {
     headers: secureHeaders,
   });
 }
 
-export const config = { matcher: ["/", "/admin/:path*", "/api/admin/:path*"] };
+export const config = { matcher: ["/", "/supremeadmin/:path*", "/api/admin/:path*"] };
