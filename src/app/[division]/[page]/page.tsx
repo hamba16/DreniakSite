@@ -11,6 +11,7 @@ import {
   type Division,
   type PageName,
 } from "@/lib/site";
+import { BreadcrumbStructuredData } from "@/components/seo";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return [
@@ -54,28 +55,39 @@ export default async function Page({
   )
     notFound();
   return (
-    <main id="main">
-      <div className="page-container">
-        <Breadcrumb
-          division={division as Division}
-          label={
-            page === "assessment"
-              ? "Maturity assessment"
-              : pageTitles[page as PageName]
-          }
-        />
-        {page === "assessment" ? (
-          <AssessmentPage />
-        ) : (
-          <DivisionPage
+    <>
+      <BreadcrumbStructuredData
+        division={division as Division}
+        label={
+          page === "assessment"
+            ? "Maturity assessment"
+            : pageTitles[page as PageName]
+        }
+        path={page}
+      />
+      <main id="main">
+        <div className="page-container">
+          <Breadcrumb
             division={division as Division}
-            page={page as PageName}
+            label={
+              page === "assessment"
+                ? "Maturity assessment"
+                : pageTitles[page as PageName]
+            }
           />
+          {page === "assessment" ? (
+            <AssessmentPage />
+          ) : (
+            <DivisionPage
+              division={division as Division}
+              page={page as PageName}
+            />
+          )}
+        </div>
+        {page !== "contact" && page !== "consultation" && (
+          <CTA division={division as Division} />
         )}
-      </div>
-      {page !== "contact" && page !== "consultation" && (
-        <CTA division={division as Division} />
-      )}
-    </main>
+      </main>
+    </>
   );
 }

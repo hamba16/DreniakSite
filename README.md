@@ -81,6 +81,8 @@ The browser suite covers desktop and mobile routing, image errors, overflow, div
 
 ## Before public launch
 
+- Make the public production domain crawlable: remove any Vercel Deployment Protection or Managed Challenge from the production domain, then confirm `/`, `/robots.txt`, and `/sitemap.xml` return `200` to an unauthenticated request. Add `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` from the respective webmaster tools, redeploy, and submit `https://www.dreniak.com/sitemap.xml`.
+
 - Confirm red / indigo division assignment, Inter substitution, and preferred office-hours timezone (implemented as East Africa Time).
 - Add Buttondown credentials, apply all migrations, register the signed unsubscribe webhook and schedule reconciliation. Verify a subscriber and unsubscribe through both systems after deployment.
 - Supply approved Engineering leadership biographies/portraits, real case studies, the named Insights owner and initial articles. Refine the drafted service descriptions when client copy is available.

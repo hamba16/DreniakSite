@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DivisionHome } from "@/components/division-pages";
 import { divisions, names, type Division } from "@/lib/site";
+import { BreadcrumbStructuredData } from "@/components/seo";
 export function generateStaticParams() {
   return divisions.map((division) => ({ division }));
 }
@@ -34,8 +35,11 @@ export default async function Page({
   const { division } = await params;
   if (!divisions.includes(division as Division)) notFound();
   return (
-    <main id="main">
-      <DivisionHome division={division as Division} />
-    </main>
+    <>
+      <BreadcrumbStructuredData division={division as Division} />
+      <main id="main">
+        <DivisionHome division={division as Division} />
+      </main>
+    </>
   );
 }
