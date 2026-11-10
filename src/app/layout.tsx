@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Experience } from "@/components/interactions";
 import { AnalyticsConsent } from "@/components/forms";
+import { SiteStructuredData } from "@/components/seo";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 import "./editorial.css";
@@ -26,6 +27,25 @@ export const metadata: Metadata = {
   description:
     "Dreniak brings engineering and asset management together to engineer the longevity of civilisation.",
   alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  verification: {
+    ...(process.env.GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } }
+      : {}),
+  },
   openGraph: {
     type: "website",
     locale: "en_GB",
@@ -52,6 +72,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} data-scroll-behavior="smooth">
       <body id="top">
+        <SiteStructuredData />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

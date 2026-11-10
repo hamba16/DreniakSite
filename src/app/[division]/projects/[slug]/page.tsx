@@ -5,7 +5,8 @@ import { Breadcrumb } from "@/components/shared";
 import { ProjectLabel } from "@/components/project-label";
 import { assetManagementFeaturedProjects } from "@/content/project-case-studies";
 import { publishedCaseStudies } from "@/lib/public-content";
-import { divisions, type Division } from "@/lib/site";
+import { divisions, siteUrl, type Division } from "@/lib/site";
+import { ArticleStructuredData, BreadcrumbStructuredData } from "@/components/seo";
 
 export function generateStaticParams() {
   return divisions.flatMap((division) =>
@@ -57,9 +58,17 @@ export default async function ProjectCaseStudyPage({
   if (!study) notFound();
 
   return (
-    <main id="main" className="page-container">
-      <Breadcrumb division={allowedDivision} label="Projects" />
-      <article className="case-study-article final-case-study">
+    <>
+      <BreadcrumbStructuredData division={allowedDivision} label="Projects" />
+      <ArticleStructuredData
+        type="CreativeWork"
+        headline={study.title}
+        description={study.summary}
+        url={`${siteUrl}/${division}/projects/${slug}`}
+      />
+      <main id="main" className="page-container">
+        <Breadcrumb division={allowedDivision} label="Projects" />
+        <article className="case-study-article final-case-study">
         <header className="case-study-sidebar">
         <div className="case-study-meta-top">
           <ProjectLabel kind="category" href={study.sectorLink}>{study.sector}</ProjectLabel>
@@ -108,12 +117,13 @@ export default async function ProjectCaseStudyPage({
           </section>
         ))}
         </div>
-      </article>
-      <div className="case-study-backlink">
-        <Link href="/asset-management/projects" className="text-link">
-          ← Back to projects
-        </Link>
-      </div>
-    </main>
+        </article>
+        <div className="case-study-backlink">
+          <Link href="/asset-management/projects" className="text-link">
+            ← Back to projects
+          </Link>
+        </div>
+      </main>
+    </>
   );
 }
