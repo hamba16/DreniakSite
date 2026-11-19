@@ -1,6 +1,6 @@
 # Homepage traffic guard operations
 
-The root route has a best-effort daily request counter in `src/proxy.ts` backed by Upstash Redis REST. Next.js 16 calls this request hook `proxy.ts`; the project already uses that convention, so a separate `middleware.ts` is not supported here. Next.js 16 Proxy runs on Node.js and does not support the Edge runtime; Vercel still runs its routing middleware globally before the cache. When Upstash is unavailable or its credentials are absent, the homepage serves normally; counter errors are logged at most once per minute per warm instance.
+The root route has a best-effort daily request counter in `src/proxy.ts` backed by Upstash Redis REST. The counter runs through `NextFetchEvent.waitUntil`, so Redis latency does not delay the homepage response. Next.js 16 calls this request hook `proxy.ts`; the project already uses that convention, so a separate `middleware.ts` is not supported here. Next.js 16 Proxy runs on Node.js and does not support the Edge runtime; Vercel still runs its routing middleware globally before the cache. When Upstash is unavailable or its credentials are absent, the homepage serves normally; counter errors are logged at most once per minute per warm instance.
 
 ## Required Vercel settings
 

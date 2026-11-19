@@ -1,14 +1,18 @@
-import { type NextRequest, NextResponse } from "next/server";
+import {
+  type NextFetchEvent,
+  type NextRequest,
+  NextResponse,
+} from "next/server";
 import { authRpc, sessionCookie } from "@/lib/admin-auth/server";
 import { hashToken } from "@/lib/admin-auth/crypto";
 import { recordHomepageRequest } from "@/lib/traffic-guard";
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest, event: NextFetchEvent) {
   const path = request.nextUrl.pathname;
 
   if (path === "/") {
-    // Count for monitoring only. CDN request quotas are counted before this hook.
-    await recordHomepageRequest();
+    // Count for monitoring only without delaying the homepage response.
+    event.waitUntil(recordHomepageRequest());
     return NextResponse.next();
   }
 
