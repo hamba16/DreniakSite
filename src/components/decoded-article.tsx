@@ -11,6 +11,8 @@ import {
 } from "@/content/decoded-01";
 import type { ReactNode } from "react";
 import { DecodedChoiceAnchor } from "./decoded-choice-anchor";
+import { DecodedDecisionTabs } from "./decoded-decision-tabs";
+import { DecodedEnergyInteraction } from "./decoded-energy-interaction";
 import { DecodedGraphic } from "./decoded-graphics";
 import { DecodedReadingChrome } from "./decoded-reading-chrome";
 import styles from "./decoded-article.module.css";
@@ -128,13 +130,21 @@ function DataTable({
   rows,
   note,
   className = "",
+  interactiveEnergyRows = false,
 }: {
   caption: string;
   headers: readonly string[];
   rows: readonly (readonly string[])[];
   note?: ReactNode;
   className?: string;
+  interactiveEnergyRows?: boolean;
 }) {
+  const energyRowKeys: Record<string, string> = {
+    "Energy purchased": "purchased",
+    "Energy sold": "sold",
+    "Purchase–sales gap": "gap",
+  };
+
   return (
     <div
       className={`${styles.tableScroller} ${className}`}
@@ -157,7 +167,18 @@ function DataTable({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.join("|")}>
+            <tr
+              aria-selected={
+                interactiveEnergyRows && energyRowKeys[row[0]] ? false : undefined
+              }
+              data-energy-row={
+                interactiveEnergyRows ? energyRowKeys[row[0]] : undefined
+              }
+              key={row.join("|")}
+              tabIndex={
+                interactiveEnergyRows && energyRowKeys[row[0]] ? -1 : undefined
+              }
+            >
               {row.map((cell, index) => (
                 <td key={`${index}-${cell}`} data-label={headers[index]}>
                   <span className={styles.cellLabel} aria-hidden="true">
@@ -183,12 +204,32 @@ function SeriesLabel() {
   );
 }
 
-function EnergyChart() {
+function energyValues(row: readonly string[]) {
+  return row.slice(1, 3).map((value) => {
+    const parsed = Number(value.replace(/[^\d]/g, ""));
+    if (!Number.isSafeInteger(parsed) || parsed <= 0) {
+      throw new Error(`Invalid energy chart value: ${value}`);
+    }
+    return parsed;
+  });
+}
+
+function EnergyChart({
+  purchasedValues,
+  soldValues,
+}: {
+  purchasedValues: readonly number[];
+  soldValues: readonly number[];
+}) {
   return (
     <figure className={styles.chartFigure}>
       <div className={styles.chartScroller} role="region" aria-label="Electricity access and distribution performance chart" tabIndex={0}>
         <DecodedGraphic name="energy-chart" />
       </div>
+      <DecodedEnergyInteraction
+        purchasedValues={purchasedValues}
+        soldValues={soldValues}
+      />
       <figcaption>Energy purchased and sold, 2024–2025. Indigo: purchased; red: sold. On small screens, scroll to explore the chart.</figcaption>
     </figure>
   );
@@ -251,6 +292,8 @@ export function DecodedInsightCard() {
 export function DecodedArticle() {
   const section6 = decodedArticle.research.sections[5];
   const firstTable = decodedArticle.research.sections[2].energyTable;
+  const purchasedValues = firstTable ? energyValues(firstTable.rows[0]) : [];
+  const soldValues = firstTable ? energyValues(firstTable.rows[1]) : [];
 
   return (
     <div className={styles.articleLayout}>
@@ -331,21 +374,10 @@ export function DecodedArticle() {
           <figure className={styles.kitFigure}>
             <DecodedGraphic name="decision" />
           </figure>
-          <div className={styles.choices}>
-            {decodedArticle.decision.choices.map((choice) => (
-              <details
-                id={choice.id}
-                className={styles.choice}
-                key={choice.id}
-              >
-                <summary>
-                  <strong>{choice.title}</strong>
-                  <span>{choice.description}</span>
-                </summary>
-                <p>{choice.explanation}</p>
-              </details>
-            ))}
-          </div>
+          <DecodedDecisionTabs
+            choices={decodedArticle.decision.choices}
+            label={decodedArticle.decision.promptHeading}
+          />
           <p className={styles.decisionClosing}>
             {decodedArticle.decision.closing}
           </p>
@@ -377,11 +409,21 @@ export function DecodedArticle() {
           <ol className={styles.questions}>
             {decodedArticle.questions.items.map((item) => (
               <li key={item.question}>
+                <input
+                  aria-label={item.question}
+                  className={styles.questionCheckbox}
+                  type="checkbox"
+                />
                 <strong>{item.question}</strong>
                 <p>{item.answer}</p>
               </li>
             ))}
           </ol>
+          <div aria-hidden="true" className={styles.questionProgress}>
+            <span />
+            <span />
+            <span />
+          </div>
         </section>
 
         <p className={styles.transition}>
@@ -484,8 +526,12 @@ export function DecodedArticle() {
                       />
                     }
                     className={`${styles.researchTable} ${styles.energyTable}`}
+                    interactiveEnergyRows
                   />
-                  <EnergyChart />
+                  <EnergyChart
+                    purchasedValues={purchasedValues}
+                    soldValues={soldValues}
+                  />
                 </>
               )}
               {index === 5 && section6 && (

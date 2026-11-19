@@ -10,9 +10,19 @@ export function DecodedChoiceAnchor() {
       const id = window.location.hash.slice(1);
       if (!choiceIds.has(id)) return;
 
+      const tab = document.querySelector<HTMLButtonElement>(
+        `[role="tab"][aria-controls="${id}-panel"]`,
+      );
+      if (tab) {
+        tab.click();
+        window.requestAnimationFrame(() =>
+          tab.scrollIntoView({ block: "start" }),
+        );
+        return;
+      }
+
       const choice = document.getElementById(id);
       if (!(choice instanceof HTMLDetailsElement)) return;
-
       choice.open = true;
       window.requestAnimationFrame(() =>
         choice.scrollIntoView({ block: "start" }),

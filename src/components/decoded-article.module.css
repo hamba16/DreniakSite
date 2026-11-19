@@ -353,6 +353,69 @@
   margin: 24px 0;
 }
 
+.decisionInteractive {
+  display: none;
+  margin: 24px 0;
+}
+
+.decisionStatic {
+  display: block;
+}
+
+.decisionTablist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.decisionTab {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #0d3251;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.decisionTab strong {
+  color: #0d3251;
+  font-size: 1.1rem;
+}
+
+.decisionTab span {
+  color: #111;
+}
+
+.decisionTab[aria-selected="true"] {
+  padding-top: 16px;
+  border-top: 3px solid #991923;
+}
+
+.decisionTab:focus-visible {
+  outline: 3px solid #991923;
+  outline-offset: 3px;
+}
+
+.decisionPanel {
+  margin-top: 12px;
+  padding: 18px;
+  border-left: 3px solid #0d3251;
+  background: rgb(13 50 81 / 5%);
+}
+
+.decisionPanel[hidden] {
+  display: none;
+}
+
+.decisionPanel p {
+  margin: 0;
+}
+
 .choice {
   border: 1px solid #0d3251;
   background: #fff;
@@ -443,6 +506,19 @@
   font-weight: 700;
 }
 
+.energyTable .dataTable tbody tr[data-energy-row] {
+  cursor: pointer;
+}
+
+.energyTable .dataTable tbody tr[data-energy-row]:focus-visible {
+  outline: 3px solid #991923;
+  outline-offset: -3px;
+}
+
+.energyTable .dataTable tbody tr[data-energy-row][aria-selected="true"] {
+  background-color: rgb(13 50 81 / 8%);
+}
+
 .cellLabel {
   display: none;
 }
@@ -507,8 +583,31 @@
   filter: brightness(1.08);
 }
 
+.chartScroller svg [data-energy-series] {
+  transition: opacity 180ms ease;
+}
+
+.chartScroller svg[data-energy-selection="purchased"]
+  [data-energy-series="sold"],
+.chartScroller svg[data-energy-selection="sold"]
+  [data-energy-series="purchased"] {
+  opacity: 0.24;
+}
+
+.chartScroller svg[data-energy-selection="gap"] [data-energy-series] {
+  opacity: 1;
+}
+
+.chartScroller svg [data-energy-gap] {
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .chartScroller svg > rect:not(:first-of-type) {
+    transition: none;
+  }
+
+  .chartScroller svg [data-energy-series] {
     transition: none;
   }
 }
@@ -579,7 +678,7 @@
 
 .questions li {
   position: relative;
-  padding: 20px 20px 18px 58px;
+  padding: 20px 58px 18px 58px;
   border-bottom: 1px solid rgb(13 50 81 / 30%);
   counter-increment: question;
 }
@@ -596,12 +695,78 @@
   font-weight: 700;
 }
 
+.questionCheckbox {
+  position: absolute;
+  top: 20px;
+  right: 18px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  appearance: none;
+  border: 2px solid #0d3251;
+  border-radius: 2px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.questionCheckbox:checked {
+  border-color: #991923;
+  background: #991923;
+}
+
+.questionCheckbox:checked::after {
+  display: block;
+  width: 6px;
+  height: 11px;
+  margin: 2px 0 0 6px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.questionCheckbox:focus-visible {
+  outline: 3px solid #991923;
+  outline-offset: 3px;
+}
+
 .questions strong {
   color: #0d3251;
 }
 
 .questions p {
   margin: 5px 0 0;
+}
+
+.questionProgress {
+  display: flex;
+  gap: 4px;
+  margin: -18px 0 28px;
+}
+
+.questionProgress span {
+  flex: 1;
+  height: 4px;
+  background: rgb(13 50 81 / 18%);
+  transition: background-color 160ms ease;
+}
+
+.questions:has(li:nth-child(1) .questionCheckbox:checked)
+  + .questionProgress
+  span:nth-child(1),
+.questions:has(li:nth-child(2) .questionCheckbox:checked)
+  + .questionProgress
+  span:nth-child(2),
+.questions:has(li:nth-child(3) .questionCheckbox:checked)
+  + .questionProgress
+  span:nth-child(3) {
+  background: #991923;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .questionProgress span {
+    transition: none;
+  }
 }
 
 .transition {
@@ -1034,6 +1199,10 @@
     grid-template-columns: 1fr;
   }
 
+  .decisionTablist {
+    grid-template-columns: 1fr;
+  }
+
   .article [id] {
     scroll-margin-top: 102px;
   }
@@ -1150,11 +1319,29 @@
   }
 }
 
+@media (scripting: enabled) {
+  .decisionInteractive {
+    display: block;
+  }
+
+  .decisionStatic {
+    display: none;
+  }
+}
+
 @media print {
   .contents,
   .readingProgress,
   .readingRail {
     display: none;
+  }
+
+  .decisionInteractive {
+    display: none !important;
+  }
+
+  .decisionStatic {
+    display: block !important;
   }
 
   .articleLayout {
