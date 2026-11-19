@@ -3,6 +3,7 @@ from pathlib import Path
 from html import escape
 import json
 import re
+import sys
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.pens.svgPathPen import SVGPathPen
@@ -43,6 +44,10 @@ def primary(x, y, w, h, dark=False):
 def descriptor(x, y, dark=False):
     color = WHITE if dark else INDIGO
     return f'<svg data-decoded="true" x="{x}" y="{y}" width="180" height="40" viewBox="0 0 180 40">{dd(0, 10, 42, 18, color)}{text("Decoded", 54, 29, 26, color)}</svg>'
+
+svg('illustration-label', 170, 30, 'Illustration', 'This generated image is an illustration, not documentary photography.', f'<rect width="170" height="30" fill="{INDIGO}"/>' + text('Illustration', 17, 22, 21, WHITE))
+if '--label-only' in sys.argv:
+    sys.exit(0)
 
 svg('dd', 244, 105, 'Decoded monogram', 'Two reflected forms derived from the Dreniak mark, sharing a central spine.', dd())
 svg('wordmark', 180, 40, 'Decoded', 'The Decoded descriptor, set in Dreniak’s Inter typeface.', descriptor(0, 0))

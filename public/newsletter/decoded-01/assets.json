@@ -1,0 +1,70 @@
+{
+  "series": "Dreniak Decoded",
+  "issue": "01",
+  "generatedPlates": 2,
+  "assets": [
+    {
+      "file": "/images/insights/after-the-connection-hero.jpg",
+      "width": 1600,
+      "height": 900,
+      "alt": "Illustration: distribution transformer and overhead lines beside a red earth road in a Ugandan trading centre at late afternoon.",
+      "use": "Article hero"
+    },
+    {
+      "file": "/images/insights/after-the-connection-thumb.jpg",
+      "width": 640,
+      "height": 360,
+      "alt": "Illustration: distribution transformer and overhead lines beside a red earth road in a Ugandan trading centre at late afternoon.",
+      "use": "Insights listing thumbnail"
+    },
+    {
+      "file": "/images/insights/after-the-connection-research.jpg",
+      "width": 1200,
+      "height": 480,
+      "alt": "Illustration: abstract electricity feeders, nodes and a grid fading into indigo dusk.",
+      "use": "Research brief section header"
+    },
+    {
+      "file": "/images/insights/after-the-connection-og.jpg",
+      "width": 1200,
+      "height": 630,
+      "alt": "Dreniak Limited — Decoded. Issue 01: After the connection. Illustration of a Ugandan electricity distribution transformer.",
+      "use": "Open Graph and Twitter share image"
+    },
+    {
+      "file": "/newsletter/decoded-01/linkedin-card.jpg",
+      "width": 1200,
+      "height": 627,
+      "alt": "Dreniak Limited — Decoded. Issue 01: After the connection. Illustration of a Ugandan electricity distribution transformer.",
+      "use": "LinkedIn share card"
+    },
+    {
+      "file": "/newsletter/decoded-01/email-banner.jpg",
+      "width": 1200,
+      "height": 400,
+      "alt": "Dreniak Limited — Decoded. Issue 01: After the connection. Illustration of a Ugandan electricity distribution transformer.",
+      "use": "Buttondown email header"
+    },
+    {
+      "file": "/newsletter/decoded-01/buttondown-icon.png",
+      "width": 512,
+      "height": 512,
+      "alt": "Dreniak Limited, with the smaller Decoded series descriptor beneath.",
+      "use": "Buttondown publication icon"
+    },
+    {
+      "file": "/newsletter/decoded-01/stat-card.png",
+      "width": 1200,
+      "height": 630,
+      "alt": "Distribution loss rate: 16.7% in 2024 to 18.1% in 2025, up 1.4 percentage points. Source: ERA distribution data; Dreniak calculations.",
+      "use": "Email distribution loss statistic"
+    },
+    {
+      "file": "/newsletter/decoded-01/energy-chart.png",
+      "width": 1200,
+      "height": 675,
+      "alt": "Uganda electricity, GWh: 2024 purchased 5,815, sold 4,846; 2025 purchased 6,630, sold 5,430. Source: ERA distribution data.",
+      "use": "Email purchased-versus-sold bar chart"
+    }
+  ]
+}
