@@ -15,18 +15,14 @@ import type { Metadata } from "next";
 export async function generateStaticParams() {
   const databaseParams = (await Promise.all(
     divisions.map(async (division) => {
-      try {
-        const insights = await publishedInsights(division);
-        return insights
-          .filter(
-            (item) =>
-              division !== "asset-management" ||
-              item.slug !== decodedArticle.slug,
-          )
-          .map((item) => ({ division, slug: item.slug }));
-      } catch {
-        return [];
-      }
+      const insights = await publishedInsights(division);
+      return insights
+        .filter(
+          (item) =>
+            division !== "asset-management" ||
+            item.slug !== decodedArticle.slug,
+        )
+        .map((item) => ({ division, slug: item.slug }));
     }),
   )).flat();
   return [
