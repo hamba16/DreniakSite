@@ -1,0 +1,17 @@
+# Dreniak Decoded
+- Dreniak Limited is always primary. Decoded is a quiet series descriptor.
+- Sources: ../logo-light.svg, ../logo-dark.svg, ../mark-path.json and the site’s Inter font.
+- The monogram reflects the original mark around a shared spine; do not redraw the parent logo.
+- Use only existing Dreniak colours: Business Red #991923, Indigo #0d3251, black and white.
+- Reserve red for the original logo and meaningful data comparisons; the descriptor is indigo or white.
+- Clear space: at least half the descriptor height around each lockup.
+- Minimum widths: horizontal lockup 320px; stacked 200px; descriptor 120px; standalone dd 32px.
+- The Dreniak logo must be larger than the complete Decoded descriptor in every lockup.
+- Light lockups: white or the site’s paper background. White lockups: indigo or opaque black.
+- On imagery, place the lockup on an opaque indigo panel; never sacrifice contrast for texture.
+- In the site, use dd only inside Insights; never in global navigation or the footer.
+- Do not create a new palette, font, motion style, accent, or independent Decoded identity.
+- Do not stretch, rotate or recolour the parent logo, or give Decoded equal billing.
+- Label generated imagery “Illustration”; never imply it records an actual Dreniak project.
+- SVG text is outlined from the installed Inter font for deterministic newsletter exports.
+- Rebuild originals with python scripts/build-decoded-kit.py (existing fontTools installation).

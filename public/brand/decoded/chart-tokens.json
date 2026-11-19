@@ -1,0 +1,13 @@
+{
+  "font": "Inter",
+  "axis": "#0d3251",
+  "barPurchased": "#0d3251",
+  "barSold": "#991923",
+  "label": "#0d3251",
+  "surface": "#ffffff",
+  "scale": {
+    "min": 0,
+    "max": 7000,
+    "unit": "GWh"
+  }
+}
