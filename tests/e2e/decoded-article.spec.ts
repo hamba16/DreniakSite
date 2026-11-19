@@ -189,3 +189,37 @@ test("Asset Management Insights features Issue 01 first and the article fits tar
     expect(result.violations, `Accessibility at ${width}px`).toEqual([]);
   }
 });
+
+test("reading rail follows its anchor jump and is hidden in print", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(route);
+
+  const rail = page.getByRole("navigation", { name: "On this page" });
+  const decisionLink = rail.getByRole("link", { name: "Your decision" });
+  await expect(rail).toBeVisible();
+  await decisionLink.focus();
+  await expect(decisionLink).toBeFocused();
+  await expect(decisionLink).toHaveCSS("outline-style", "solid");
+  await decisionLink.press("Enter");
+
+  await expect.poll(
+    () => rail.locator('a[aria-current="location"]').getAttribute("href"),
+  ).toBe("#your-decision");
+  await expect.poll(
+    () =>
+      page.locator("#your-decision").evaluate((section) => {
+        const margin = Number.parseFloat(
+          getComputedStyle(section).scrollMarginTop,
+        );
+        return Math.abs(section.getBoundingClientRect().top - margin);
+      }),
+  ).toBeLessThan(5);
+  await expect(page.locator("body")).toHaveClass(/decoded-header-compact/);
+
+  await page.emulateMedia({ media: "print" });
+  await expect(rail).toBeHidden();
+  await expect(page.locator('[class*="readingProgress"]')).toBeHidden();
+  await expect(page.locator("#sources")).toBeVisible();
+});

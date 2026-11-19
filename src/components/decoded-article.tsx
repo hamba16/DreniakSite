@@ -12,6 +12,7 @@ import {
 import type { ReactNode } from "react";
 import { DecodedChoiceAnchor } from "./decoded-choice-anchor";
 import { DecodedGraphic } from "./decoded-graphics";
+import { DecodedReadingChrome } from "./decoded-reading-chrome";
 import styles from "./decoded-article.module.css";
 
 const heroPath = "/images/insights/after-the-connection-hero.jpg";
@@ -252,9 +253,11 @@ export function DecodedArticle() {
   const firstTable = decodedArticle.research.sections[2].energyTable;
 
   return (
-    <main id="main" className={`page-container ${styles.page}`}>
-      <Breadcrumb division="asset-management" label="Insights" />
-      <article className={styles.article}>
+    <div className={styles.articleLayout}>
+      <DecodedReadingChrome />
+      <main id="main" className={`page-container ${styles.page}`}>
+        <Breadcrumb division="asset-management" label="Insights" />
+        <article className={styles.article}>
         <header className={styles.articleHeader}>
           <div className={styles.seriesLine}>
             <SeriesLabel />
@@ -548,8 +551,9 @@ export function DecodedArticle() {
         >
           ← Back to insights
         </Link>
-      </article>
-      <DecodedChoiceAnchor />
-    </main>
+        </article>
+        <DecodedChoiceAnchor />
+      </main>
+    </div>
   );
 }
