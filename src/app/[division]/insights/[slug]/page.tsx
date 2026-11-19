@@ -13,18 +13,24 @@ import {
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
-  const databaseParams = (await Promise.all(
-    divisions.map(async (division) => {
-      const insights = await publishedInsights(division);
-      return insights
-        .filter(
-          (item) =>
-            division !== "asset-management" ||
-            item.slug !== decodedArticle.slug,
-        )
-        .map((item) => ({ division, slug: item.slug }));
-    }),
-  )).flat();
+  const databaseParams =
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+      ? (
+          await Promise.all(
+            divisions.map(async (division) => {
+              const insights = await publishedInsights(division);
+              return insights
+                .filter(
+                  (item) =>
+                    division !== "asset-management" ||
+                    item.slug !== decodedArticle.slug,
+                )
+                .map((item) => ({ division, slug: item.slug }));
+            }),
+          )
+        ).flat()
+      : [];
   return [
     ...databaseParams,
     { division: "asset-management", slug: decodedArticle.slug },
