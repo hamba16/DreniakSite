@@ -18,6 +18,7 @@ try {
         browser = await chromium.launch();
         const context = await browser.newContext({ viewport: { width, height: 1000 }, colorScheme, reducedMotion: 'reduce' });
         const page = await context.newPage();
+        page.setDefaultTimeout(45000);
         let releaseImages;
         const imageGate = new Promise(resolve => { releaseImages = resolve; });
         await page.route('**/*', async route => {
@@ -38,8 +39,8 @@ try {
           }).observe({ type: 'layout-shift', buffered: true });
         });
         const response = await page.goto(`${origin}${route}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-        await page.locator('main h1').waitFor();
-        await page.evaluate(() => document.fonts.ready);
+        await page.getByRole('heading', { level: 1 }).filter({ hasText: route === article ? 'After the connection' : 'Perspectives on infrastructure' }).waitFor();
+        await page.evaluate(() => Promise.race([document.fonts.ready, new Promise((_, reject) => setTimeout(() => reject(new Error('Font loading timed out')), 30000))]));
         const reserved = await page.locator('main img').evaluateAll(images => images.filter(image => /decoded|after-the-connection/.test(decodeURIComponent(image.getAttribute('src')))).map(image => {
           const rect = image.getBoundingClientRect();
           return { src: image.getAttribute('src'), width: rect.width, height: rect.height };
@@ -48,7 +49,10 @@ try {
         // Trigger all lazy images, then return to the top for the permitted captures.
         for (const image of await page.locator('main img').all()) await image.scrollIntoViewIfNeeded();
         await page.evaluate(async () => {
-          await Promise.all([...document.querySelectorAll('main img')].map(image => image.decode().catch(() => {})));
+          await Promise.race([
+            Promise.all([...document.querySelectorAll('main img')].map(image => image.decode().catch(() => {}))),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Image loading timed out')), 30000)),
+          ]);
           scrollTo(0, 0);
         });
         const loaded = await page.locator('main img').evaluateAll(images => images.filter(image => /decoded|after-the-connection/.test(decodeURIComponent(image.getAttribute('src')))).map(image => {
