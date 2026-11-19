@@ -239,8 +239,17 @@
 }
 
 .section {
-  scroll-margin-top: 110px;
+  scroll-margin-top: var(--decoded-header-offset, 148px);
   margin: 0 0 48px;
+}
+
+.article [id] {
+  scroll-margin-top: var(--decoded-header-offset, 148px);
+}
+
+.section#quick-read > p:first-of-type {
+  font-size: 1.125rem;
+  line-height: 1.6;
 }
 
 .section h2,
@@ -341,7 +350,7 @@
 .choice {
   border: 1px solid #0d3251;
   background: #fff;
-  scroll-margin-top: 110px;
+  scroll-margin-top: var(--decoded-header-offset, 148px);
 }
 
 .choice summary {
@@ -401,6 +410,7 @@
 
 .dataTable th {
   padding: 12px 14px;
+  border: 1px solid rgb(13 50 81 / 30%);
   background: #0d3251;
   color: #fff;
   font-weight: 600;
@@ -409,12 +419,22 @@
 
 .dataTable td {
   padding: 12px 14px;
-  border: 1px solid rgb(13 50 81 / 30%);
+  border: 1px solid rgb(13 50 81 / 22%);
   vertical-align: top;
 }
 
 .dataTable tbody tr:nth-child(even) {
   background: rgb(13 50 81 / 5%);
+}
+
+.energyTable .dataTable th:not(:first-child),
+.energyTable .dataTable td:not(:first-child) {
+  text-align: right;
+}
+
+.energyTable .dataTable th:last-child,
+.energyTable .dataTable td:last-child > span:last-child {
+  font-weight: 700;
 }
 
 .cellLabel {
@@ -428,6 +448,20 @@
 .workTable .dataTable th,
 .workTable .dataTable td {
   width: 50%;
+}
+
+.dataTable tbody tr {
+  transition: background-color 160ms ease;
+}
+
+@media (hover: hover) {
+  .dataTable tbody tr:nth-child(odd):hover {
+    background-color: rgb(13 50 81 / 4%);
+  }
+
+  .dataTable tbody tr:nth-child(even):hover {
+    background-color: rgb(13 50 81 / 9%);
+  }
 }
 
 .researchTable .dataTable {
@@ -579,8 +613,16 @@
   margin-top: 40px;
 }
 
+.researchPlate + h3 + p {
+  margin: 14px 0 28px;
+  padding: 18px 22px;
+  border-left: 3px solid var(--indigo);
+  background: rgb(13 50 81 / 5%);
+  line-height: 1.75;
+}
+
 .researchSection h2 {
-  scroll-margin-top: 110px;
+  scroll-margin-top: var(--decoded-header-offset, 148px);
 }
 
 .sources {
@@ -593,19 +635,41 @@
   border-bottom: 1px solid rgb(13 50 81 / 25%);
   color: #111;
   line-height: 1.65;
-  scroll-margin-top: 110px;
+  scroll-margin-top: var(--decoded-header-offset, 148px);
 }
 
 .sourceBacklinks {
   display: inline-flex;
   gap: 10px;
   margin-left: 12px;
+  counter-reset: source-backlink;
 }
 
 .sourceBacklinks a {
+  counter-increment: source-backlink;
   color: #991923 !important;
+  font-size: 0;
   font-weight: 700;
   text-decoration: none !important;
+}
+
+.sourceBacklinks a::before {
+  content: counter(source-backlink, lower-alpha);
+  font-size: 0.72rem;
+}
+
+.sources li:target,
+.citation:target {
+  animation: source-target-highlight 1800ms ease-out both;
+}
+
+@keyframes source-target-highlight {
+  from {
+    background-color: rgb(13 50 81 / 14%);
+  }
+  to {
+    background-color: transparent;
+  }
 }
 
 .newsletter {
@@ -642,7 +706,18 @@
 .backToInsights {
   display: inline-block;
   margin-top: 18px;
+  padding: 9px 14px;
+  border: 1px solid var(--indigo);
+  color: var(--indigo) !important;
   font-weight: 600;
+  text-decoration: none !important;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.backToInsights:hover {
+  background: rgb(13 50 81 / 5%);
 }
 
 .featuredCard {
@@ -705,6 +780,46 @@
   letter-spacing: 0.04em;
 }
 
+.processOverview {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin: 28px 0;
+}
+
+.processOverview > .tableScroller,
+.processOverview > .kitFigure {
+  margin: 0;
+}
+
+.processOverview > .kitFigure {
+  order: -1;
+}
+
+.workTable .dataTable tbody {
+  counter-reset: process-step;
+}
+
+.workTable .dataTable tbody tr {
+  counter-increment: process-step;
+}
+
+.workTable .dataTable tbody td:first-child > span:last-child::before {
+  display: inline-grid;
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: rgb(13 50 81 / 8%);
+  color: var(--red);
+  content: counter(process-step);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  place-items: center;
+  vertical-align: middle;
+}
+
 @media (min-width: 800px) {
   .contents {
     position: sticky;
@@ -712,9 +827,35 @@
   }
 }
 
+@media (min-width: 1000px) {
+  .newsletter,
+  .nextInSeries {
+    box-sizing: border-box;
+    width: calc(50% - 12px);
+  }
+
+  .newsletter {
+    float: left;
+    margin: 50px 0 30px;
+  }
+
+  .nextInSeries {
+    float: right;
+    margin: 50px 0 30px;
+  }
+
+  .backToInsights {
+    clear: both;
+  }
+}
+
 @media (max-width: 760px) {
   .featuredCard {
     grid-template-columns: 1fr;
+  }
+
+  .article [id] {
+    scroll-margin-top: 102px;
   }
 
   .workTable {
@@ -797,6 +938,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sources li:target,
+  .citation:target {
+    animation: none;
+    background-color: rgb(13 50 81 / 14%);
+  }
+
+  .dataTable tbody tr {
+    transition: none;
+  }
+
   .article *,
   .article *::before,
   .article *::after {
@@ -804,5 +955,15 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .contents {
+    display: none;
+  }
+
+  .choice > p {
+    display: block !important;
   }
 }

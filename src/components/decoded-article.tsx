@@ -351,13 +351,15 @@ export function DecodedArticle() {
         <section id="how-we-work" className={styles.section}>
           <h2>{decodedArticle.howWeWork.heading}</h2>
           <p>{decodedArticle.howWeWork.introduction}</p>
-          <DataTable
-            caption={decodedArticle.howWeWork.table.caption}
-            headers={decodedArticle.howWeWork.table.headers}
-            rows={decodedArticle.howWeWork.table.rows}
-            className={styles.workTable}
-          />
-          <ProcessDiagram />
+          <div className={styles.processOverview}>
+            <DataTable
+              caption={decodedArticle.howWeWork.table.caption}
+              headers={decodedArticle.howWeWork.table.headers}
+              rows={decodedArticle.howWeWork.table.rows}
+              className={styles.workTable}
+            />
+            <ProcessDiagram />
+          </div>
           <h3>{decodedArticle.howWeWork.investmentHeading}</h3>
           <p>{decodedArticle.howWeWork.investment}</p>
           <h3>{decodedArticle.howWeWork.startHeading}</h3>
@@ -478,7 +480,7 @@ export function DecodedArticle() {
                         sources={decodedCitations.briefTable.sources}
                       />
                     }
-                    className={styles.researchTable}
+                    className={`${styles.researchTable} ${styles.energyTable}`}
                   />
                   <EnergyChart />
                 </>
