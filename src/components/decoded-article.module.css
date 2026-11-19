@@ -733,6 +733,12 @@
     min-width: 0;
   }
 
+  .workTable .dataTable caption {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   .workTable .dataTable thead {
     position: absolute;
     width: 1px;
