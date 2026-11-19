@@ -1,0 +1,12 @@
+﻿# Decoded 01 state
+- [x] Pass 1: 11 SVG originals, rules, tokens; palette/primacy/descriptions: 0/0/0 failures.
+- [x] Pass 2: 2 generations, 9 exports; text/logos observed/dimensions/alt failures: 0/0/0.
+- [x] Pass 3: integration delivered; user accepted documented verification limits (CERTIFICATION.md).
+- Files: public/brand/decoded/*; assets/images/decoded-01/*; public/images/insights/*; public/newsletter/decoded-01/*.
+- Scripts: build-decoded-kit.py, check-decoded-kit.mjs, export-decoded-assets.mjs; generation prompts in GENERATION.md.
+- Checks: final tsc 0 errors; lint 0 errors; 17 unit cases passed including isolated retry after memory crash.
+- Browser: final-source certification incomplete; 4 screenshots captured, desktop listing capture stale.
+- Branch: insights/after-the-connection; pre-existing article/newsletter edits preserved.
+- Brand folders have no index; existing SVG sources and globals.css are the authority.
+- Concurrent commits (f578065, d26749c, 8bb5f35) include integration and prior edits; preserved.
+- Open issues: stable preview and 6 final-source interaction cases; no new package dependencies.

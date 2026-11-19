@@ -31,6 +31,7 @@ import {
 } from "./interactions";
 import { PageIntro, Standards, CTA, Sectors, ProjectApproach } from "./shared";
 import { EnquiryForm, Newsletter } from "./forms";
+import { DecodedInsightCard } from "./decoded-article";
 import { ConvergenceDiagram } from "./convergence-diagram";
 import {
   type Division,
@@ -634,6 +635,7 @@ export async function DivisionPage({
               </span>
             ))}
           </div>
+          {division === "asset-management" && <DecodedInsightCard />}
           {databaseInsights.length ? (
             databaseInsights.map((item) => (
               <article className="insight-card" key={item.slug}>
@@ -648,7 +650,7 @@ export async function DivisionPage({
                 <p>{item.summary}</p>
               </article>
             ))
-          ) : (
+          ) : division !== "asset-management" ? (
             <section className="insights-empty">
               <div>
                 <span className="eyebrow">
@@ -663,7 +665,7 @@ export async function DivisionPage({
               </div>
               <Mark stroke flow />
             </section>
-          )}
+          ) : null}
           <div className="inline-newsletter">
             <Newsletter />
           </div>

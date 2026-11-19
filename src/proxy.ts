@@ -1,9 +1,21 @@
-import { type NextRequest, NextResponse } from "next/server";
+import {
+  type NextFetchEvent,
+  type NextRequest,
+  NextResponse,
+} from "next/server";
 import { authRpc, sessionCookie } from "@/lib/admin-auth/server";
 import { hashToken } from "@/lib/admin-auth/crypto";
+import { recordHomepageRequest } from "@/lib/traffic-guard";
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest, event: NextFetchEvent) {
   const path = request.nextUrl.pathname;
+
+  if (path === "/") {
+    // Count for monitoring only without delaying the homepage response.
+    event.waitUntil(recordHomepageRequest());
+    return NextResponse.next();
+  }
+
   const secureHeaders = {
     "Cache-Control": "no-store, private",
     "Referrer-Policy": "no-referrer",
@@ -14,13 +26,23 @@ export async function proxy(request: NextRequest) {
   }
 
   if (!path.startsWith("/supremeadmin/")) return NextResponse.next();
+
   const token = request.cookies.get(sessionCookie)?.value;
   try {
-    const session = token && /^[A-Za-z0-9_-]{43}$/.test(token) ? await authRpc("session", { token: hashToken(token) }) : null;
+    const session =
+      token && /^[A-Za-z0-9_-]{43}$/.test(token)
+        ? await authRpc("session", { token: hashToken(token) })
+        : null;
     if (session) return NextResponse.next({ headers: secureHeaders });
   } catch {
-    return new NextResponse("Admin authentication is temporarily unavailable.", { status: 503, headers: secureHeaders });
+    return new NextResponse("Admin authentication is temporarily unavailable.", {
+      status: 503,
+      headers: secureHeaders,
+    });
   }
-  return NextResponse.redirect(new URL("/supremeadmin", request.url), { headers: secureHeaders });
+  return NextResponse.redirect(new URL("/supremeadmin", request.url), {
+    headers: secureHeaders,
+  });
 }
-export const config = { matcher: ["/supremeadmin/:path*", "/api/admin/:path*"] };
+
+export const config = { matcher: ["/", "/supremeadmin/:path*", "/api/admin/:path*"] };

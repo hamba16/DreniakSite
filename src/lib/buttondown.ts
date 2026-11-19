@@ -10,6 +10,18 @@ type ButtondownFailureReason =
   | "suppressed"
   | "unknown";
 
+type ButtondownSubscriberResult =
+  | {
+      ok: true;
+      duplicate: boolean;
+      metadataApplied?: boolean;
+    }
+  | {
+      ok: false;
+      reason: ButtondownFailureReason;
+      status?: number;
+    };
+
 function classifyButtondownFailure(status?: number, code?: string): ButtondownFailureReason {
   if (status === 401 || status === 403) return "authentication";
   if (status === 429) return "rate_limit";
@@ -18,7 +30,10 @@ function classifyButtondownFailure(status?: number, code?: string): ButtondownFa
   return status === undefined ? "network" : "unknown";
 }
 
-export async function sendButtondownSubscriber(email: string) {
+export async function sendButtondownSubscriber(
+  email: string,
+  metadata?: Record<string, string>,
+): Promise<ButtondownSubscriberResult> {
   const apiKey = process.env.BUTTONDOWN_API_KEY;
   const baseUrl = process.env.BUTTONDOWN_API_BASE_URL || "https://api.buttondown.email/v1";
   if (!apiKey) {
@@ -41,10 +56,18 @@ export async function sendButtondownSubscriber(email: string) {
           "Content-Type": "application/json",
           "X-Buttondown-Collision-Behavior": "add",
         },
-        body: JSON.stringify({ email_address: email }),
+        body: JSON.stringify({
+          email_address: email,
+          ...(metadata ? { metadata } : {}),
+        }),
         signal: AbortSignal.timeout(10000),
       });
-      if (response.ok) return { ok: true as const, duplicate: false };
+      if (response.ok)
+        return {
+          ok: true as const,
+          duplicate: false,
+          ...(metadata ? { metadataApplied: true } : {}),
+        };
       const text = await response.text();
       let code: string | undefined;
       try {
@@ -53,11 +76,21 @@ export async function sendButtondownSubscriber(email: string) {
       } catch {
         code = text;
       }
+      if (response.status === 403 && code === "feature_disabled" && metadata) {
+        const fallback = await sendButtondownSubscriber(email);
+        return fallback.ok
+          ? { ...fallback, metadataApplied: false }
+          : fallback;
+      }
       if (
         response.status === 400 &&
         /already|duplicate|collision|subscriber_exists/i.test(code || text)
       ) {
-        return { ok: true as const, duplicate: true };
+        return {
+          ok: true as const,
+          duplicate: true,
+          ...(metadata ? { metadataApplied: false } : {}),
+        };
       }
       const reason = classifyButtondownFailure(response.status, code);
       if (!["rate_limit", "server"].includes(reason) || attempt === retryDelays.length) {

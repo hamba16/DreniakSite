@@ -12,6 +12,8 @@ Apply all Supabase migrations in order, including `20260920173005_public_intake_
 
 `NEWSLETTER_PROVIDER=buttondown` is the default. Supabase stores consent before provider sync. Existing rows retain their original consent evidence and unsubscribe status on duplicate signup. `consent_version=2026-09-10` identifies the existing signup statement, not an approved privacy-policy date. Client-approved privacy text/version remains a content decision.
 
+The signup form's validated `source` value is stored in the Supabase `source` column and forwarded as Buttondown subscriber metadata. Scheduled reconciliation reads and forwards that stored source as well. Buttondown metadata is plan-gated; if the API reports `feature_disabled`, the integration retries subscriber capture without metadata, logs the attribution limitation, and keeps the source in Supabase. Reconciliation reports how many subscribers lacked provider metadata. The Dreniak Decoded article uses `insights-after-the-connection`; other site forms default to `dreniak-website`.
+
 ## Buttondown unsubscribe webhook
 
 1. Configure `BUTTONDOWN_API_KEY` and a long random `BUTTONDOWN_WEBHOOK_SIGNING_KEY` on the server.

@@ -13,6 +13,10 @@ import { FounderCard } from "@/components/founder-card";
 import { CinematicImage } from "@/components/cinematic-image";
 import { homepageContent } from "@/lib/public-content";
 import { homepageImagery, homepagePanelSizes } from "@/content/homepage-imagery";
+
+// Re-render the homepage at most hourly; its CMS data uses the same lifetime.
+export const revalidate = 3600;
+
 export default async function Home() {
   let content = null;
   try {
