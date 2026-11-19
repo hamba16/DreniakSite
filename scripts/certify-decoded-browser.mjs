@@ -7,8 +7,9 @@ const listing = '/asset-management/insights';
 const capture = process.argv.includes('--capture');
 const probe = process.argv.includes('--probe');
 let browser;
-const rows = process.argv.includes('--resume') ? JSON.parse(await fs.readFile('doc/decoded-01/evidence/browser.json', 'utf8')) : [];
+const rows = process.argv.includes('--resume') ? JSON.parse(await fs.readFile('doc/decoded-01/evidence/browser.json', 'utf8')).filter(row => row.origin === origin) : [];
 await fs.mkdir('doc/decoded-01/evidence', { recursive: true });
+await fs.writeFile('doc/decoded-01/evidence/browser.json', JSON.stringify(rows, null, 2) + '\n');
 try {
   for (const route of (probe ? [article] : [article, listing])) {
     for (const width of (probe ? [360] : [360, 768, 1280])) {
@@ -36,7 +37,7 @@ try {
             }
           }).observe({ type: 'layout-shift', buffered: true });
         });
-        const response = await page.goto(`${origin}${route}`, { waitUntil: 'domcontentloaded' });
+        const response = await page.goto(`${origin}${route}`, { waitUntil: 'domcontentloaded', timeout: 60000 });
         await page.locator('main h1').waitFor();
         await page.evaluate(() => document.fonts.ready);
         const reserved = await page.locator('main img').evaluateAll(images => images.filter(image => /decoded|after-the-connection/.test(decodeURIComponent(image.getAttribute('src')))).map(image => {
@@ -81,7 +82,7 @@ try {
           };
         });
         const axe = await new AxeBuilder({ page }).include('main').withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']).analyze();
-        rows.push({ route, width, colorScheme, status: response.status(), ...counts, imagesMeasured: reserved.length, imageLayoutShiftFailures, externalOrigins: [...external], axeViolations: axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })) });
+        rows.push({ origin, route, width, colorScheme, status: response.status(), ...counts, imagesMeasured: reserved.length, imageLayoutShiftFailures, externalOrigins: [...external], axeViolations: axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })) });
         await fs.writeFile('doc/decoded-01/evidence/browser.json', JSON.stringify(rows, null, 2) + '\n');
         if (capture && colorScheme === 'light' && width !== 768) {
           // Exactly four screenshots: article top and listing at the two requested sizes.
