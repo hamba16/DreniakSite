@@ -454,6 +454,25 @@
   background: #fff;
 }
 
+.chartScroller svg > path {
+  fill: none;
+}
+
+.chartScroller svg > rect:not(:first-of-type) {
+  transition: filter 160ms ease;
+}
+
+.chartScroller svg > rect:not(:first-of-type):hover,
+.chartScroller:focus-visible svg > rect:not(:first-of-type) {
+  filter: brightness(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chartScroller svg > rect:not(:first-of-type) {
+    transition: none;
+  }
+}
+
 .chartLabel {
   fill: #111;
   font-size: 14px;
