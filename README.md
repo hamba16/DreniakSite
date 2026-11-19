@@ -27,6 +27,7 @@ Node 20.9+ is required by Next.js; this build was developed with Node 24.13.0. T
 - Six-question maturity assessment with transparent indicative scoring, answer review, restart and context passed into an enquiry.
 - Contact: client and server validation, consent, honeypot, request size/origin checks, throttling, SMTP delivery adapter, explicit unavailable/error states and email fallback.
 - Newsletter: validated capture with Supabase as the subscriber system of record and Buttondown as the delivery provider. Legacy authenticated webhook and persistent filesystem adapters remain available explicitly for migration or local use.
+- Dreniak Decoded Issue 01: a static, fully sourced article on the Asset Management Insights route, with the original reader piece and research brief presented together.
 - Portal entry: honest Phase 2 surface with no fake credentials or document access.
 - SEO: route metadata, canonical URLs, social images for all three brands, sitemap, robots, favicon and Apple icon.
 - Optional GA4 behind visitor consent; privacy and preference reset surface.
@@ -52,7 +53,7 @@ In production, Buttondown is the default provider:
 1. `BUTTONDOWN_API_KEY`: server-only Buttondown API token.
 2. `BUTTONDOWN_API_BASE_URL=https://api.buttondown.email/v1`: Buttondown API base URL.
 
-Each signup is inserted into Supabase's `newsletter_subscribers` table before Buttondown is called. Duplicate capture preserves existing unsubscribe status and original consent evidence. A Buttondown outage is logged and returned as a successful capture because Supabase is authoritative. Run `npx tsx scripts/reconcile-newsletter.ts` for a read-only dry-run, then schedule that command with `--apply` on the selected host to retry provider sync. It paginates stored active captures and reports counts without printing subscriber emails. Buttondown collision behavior `add` handles duplicates without forcing suppressed subscribers active.
+Each signup is inserted into Supabase's `newsletter_subscribers` table before Buttondown is called. Duplicate capture preserves existing unsubscribe status and original consent evidence. Newsletter form source attribution is stored in Supabase and sent as Buttondown subscriber metadata; reconciliation retries carry the stored source as well. Buttondown metadata is plan-gated: if unavailable, the integration still submits the subscriber without metadata, retains the source in Supabase, logs the limitation, and counts it as `metadataUnavailable` during reconciliation. A Buttondown outage is logged and returned as a successful capture because Supabase is authoritative. Run `npx tsx scripts/reconcile-newsletter.ts` for a read-only dry-run, then schedule that command with `--apply` on the selected host to retry provider sync. It paginates stored active captures and reports counts without printing subscriber emails. Buttondown collision behavior `add` handles duplicates without forcing suppressed subscribers active.
 
 The legacy adapters remain available by setting `NEWSLETTER_PROVIDER` explicitly:
 

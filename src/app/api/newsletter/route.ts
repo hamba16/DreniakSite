@@ -122,7 +122,7 @@ export async function POST(request: Request) {
     consent: true,
     consentVersion: NEWSLETTER_CONSENT_VERSION,
     createdAt: new Date().toISOString(),
-    source: "dreniak-website",
+    source: parsed.data.source,
   };
   const provider = process.env.NEWSLETTER_PROVIDER || "buttondown";
 
@@ -157,7 +157,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const buttondown = await sendButtondownSubscriber(email);
+    const buttondown = await sendButtondownSubscriber(email, {
+      source: record.source,
+    });
     if (!buttondown.ok) {
       serverLog("error", "newsletter.buttondown_sync_failed", {
         reason: buttondown.reason,
@@ -170,6 +172,11 @@ export async function POST(request: Request) {
     serverLog("info", "newsletter.buttondown_synced", {
       duplicate: buttondown.duplicate,
     });
+    if (buttondown.metadataApplied === false) {
+      serverLog("warn", "newsletter.buttondown_source_metadata_unavailable", {
+        source: record.source,
+      });
+    }
     return Response.json({ ok: true, synced: true, duplicate: buttondown.duplicate });
   }
 

@@ -91,6 +91,8 @@ export function ArticleStructuredData({
   url,
   datePublished,
   author,
+  authorType = "Person",
+  image,
 }: {
   type?: "Article" | "CreativeWork";
   headline: string;
@@ -98,6 +100,8 @@ export function ArticleStructuredData({
   url: string;
   datePublished?: string;
   author?: string;
+  authorType?: "Person" | "Organization";
+  image?: string;
 }) {
   return (
     <JsonLd
@@ -109,9 +113,14 @@ export function ArticleStructuredData({
         url,
         ...(datePublished ? { datePublished } : {}),
         author: author
-          ? { "@type": "Person", name: author }
+          ? { "@type": authorType, name: author }
           : { "@type": "Organization", name: "Dreniak Limited" },
-        publisher: { "@id": `${siteUrl}/#organization` },
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteUrl}/#organization`,
+          name: "Dreniak Limited",
+        },
+        ...(image ? { image } : {}),
       }}
     />
   );

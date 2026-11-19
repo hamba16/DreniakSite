@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/credits",
     "/careers",
     "/asset-management/assessment",
+    "/asset-management/insights/after-the-connection-africa-electricity",
     ...projects.map(project => `/asset-management/projects/${project.slug}`),
     ...divisions.flatMap((d) => [
       `/${d}`,

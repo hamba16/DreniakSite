@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, readFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { POST } from "../src/app/api/newsletter/route";
+import { sendButtondownSubscriber } from "../src/lib/buttondown";
 test("newsletter returns success only after email and consent are persisted", async () => {
   const base = path.resolve(".data/verification");
   await mkdir(base, { recursive: true });
@@ -84,10 +85,15 @@ test("buttondown signup upserts Supabase before syncing and treats duplicates as
     const url = String(input);
     calls.push(url);
     if (url.includes("/rest/v1/newsletter_subscribers")) {
-      assert.equal(JSON.parse(String(init?.body)).consent_version, "2026-09-10");
+      const subscriber = JSON.parse(String(init?.body));
+      assert.equal(subscriber.consent_version, "2026-09-10");
+      assert.equal(subscriber.source, "insights-after-the-connection");
       assert.match(String(new Headers(init?.headers).get("prefer")), /resolution=ignore-duplicates/);
       return new Response(null, { status: 201 });
     }
+    assert.deepEqual(JSON.parse(String(init?.body)).metadata, {
+      source: "insights-after-the-connection",
+    });
     return new Response(JSON.stringify({ code: "subscriber_exists" }), {
       status: 400,
       headers: { "content-type": "application/json" },
@@ -98,7 +104,11 @@ test("buttondown signup upserts Supabase before syncing and treats duplicates as
       new Request("http://localhost:3000/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "buttondown@example.com", consent: true }),
+        body: JSON.stringify({
+          email: "buttondown@example.com",
+          consent: true,
+          source: "insights-after-the-connection",
+        }),
       }),
     );
     assert.equal(response.status, 200);
@@ -155,5 +165,34 @@ test("buttondown sync failure does not hide a successful Supabase capture", asyn
       if (value === undefined) delete process.env[key];
       else process.env[key] = value;
     }
+  }
+});
+
+test("Buttondown source metadata fallback still adds the subscriber when metadata is plan-gated", async () => {
+  const previous = process.env.BUTTONDOWN_API_KEY;
+  const originalFetch = globalThis.fetch;
+  process.env.BUTTONDOWN_API_KEY = "test-key";
+  const payloads: Record<string, unknown>[] = [];
+  globalThis.fetch = async (_, init) => {
+    payloads.push(JSON.parse(String(init?.body)));
+    return payloads.length === 1
+      ? Response.json({ code: "feature_disabled" }, { status: 403 })
+      : Response.json({}, { status: 201 });
+  };
+  try {
+    assert.deepEqual(
+      await sendButtondownSubscriber("metadata@example.com", {
+        source: "insights-after-the-connection",
+      }),
+      { ok: true, duplicate: false, metadataApplied: false },
+    );
+    assert.deepEqual(payloads[0].metadata, {
+      source: "insights-after-the-connection",
+    });
+    assert.equal(payloads[1].metadata, undefined);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (previous === undefined) delete process.env.BUTTONDOWN_API_KEY;
+    else process.env.BUTTONDOWN_API_KEY = previous;
   }
 });

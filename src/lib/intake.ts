@@ -14,6 +14,9 @@ export const enquirySchema = z.object({
 export const newsletterSchema = z.object({
   email: emailSchema,
   consent: z.literal(true),
+  source: z
+    .enum(["dreniak-website", "insights-after-the-connection"])
+    .default("dreniak-website"),
   website: z.string().max(500).default(""),
 });
 const counters = new Map<string, { count: number; expires: number }>();

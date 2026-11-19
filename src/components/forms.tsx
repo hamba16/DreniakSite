@@ -172,7 +172,13 @@ export function EnquiryForm({ division }: { division: Division }) {
     </form>
   );
 }
-export function Newsletter() {
+export function Newsletter({
+  source = "dreniak-website",
+  description = "Read about infrastructure and the value it creates over time.",
+}: {
+  source?: "dreniak-website" | "insights-after-the-connection";
+  description?: string;
+}) {
   const emailId = useId();
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
@@ -187,7 +193,7 @@ export function Newsletter() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, consent: true }),
+        body: JSON.stringify({ ...values, consent: true, source }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -206,7 +212,7 @@ export function Newsletter() {
   return (
     <form className="newsletter" onSubmit={submit}>
       <label htmlFor={emailId}>The Dreniak newsletter.</label>
-      <p>Read about infrastructure and the value it creates over time.</p>
+      <p>{description}</p>
       <div className="newsletter-input">
         <input
           id={emailId}
@@ -233,6 +239,7 @@ export function Newsletter() {
         tabIndex={-1}
         autoComplete="off"
       />
+      <input type="hidden" name="source" value={source} />
       <p id={`${emailId}-consent`} className="fine-print">
         By subscribing, you agree to receive our newsletter. Unsubscribe by
         emailing us. <Link href="/privacy">Privacy</Link>
